@@ -5,6 +5,10 @@ const compression = require('compression');
  * APIs for ingredients and templates
  */
 const metaAPI = require('./meta-api');
+/**
+ * APIs for teams
+ */
+const teamAPI = require('./team-api');
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -49,6 +53,7 @@ api.use(function (req, res, next) {
     next();
 });
 api.use('/', metaAPI);
+api.use('/', teamAPI);
 
 
 api.post('/pizzas', (req, res, next) => {
