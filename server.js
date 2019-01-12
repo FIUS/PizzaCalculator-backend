@@ -1,7 +1,10 @@
 const express = require('express');
 const api = express();
 const compression = require('compression');
-const fs = require('fs');
+/**
+ * APIs for ingredients and templates
+ */
+const metaAPI = require('./meta-api');
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -45,26 +48,8 @@ api.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+api.use('/', metaAPI);
 
-api.get('/ingredients', (req, res, next) => {
-    try {
-        let ingredients = fs.readFileSync('./ingredients.json');
-        console.log(JSON.parse(ingredients));
-        res.status(200).end(ingredients);   
-    } catch (error) {
-        res.sendStatus(500);
-    }
-});
-
-api.get('/templates', (req, res, next) => {
-    try {
-        let templates = fs.readFileSync('./templates.json');
-        console.log(JSON.parse(templates));
-        res.status(200).end(templates);
-    } catch (error) {
-        res.sendStatus(500);
-    }
-});
 
 api.post('/pizzas', (req, res, next) => {
     res.sendStatus(404);
