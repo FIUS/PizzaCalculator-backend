@@ -56,7 +56,36 @@ module.exports = class DBController {
         let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients;');
         stmt.all((err, result) => {
             if (err) {
-                console.log('[Error] Error on receiving ingredients');
+                console.log(`[Error] Error on receiving ingredients: ${err}`);
+                callback(null);
+            }
+            callback(result);
+        });
+    }
+
+    storeTemplate(template) {
+        let stmt = prepare('INSERT INTO Templates(name, ingredients, vegetarian, pork) VALUES (?, ?, ?, ?);');
+        let name = template.name;
+        let ingredients = JSON.stringify(template.ingredients);
+        let vegetarian = template.vegetarian;
+        let pork = template.pork;
+        try {
+            stmt.run(name, ingredients, vegetarian, pork, (err) => {
+                if (err) {
+                    console.log(`[Error] Error on inserting new template: ${err}`);
+                    throw err;
+                }
+            });
+        } catch (error) {
+            // TODO some error handling
+        }
+    }
+
+    getAllTemplates(callback) {
+        let stmt = prepare('SELECT name, ingredients, vegetarian, pork FROM Templates;');
+        stmt.all((err, result) => {
+            if (err) {
+                console.log(`[Error] Error on receiving templates: ${err}`);
                 callback(null);
             }
             callback(result);

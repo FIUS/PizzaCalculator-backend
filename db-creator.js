@@ -2,7 +2,7 @@ const sqlite3 = require('sqlite3');
 const DBController = require('./db-controller');
 const fs = require('fs');
 
-function recreateDB() {
+function recreateDB(callback) {
     let db = new sqlite3.Database('./meta.db');
     db.serialize(function () {
         // create DB tables
@@ -14,11 +14,10 @@ function recreateDB() {
     db.close();
 
     console.log("The database was created at: ./meta.db");
-
-    initializaIngredients();
+    callback();
 }
 
-function initializaIngredients() {
+function initializeIngredients() {
     let db = new DBController();
     let ingredients = JSON.parse(fs.readFileSync('./ingredients.json'));
     ingredients.forEach((ingredient) => {
@@ -26,4 +25,19 @@ function initializaIngredients() {
     });
 }
 
-recreateDB();
+function initializeTemplates() {
+    let db = new DBController();
+    let templates = JSON.parse(fs.readFileSync('./templates.json'));
+    templates.forEach((template) => {
+        db.storeTemplate(template);
+    });
+}
+
+recreateDB(() => {
+    setTimeout(() => {
+        initializeIngredients();
+        initializeTemplates();
+        console.log('Initializing data');
+    }, 1000);
+    
+});
