@@ -79,11 +79,11 @@ module.exports = class Pizzas {
         let teamSuggestions = suggestions.get(teamname);
         let teamSuggestion;
         teamSuggestions.values().forEach((suggestion) => {
-            if (suggestionName === suggestion.name) {
+            if (suggestionName == suggestion.name) {
                 teamSuggestion = suggestion;
             }
         });
-        let hashMapSuggestionName = createSuggestionName(teamSuggestion.name);
+        let hashMapSuggestionName = createSuggestionName(teamSuggestion);
         if (teamSuggestions.has(hashMapSuggestionName)) {
             teamSuggestions.remove(hashMapSuggestionName);
             return teamSuggestion;

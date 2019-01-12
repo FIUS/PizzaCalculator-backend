@@ -14,6 +14,8 @@ function recreateDB() {
     db.close();
 
     console.log("The database was created at: ./meta.db");
+
+    initializaIngredients();
 }
 
 function initializaIngredients() {
@@ -25,4 +27,3 @@ function initializaIngredients() {
 }
 
 recreateDB();
-initializaIngredients();
