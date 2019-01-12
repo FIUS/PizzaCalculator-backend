@@ -5,6 +5,10 @@ const timeoutInMS = 28800000;
 
 let teams = new HashMap();
 
+function hasTeam(team) {
+    return teams.has(team);
+};
+
 api.post('/teams', (req, res, next) => {
     let teamname = req.body.teamname;
     // teamname is not undefined and teamname is not currently used
@@ -28,6 +32,10 @@ api.post('/teams', (req, res, next) => {
     } else {
         res.send(409).end('Conflict: teamname is already used');
     }
+});
+
+api.get('/teams', (req, res, next) => {
+    res.status(200).end(JSON.stringify(teams.keys()));
 });
 
 module.exports = api;
