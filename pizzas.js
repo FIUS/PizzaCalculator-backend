@@ -28,10 +28,14 @@ module.exports = class Pizzas {
         return suggestions.get(teamname);
     }
 
-
-    checkIngredientsOfPizza(pizza) {
+    /**
+     * 
+     * @param {*} pizza - Given pizza to check
+     * @param {*} callback - Callback with true if
+     */
+    checkIngredientsOfPizza(pizza, callback) {
         db.getAllIngredients((ingredients) => {
-            ingredients.includes(pizza.ingredients);
+            callback(ingredients.includes(pizza.ingredients));
         });
     }
 
@@ -39,7 +43,7 @@ module.exports = class Pizzas {
         let pizzas = [
             {
                 name: 0,
-                ingredient: [
+                ingredients: [
                     "Tomaten",
                     "Mozarella",
                     "Feta"
@@ -49,7 +53,7 @@ module.exports = class Pizzas {
             },
             {
                 name: 1,
-                ingredient: [
+                ingredients: [
                     "Salami",
                     "Schinken",
                 ],
@@ -58,7 +62,7 @@ module.exports = class Pizzas {
             },
             {
                 name: 2,
-                ingredient: [
+                ingredients: [
                     "Sucuk",
                     "Spinat",
                     "Feta",
