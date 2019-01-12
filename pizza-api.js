@@ -53,6 +53,7 @@ api.post('/pizzas', (req, res, next) => {
 });
 
 api.post('/pizzas/templates', (req, res, next) => {
+    console.log('[Log] POST /pizzas/templates');
     let teamname = req.body.teamname;
     let template = req.body.template;
     if (teamname === undefined || template === undefined) {
@@ -72,8 +73,8 @@ api.post('/pizzas/templates', (req, res, next) => {
 });
 
 api.get('/pizzas', (req, res, next) => {
-    console.log('[Log] GET /pizzas');
     let teamname = req.query.teamname;
+    console.log(`[Log] GET /pizzas/?teamname=${teamname}`);
     if (teamname === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }))
     } else if (!teams.has(teamname)) {
@@ -88,6 +89,7 @@ api.get('/pizzas', (req, res, next) => {
  */
 api.get('/pizzas/order', (req, res, next) => {
     let teamname = req.query.teamname;
+    console.log(`[Log] GET /pizzas/order/${teamname}`);
     if (teamname === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }))
     } else if (!teams.has(teamname)) {
@@ -100,6 +102,7 @@ api.get('/pizzas/order', (req, res, next) => {
 api.delete('/pizzas/:name', (req, res, next) => {
     let suggestionName = req.params.name;
     let teamname = req.body.teamname;
+    console.log(`[Log] DELETE /pizzas/${teamname}`);
     if (teamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or name of pizza is not defined' }));
     } else if (!teams.has(teamname)) {
