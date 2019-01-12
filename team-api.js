@@ -1,13 +1,8 @@
 const express = require('express');
 const api = express();
-const HashMap = require('hashmap');
 const timeoutInMS = 28800000;
-
-let teams = new HashMap();
-
-function hasTeam(team) {
-    return teams.has(team);
-};
+const Teams = require('./teams');
+const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {
     let teamname = req.body.teamname;

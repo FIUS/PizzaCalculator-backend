@@ -13,6 +13,11 @@ const teamAPI = require('./team-api');
  * APIs for pizzas
  */
 const pizzaAPI = require('./pizza-api');
+/**
+ * Module to controll teams
+ */
+const Teams = require('./teams');
+const teams = new Teams();
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -30,12 +35,6 @@ if (process.env.PORT != null) {
 } else {
     console.log("Environment variable PORT not set. Using default port 8080.");
 }
-
-var server = api.listen(port, function () {
-    var host = server.address().address;
-    var port = server.address().port;
-    console.log("REST server listening at http://%s:%s", host, port);
-});
 
 // Setup Global Middlewares
 api.use(compression());
@@ -60,7 +59,11 @@ api.use('/', metaAPI);
 api.use('/', teamAPI);
 api.use('/', pizzaAPI);
 
+var server = api.listen(port, function () {
+    teams.setTestTeams();
 
-api.post('/pizzas', (req, res, next) => {
-    res.sendStatus(404);
+    var host = server.address().address;
+    var port = server.address().port;
+    console.log("REST server listening at http://%s:%s", host, port);
 });
+
