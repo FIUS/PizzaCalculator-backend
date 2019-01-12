@@ -14,10 +14,15 @@ const teamAPI = require('./team-api');
  */
 const pizzaAPI = require('./pizza-api');
 /**
- * Module to controll teams
+ * Module to control teams
  */
 const Teams = require('./teams');
 const teams = new Teams();
+/**
+ * Module to control teams
+ */
+const Pizzas = require('./pizzas');
+const pizzas = new Pizzas();
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -61,6 +66,7 @@ api.use('/', pizzaAPI);
 
 var server = api.listen(port, function () {
     teams.setTestTeams();
+    pizzas.setTestSuggestions();
 
     var host = server.address().address;
     var port = server.address().port;

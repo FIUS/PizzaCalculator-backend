@@ -25,4 +25,37 @@ module.exports = class Pizzas {
         return suggestions.get(teamname);
     }
 
+    setTestSuggestions() {
+        let pizzas = [
+            {
+                ingredient: [
+                    "Tomaten",
+                    "Mozarella",
+                    "Feta"
+                ],
+                vegetarian: true,
+                pork: false
+            },
+            {
+                ingredient: [
+                    "Salami",
+                    "Schinken",
+                ],
+                vegetarian: false,
+                pork: true
+            },
+            {
+                ingredient: [
+                    "Sucuk",
+                    "Spinat",
+                    "Feta",
+                    "Pepperoni"
+                ],
+                vegetarian: false,
+                pork: false
+            }
+        ];
+        suggestions.set('test', pizzas);
+    }
+
 }
