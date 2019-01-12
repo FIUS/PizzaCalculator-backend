@@ -155,10 +155,6 @@
         "pork": true
     },
     {
-        "name": "vegetarian": ,
-        "pork":
-    },
-    {
         "name": "Hähnchenfleisch",
         "vegetarian": false,
         "pork": false

@@ -6,7 +6,9 @@
       "Schinken",
       "Speck",
       "Hackfleischklöse"
-    ]
+    ],
+    "vegetarian": false,
+    "pork": true
   },
   {
     "name": "A lá Flo",
@@ -15,34 +17,42 @@
       "Zwiebeln",
       "Mais",
       "Speck"
-    ]
+    ],
+    "vegetarian": false,
+    "pork": true
   },
   {
     "name": "Sucuk (scharf)",
     "ingredients": [
-      "türk. Salami",
+      "Sucuk",
       "Mais",
       "Speck",
       "Pepperoni (scharf)"
-    ]
+    ],
+    "vegetarian": false,
+    "pork": false
   },
   {
     "name": "Sucuk (mild)",
     "ingredients": [
-      "türk. Salami",
+      "Sucuk",
       "Mais",
       "Speck",
       "Fetakäse"
-    ]
+    ],
+    "vegetarian": false,
+    "pork": false
   },
   {
     "name": "MC's Sucuk-Pizza",
     "ingredients": [
-      "türk. Salami",
+      "Sucuk",
       "Zwiebeln",
       "Mais",
       "Speck"
-    ]
+    ],
+    "vegetarian": false,
+    "pork": true
   },
   {
     "name": "Mozzarella + Ei",
@@ -51,6 +61,8 @@
       "Pepperoni (scharf)",
       "Mozzarella",
       "Oliven"
-    ]
+    ],
+    "vegetarian": true,
+    "pork": false
   }
 ]
