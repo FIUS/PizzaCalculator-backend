@@ -27,6 +27,8 @@
     "compression": "^1.7.3",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
-    "nodemon": "^1.18.9"
+    "hashmap": "^2.3.0",
+    "nodemon": "^1.18.9",
+    "sqlite3": "^4.0.6"
   }
 }
