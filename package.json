@@ -25,6 +25,7 @@
   "homepage": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend#readme",
   "dependencies": {
     "compression": "^1.7.3",
+    "crypto": "^1.0.1",
     "express": "^4.16.4",
     "fs": "0.0.1-security",
     "hashmap": "^2.3.0",

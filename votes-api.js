@@ -16,7 +16,7 @@ api.patch('/pizzas/:name', (req, res, next) => {
     } else if (mode == 'up' || mode == 'down'){
         try {
             pizzas.revoteSuggestionOfTeam(suggestionName, teamname, mode);
-            res.sendStatus(200);
+            res.status(200).end(JSON.stringify({ msg: 'OK: Suggestion is revoted' }));
         } catch (error) {
             res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such suggestion for the team' }));
         }

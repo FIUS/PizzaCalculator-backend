@@ -101,14 +101,15 @@ api.get('/pizzas/order', (req, res, next) => {
 
 api.delete('/pizzas/:name', (req, res, next) => {
     let suggestionName = req.params.name;
-    let teamname = req.body.teamname;
-    console.log(`[Log] DELETE /pizzas/${teamname}`);
-    if (teamname === undefined || suggestionName === undefined) {
+    let hashedTeamname = req.body.teamname;
+    console.log(`[Log] DELETE /pizzas/${suggestionName}`);
+    if (hashedTeamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or name of pizza is not defined' }));
-    } else if (!teams.has(teamname)) {
+    } else if (!teams.hasHash(hashedTeamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         try {
+            let teamname = teams.getTeamnameOfHash(hashedTeamname);
             let deletedSuggestion = pizzas.deletePizzaSuggestionOfTeam(suggestionName, teamname);
             res.status(200).end(JSON.stringify(deletedSuggestion));
         } catch (error) {
