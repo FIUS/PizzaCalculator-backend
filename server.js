@@ -14,12 +14,16 @@ const teamAPI = require('./team-api');
  */
 const pizzaAPI = require('./pizza-api');
 /**
+ * APIs for votes of pizzas
+ */
+const votesAPI = require('./votes-api');
+/**
  * Module to control teams
  */
 const Teams = require('./teams');
 const teams = new Teams();
 /**
- * Module to control teams
+ * Module to control pizzas
  */
 const Pizzas = require('./pizzas');
 const pizzas = new Pizzas();
@@ -48,7 +52,7 @@ api.use(function (req, res, next) {
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', '*');
     // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH');
     // Request headers you wish to allow
     res.setHeader('Access-Control-Allow-Headers', 'X-Auth-Token,content-type');
     // Set to true if you need the website to include cookies in the requests sent
@@ -63,6 +67,7 @@ api.use(function (req, res, next) {
 api.use('/', metaAPI);
 api.use('/', teamAPI);
 api.use('/', pizzaAPI);
+api.use('/', votesAPI);
 
 var server = api.listen(port, function () {
     teams.setTestTeams();

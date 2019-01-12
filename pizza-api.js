@@ -17,7 +17,7 @@ function createPizza(ingredientsData, teamname) {
     });
     let numberOfSuggestion = (pizzas.getPizzaSuggestionsOfTeam(teamname) != null) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
     let pizza = {
-        name: numberOfSuggestion, // TODO make more beautiful than just a number
+        name: numberOfSuggestion.toString(), // TODO make more beautiful than just a number
         ingredients: ingredientsNames,
         vegetarian: vegetarian,
         pork: pork,

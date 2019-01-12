@@ -1,11 +1,25 @@
 const HashMap = require('hashmap');
+const Set = require('set');
 const DBController = require('./db-controller');
 const db = new DBController();
 
+/**
+ * Map to store suggestions of a team
+ * <key>: teamname
+ * <value>: Map of suggestions
+ *          <key>: Name of the suggestion
+ *          <value>: Pizza object
+ */
 let suggestions = new HashMap();
+/**
+ * Map to store suggestions of a team
+ * <key>: teamname
+ * <value>: Set of suggestion names build as the concatenation of the ingredient names
+ */
+let suggestionNames = new HashMap();
 
 /**
- * Creates a suggestion name for the hashmap.
+ * Creates a suggestion name for the set.
  * Concatenates the ingredients names.
  * @param {*} suggestion - Given suggestion to create a name.
  */
@@ -36,6 +50,12 @@ function containsIngredient(ingredients, toCheckIngredient) {
 
 module.exports = class Pizzas {
     /**
+     * ############################
+     * # Pizza suggestion methods #
+     * ############################
+     */
+
+    /**
      * Adds a pizza suggestion for a given team 
      * @param {*} teamname - Name of the team the suggestion is posted for
      * @param {*} suggestion - Pizza suggestion
@@ -43,17 +63,22 @@ module.exports = class Pizzas {
     addPizzaSuggestionForTeam(teamname, suggestion) {
         if (suggestions.has(teamname)) {
             let teamSuggestions = suggestions.get(teamname);
+            // Special suggestion name as concatenation of ingredients for suggestionNames
             let suggestionName = createSuggestionName(suggestion);
             // Add if not already exists else throw new Error
-            if (!teamSuggestions.has(suggestionName)) {
-                suggestions.get(teamname).set(createSuggestionName(suggestion), suggestion);
+            if (!suggestionNames.get(teamname).contains(suggestionName)) {
+                teamSuggestions.set(suggestion.name, suggestion);
+                suggestionNames.get(teamname).add(suggestionName);
             } else {
-                throw new Error(`Pizza suggestion with name ${suggestionName} already exists`);
+                throw new Error(`Pizza suggestion with name ${suggestionName} or ${suggestion.name} already exists`);
             }
         } else {
             let pizzas = new HashMap();
-            pizzas.set(createSuggestionName(suggestion), suggestion);
+            pizzas.set(suggestion.name, suggestion);
             suggestions.set(teamname, pizzas);
+            let teamSuggestionNames = new Set();
+            teamSuggestionNames.add(createSuggestionName(suggestion));
+            suggestionNames.set(teamname, teamSuggestionNames);
         }
     };
 
@@ -77,20 +102,21 @@ module.exports = class Pizzas {
      */
     deletePizzaSuggestionOfTeam(suggestionName, teamname) {
         let teamSuggestions = suggestions.get(teamname);
-        let teamSuggestion;
-        teamSuggestions.values().forEach((suggestion) => {
-            if (suggestionName == suggestion.name) {
-                teamSuggestion = suggestion;
-            }
-        });
-        let hashMapSuggestionName = createSuggestionName(teamSuggestion);
-        if (teamSuggestions.has(hashMapSuggestionName)) {
-            teamSuggestions.remove(hashMapSuggestionName);
+        if (teamSuggestions.has(suggestionName)) {
+            let teamSuggestion = teamSuggestions.get(suggestionName);
+            teamSuggestions.remove(suggestionName);
+            suggestionNames.get(teamname).remove(createSuggestionName(teamSuggestion));
             return teamSuggestion;
         } else {
             throw new Error('There is no such suggestion for given team');
         }
     }
+
+    /**
+    * ##################################
+    * # Suggestion ingredients methods #
+    * ##################################
+    */
 
     /**
      * Checks if all ingredients of a given pizza existent.
@@ -108,12 +134,39 @@ module.exports = class Pizzas {
     }
 
     /**
+    * ################
+    * # Vote methods #
+    * ################
+    */
+
+    /**
+     * Up- or downvote a suggestion of a given team depending on the given mode
+     * @param {*} suggestionName - Name of the suggestion which should be upvoted
+     * @param {*} teamname - Name of the team
+     * @param {*} mode - 'up' if the suggestion should be upvoted else 'down'
+     * @throws Error if there is no suggestion with the given name
+     */
+    revoteSuggestionOfTeam(suggestionName, teamname, mode) {
+        let teamSuggestions = suggestions.get(teamname);
+        if (!teamSuggestions.has(suggestionName)) {
+            throw new Error('There is no such suggestion');
+        }
+        (mode == 'up') ? teamSuggestions.get(suggestionName).vote++ : teamSuggestions.get(suggestionName).vote--;
+    }
+
+    /**
+     * #################
+     * # Setup methods #
+     * #################
+     */
+
+    /**
      * Init 3 pizza suggestions for test team
      */
     setTestSuggestions() {
         let pizzas = [
             {
-                name: 0,
+                name: '0',
                 ingredients: [
                     "Tomaten",
                     "Mozarella",
@@ -123,7 +176,7 @@ module.exports = class Pizzas {
                 pork: false
             },
             {
-                name: 1,
+                name: '1',
                 ingredients: [
                     "Salami",
                     "Schinken",
@@ -132,7 +185,7 @@ module.exports = class Pizzas {
                 pork: true
             },
             {
-                name: 2,
+                name: '2',
                 ingredients: [
                     "Sucuk",
                     "Spinat",
@@ -144,11 +197,14 @@ module.exports = class Pizzas {
             }
         ];
         let teamSuggestions = new HashMap();
+        let teamSuggestionNames = new Set();
         pizzas.forEach((pizza) => {
             pizza.vote = 0;
-            teamSuggestions.set(createSuggestionName(pizza), pizza);
+            teamSuggestions.set(pizza.name, pizza);
+            teamSuggestionNames.add(createSuggestionName(pizza));
         });
         suggestions.set('test', teamSuggestions);
+        suggestionNames.set('test', teamSuggestionNames);
     }
 
 }
