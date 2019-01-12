@@ -30,6 +30,7 @@ api.get('/ingredients', (req, res, next) => {
         res.sendStatus(500);
     }
 });
+
 api.get('/templates', (req, res, next) => {
     try {
         let templates = fs.readFileSync('./templates.json');
