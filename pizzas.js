@@ -34,22 +34,6 @@ function containsIngredient(ingredients, toCheckIngredient) {
     return result;
 }
 
-/**
- * Deletes a teams pizza suggestion if it exists.
- * @param {*} suggestion - The suggestion to delete
- * @param {*} teamname - The teamname which the suggestion should belong to
- * @throws Error if there is no such suggestion for the given team
- */
-function deleteSuggestionOfTeam(suggestion, teamname) {
-    let teamSuggestions = suggestions.get(teamname);
-    let suggestionName = createSuggestionName(suggestion);
-    if (teamSuggestions.has(suggestionName)) {
-        teamSuggestions.remove(suggestionName);
-    } else {
-        throw new Error('There is no such suggestion for given team');
-    }
-}
-
 module.exports = class Pizzas {
     /**
      * Adds a pizza suggestion for a given team 
@@ -86,15 +70,25 @@ module.exports = class Pizzas {
     }
 
     /**
-     * Delete a pizza suggestion of a given team if the suggestions exists. 
-     * @param {*} teamname - teamname of given team
-     * @param {*} suggestion - suggestion to delete
+     * Deletes a teams pizza suggestion if it exists.
+     * @param {*} suggestion - The name of the suggestions to delete
+     * @param {*} teamname - The teamname which the suggestion should belong to
+     * @throws Error if there is no such suggestion for the given team
      */
-    deletePizzaSuggestionOfTeam(teamname, suggestion) {
-        try {
-            deleteSuggestionOfTeam(suggestion, teamname);
-        } catch (error) {
-            console.log('[Log] No such suggestion for given team');
+    deletePizzaSuggestionOfTeam(suggestionName, teamname) {
+        let teamSuggestions = suggestions.get(teamname);
+        let teamSuggestion;
+        teamSuggestions.values().forEach((suggestion) => {
+            if (suggestionName === suggestion.name) {
+                teamSuggestion = suggestion;
+            }
+        });
+        let hashMapSuggestionName = createSuggestionName(teamSuggestion.name);
+        if (teamSuggestions.has(hashMapSuggestionName)) {
+            teamSuggestions.remove(hashMapSuggestionName);
+            return teamSuggestion;
+        } else {
+            throw new Error('There is no such suggestion for given team');
         }
     }
 

@@ -43,7 +43,7 @@ api.post('/pizzas', (req, res, next) => {
                     res.status(201).end(JSON.stringify(pizza));
                 } catch (error) {
                     res.status(400).end(JSON.stringify({ error: 'Bad request: The pizza suggestion already exists' }));
-                } 
+                }
             } else {
                 res.status(400).end(JSON.stringify({ error: 'Bad request: At least one ingredient is not existent' }));
             }
@@ -71,7 +71,12 @@ api.delete('/pizzas/:name', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-
+        try {
+            let deletedSuggestion = pizzas.deletePizzaSuggestionOfTeam(suggestionName, teamname);
+            res.status(200).end(JSON.stringify(deletedSuggestion));
+        } catch (error) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: There is no such suggestion for the given team' }));
+        }
     }
 });
 
