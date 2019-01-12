@@ -4,6 +4,23 @@ const db = new DBController();
 
 let suggestions = new HashMap();
 
+/**
+ * Checks if an given ingredientsArray contains an ingredient value
+ * @param {*} given given array
+ * @param {*} toCheck element to check
+ * @returns true if toCheck is in given
+ */
+function contains(ingredients, toCheckIngredient) {
+    let result = false;
+    ingredients.forEach((element) => {
+        if (element.name == toCheckIngredient.name) {
+            result = true
+            return;
+        }
+    });
+    return result;
+}
+
 module.exports = class Pizzas {
     /**
      * Adds a pizza suggestion for a given team 
@@ -35,10 +52,17 @@ module.exports = class Pizzas {
      */
     checkIngredientsOfPizza(pizza, callback) {
         db.getAllIngredients((ingredients) => {
-            callback(ingredients.includes(pizza.ingredients));
+            let result = false;
+            pizza.forEach((ingredient) => {
+                result = result || contains(ingredients, ingredient);
+            });
+            callback(result);
         });
     }
 
+    /**
+     * Init 3 pizza suggestions for test team
+     */
     setTestSuggestions() {
         let pizzas = [
             {
