@@ -9,6 +9,10 @@ const metaAPI = require('./meta-api');
  * APIs for teams
  */
 const teamAPI = require('./team-api');
+/**
+ * APIs for pizzas
+ */
+const pizzaAPI = require('./pizza-api');
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -54,6 +58,7 @@ api.use(function (req, res, next) {
 });
 api.use('/', metaAPI);
 api.use('/', teamAPI);
+api.use('/', pizzaAPI);
 
 
 api.post('/pizzas', (req, res, next) => {
