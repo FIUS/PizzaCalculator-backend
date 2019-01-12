@@ -29,9 +29,9 @@ module.exports = class Pizzas {
     }
 
     /**
-     * 
+     * Checks if all ingredients of a given pizza existent.
      * @param {*} pizza - Given pizza to check
-     * @param {*} callback - Callback with true if
+     * @param {*} callback - Callback with true if all ingredients are existent else false
      */
     checkIngredientsOfPizza(pizza, callback) {
         db.getAllIngredients((ingredients) => {

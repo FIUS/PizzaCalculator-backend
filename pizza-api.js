@@ -34,9 +34,16 @@ api.post('/pizzas', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-        let pizza = createPizza(ingredients, teamname);
-        pizzas.addPizzaSuggestionForTeam(teamname, pizza);
-        res.status(201).end(JSON.stringify(pizza));
+        // Checks if all ingredients are existent
+        pizzas.checkIngredientsOfPizza(ingredients, (result) => {
+            if (result) {
+                let pizza = createPizza(ingredients, teamname);
+                pizzas.addPizzaSuggestionForTeam(teamname, pizza);
+                res.status(201).end(JSON.stringify(pizza));
+            } else {
+                res.status(400).end(JSON.stringify({ error: 'Bad request: At least one ingredient is not existent' }));
+            }
+        });
     }
 });
 
