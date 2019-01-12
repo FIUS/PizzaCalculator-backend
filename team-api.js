@@ -5,6 +5,7 @@ const Teams = require('./teams');
 const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {
+    console.log('[Log] POST /teams');
     let teamname = req.body.teamname;
     // teamname is not undefined and teamname is not currently used
     if (teamname != undefined && !teams.has(teamname)) {
@@ -30,6 +31,7 @@ api.post('/teams', (req, res, next) => {
 });
 
 api.get('/teams', (req, res, next) => {
+    console.log('[Log] GET /teams');
     res.status(200).end(JSON.stringify(teams.keys()));
 });
 

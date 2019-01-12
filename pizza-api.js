@@ -24,6 +24,7 @@ function createPizza(ingredientsData) {
 }
 
 api.post('/pizzas', (req, res, next) => {
+    console.log('[Log] POST /pizzas');
     let ingredients = req.body.ingredients;
     let teamname = req.body.teamname;
     if (ingredients === undefined || teamname === undefined) {
@@ -38,6 +39,7 @@ api.post('/pizzas', (req, res, next) => {
 });
 
 api.get('/pizzas', (req, res, next) => {
+    console.log('[Log] GET /pizzas');
     let teamname = req.query.teamname;
     if (teamname === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }))

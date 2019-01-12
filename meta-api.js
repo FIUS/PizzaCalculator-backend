@@ -14,6 +14,7 @@ function changeIngredientsFlagsToBoolean(ingredients) {
 }
 
 api.get('/ingredients', (req, res, next) => {
+    console.log('[Log] GET /ingredients');
     try {
         db.getAllIngredients((ingredients) => {
             // If ingredients array is not null, return ingredients with 200
@@ -26,15 +27,15 @@ api.get('/ingredients', (req, res, next) => {
             }
         });
     } catch (error) {
-        console.log(`[Error] Catched error on retreiving all ingredients from DB in GET /ingredients: ${error}`);
+        console.error(`[Error] Catched error on retreiving all ingredients from DB in GET /ingredients: ${error}`);
         res.sendStatus(500);
     }
 });
 
 api.get('/templates', (req, res, next) => {
+    console.log('[Log] GET /templates');
     try {
         let templates = fs.readFileSync('./templates.json');
-        console.log(JSON.parse(templates));
         res.status(200).end(templates);
     } catch (error) {
         res.sendStatus(500);
