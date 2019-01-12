@@ -4,39 +4,178 @@
         "vegetarian": false,
         "pork": false
     },
-    "Sardellen",
-    "Meeresfrüchte",
-    "Krabben",
-    "Zwiebel",
-    "Kidney-Bohnen",
-    "Fetakäse",
-    "Silberzwiebeln",
-    "Pepperoni (scharf)",
-    "Pepperoni (mild)",
-    "frischer Paprika",
-    "Rucola",
-    "Mais",
-    "Zucchini",
-    "Spargel",
-    "Artischocken",
-    "frische Pilze",
-    "Auberginen",
-    "Spinat",
-    "Broccoli",
-    "Ananas",
-    "Oliven",
-    "Kapern",
-    "Tomaten",
-    "Ei",
-    "Hackfleischsoße",
-    "Salami",
-    "ital. Salami",
-    "Hackfleischklöse",
-    "Vorderschinken",
-    "Speck",
-    "Hähnchenfleisch",
-    "türk. Salami",
-    "Sucuk",
-    "Maultaschen",
-    "Mozzarella"
+    {
+        "name": "Sardellen",
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "Meeresfrüchte",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Krabben",
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "Zwiebel",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Kidney-Bohnen",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Fetakäse",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Silberzwiebeln",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Pepperoni (scharf)",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Pepperoni (mild)",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "frischer Paprika",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Rucola",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Mais",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Zucchini",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Spargel",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Artischocken",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "frische Pilze",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Auberginen",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Spinat",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Broccoli",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Ananas",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Oliven",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Kapern",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Tomaten",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Ei",
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Hackfleischsoße",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Salami",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "ital. Salami",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Hackfleischklöse",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Vorderschinken",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Speck",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "vegetarian": ,
+        "pork":
+    },
+    {
+        "name": "Hähnchenfleisch",
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "Sucuk",
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "Maultaschen",
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Mozzarella",
+        "vegetarian": true,
+        "pork": false
+    }
 ]
