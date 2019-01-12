@@ -1,7 +1,7 @@
 const HashMap = require('hashmap');
 let teams = new HashMap();
 
-module.exports = class DBController {
+module.exports = class Teams {
     has(team) {
         return teams.has(team);
     }

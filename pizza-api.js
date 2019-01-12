@@ -34,4 +34,8 @@ api.post('/pizzas', (req, res, next) => {
     }
 });
 
+api.get('/pizzas', (req, res, next) => {
+
+});
+
 module.exports = api;
