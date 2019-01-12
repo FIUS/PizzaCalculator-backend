@@ -1,4 +1,7 @@
 const HashMap = require('hashmap');
+const DBController = require('./db-controller');
+const db = new DBController();
+
 let suggestions = new HashMap();
 
 module.exports = class Pizzas {
@@ -25,9 +28,17 @@ module.exports = class Pizzas {
         return suggestions.get(teamname);
     }
 
+
+    checkIngredientsOfPizza(pizza) {
+        db.getAllIngredients((ingredients) => {
+            ingredients.includes(pizza.ingredients);
+        });
+    }
+
     setTestSuggestions() {
         let pizzas = [
             {
+                name: 0,
                 ingredient: [
                     "Tomaten",
                     "Mozarella",
@@ -37,6 +48,7 @@ module.exports = class Pizzas {
                 pork: false
             },
             {
+                name: 1,
                 ingredient: [
                     "Salami",
                     "Schinken",
@@ -45,6 +57,7 @@ module.exports = class Pizzas {
                 pork: true
             },
             {
+                name: 2,
                 ingredient: [
                     "Sucuk",
                     "Spinat",

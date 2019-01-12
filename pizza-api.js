@@ -5,18 +5,20 @@ const teams = new Teams();
 const Pizzas = require('./pizzas');
 const pizzas = new Pizzas();
 
-function createPizza(ingredientsData) {
+
+function createPizza(ingredientsData, teamname) {
     let ingredientsNames = [];
     let vegetarian = true;
     let pork = false;
     ingredientsData.forEach((ingredient) => {
         if (!ingredient.vegetarian) { vegetarian = false }
-        if (ingredient.pork) { pork = true};
+        if (ingredient.pork) { pork = true };
         ingredientsNames.push(ingredient.name);
     });
-
+    let numberOfSuggestion = (pizzas.getPizzaSuggestionsOfTeam(teamname) != undefined) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
     let pizza = {
-        ingredient: ingredientsNames,
+        name: numberOfSuggestion, // TODO make more beautiful than just a number
+        ingredients: ingredientsNames,
         vegetarian: vegetarian,
         pork: pork
     }
@@ -32,7 +34,7 @@ api.post('/pizzas', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-        let pizza = createPizza(ingredients);
+        let pizza = createPizza(ingredients, teamname);
         pizzas.addPizzaSuggestionForTeam(teamname, pizza);
         res.status(201).end(JSON.stringify(pizza));
     }
