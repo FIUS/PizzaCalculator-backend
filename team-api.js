@@ -29,3 +29,5 @@ api.post('/teams', (req, res, next) => {
         res.send(409).end('Conflict: teamname is already used');
     }
 });
+
+module.exports = api;
