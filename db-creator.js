@@ -1,4 +1,6 @@
 const sqlite3 = require('sqlite3');
+const DBController = require('./db-controller');
+const fs = require('fs');
 
 function recreateDB() {
     let db = new sqlite3.Database('./meta.db');
@@ -14,4 +16,13 @@ function recreateDB() {
     console.log("The database was created at: ./meta.db");
 }
 
+function initializaIngredients() {
+    let db = new DBController();
+    let ingredients = JSON.parse(fs.readFileSync('./ingredients.json'));
+    ingredients.forEach((ingredient) => {
+        db.storeIngredient(ingredient);
+    });
+}
+
 recreateDB();
+initializaIngredients();
