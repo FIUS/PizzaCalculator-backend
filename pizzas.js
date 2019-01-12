@@ -5,12 +5,25 @@ const db = new DBController();
 let suggestions = new HashMap();
 
 /**
+ * Creates a suggestion name for the hashmap.
+ * Concatenates the ingredients names.
+ * @param {*} suggestion - Given suggestion to create a name.
+ */
+function createSuggestionName(suggestion) {
+    let suggestionName = '';
+    suggestion.ingredients.forEach((ingredient) => {
+        suggestionName += ingredient;
+    });
+    return suggestionName;
+}
+
+/**
  * Checks if an given ingredientsArray contains an ingredient value
  * @param {*} given given array
  * @param {*} toCheck element to check
  * @returns true if toCheck is in given
  */
-function contains(ingredients, toCheckIngredient) {
+function containsIngredient(ingredients, toCheckIngredient) {
     let result = false;
     ingredients.forEach((element) => {
         if (element.name == toCheckIngredient.name) {
@@ -21,6 +34,22 @@ function contains(ingredients, toCheckIngredient) {
     return result;
 }
 
+/**
+ * Deletes a teams pizza suggestion if it exists.
+ * @param {*} suggestion - The suggestion to delete
+ * @param {*} teamname - The teamname which the suggestion should belong to
+ * @throws Error if there is no such suggestion for the given team
+ */
+function deleteSuggestionOfTeam(suggestion, teamname) {
+    let teamSuggestions = suggestions.get(teamname);
+    let suggestionName = createSuggestionName(suggestion);
+    if (teamSuggestions.has(suggestionName)) {
+        teamSuggestions.remove(suggestionName);
+    } else {
+        throw new Error('There is no such suggestion for given team');
+    }
+}
+
 module.exports = class Pizzas {
     /**
      * Adds a pizza suggestion for a given team 
@@ -29,10 +58,17 @@ module.exports = class Pizzas {
      */
     addPizzaSuggestionForTeam(teamname, suggestion) {
         if (suggestions.has(teamname)) {
-            suggestions.get(teamname).push(suggestion);
+            let teamSuggestions = suggestions.get(teamname);
+            let suggestionName = createSuggestionName(suggestion);
+            // Add if not already exists else throw new Error
+            if (!teamSuggestions.has(suggestionName)) {
+                suggestions.get(teamname).set(createSuggestionName(suggestion), suggestion);
+            } else {
+                throw new Error(`Pizza suggestion with name ${suggestionName} already exists`);
+            }
         } else {
-            let pizzas = [];
-            pizzas.push(suggestion);
+            let pizzas = new HashMap();
+            pizzas.set(createSuggestionName(suggestion), suggestion);
             suggestions.set(teamname, pizzas);
         }
     };
@@ -42,7 +78,24 @@ module.exports = class Pizzas {
      * @param {*} teamname - Name of the team of which the suggestions belong
      */
     getPizzaSuggestionsOfTeam(teamname) {
-        return suggestions.get(teamname);
+        if (suggestions.has(teamname)) {
+            return suggestions.get(teamname).values();
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Delete a pizza suggestion of a given team if the suggestions exists. 
+     * @param {*} teamname - teamname of given team
+     * @param {*} suggestion - suggestion to delete
+     */
+    deletePizzaSuggestionOfTeam(teamname, suggestion) {
+        try {
+            deleteSuggestionOfTeam(suggestion, teamname);
+        } catch (error) {
+            console.log('[Log] No such suggestion for given team');
+        }
     }
 
     /**
@@ -54,7 +107,7 @@ module.exports = class Pizzas {
         db.getAllIngredients((ingredients) => {
             let result = false;
             pizza.forEach((ingredient) => {
-                result = result || contains(ingredients, ingredient);
+                result = result || containsIngredient(ingredients, ingredient);
             });
             callback(result);
         });
@@ -96,7 +149,11 @@ module.exports = class Pizzas {
                 pork: false
             }
         ];
-        suggestions.set('test', pizzas);
+        let teamSuggestions = new HashMap();
+        pizzas.forEach((pizza) => {
+            teamSuggestions.set(createSuggestionName(pizza), pizza);
+        });
+        suggestions.set('test', teamSuggestions);
     }
 
 }

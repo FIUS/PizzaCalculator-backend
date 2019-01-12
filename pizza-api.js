@@ -15,7 +15,7 @@ function createPizza(ingredientsData, teamname) {
         if (ingredient.pork) { pork = true };
         ingredientsNames.push(ingredient.name);
     });
-    let numberOfSuggestion = (pizzas.getPizzaSuggestionsOfTeam(teamname) != undefined) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
+    let numberOfSuggestion = (pizzas.getPizzaSuggestionsOfTeam(teamname) != null) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
     let pizza = {
         name: numberOfSuggestion, // TODO make more beautiful than just a number
         ingredients: ingredientsNames,
@@ -38,8 +38,12 @@ api.post('/pizzas', (req, res, next) => {
         pizzas.checkIngredientsOfPizza(ingredients, (result) => {
             if (result) {
                 let pizza = createPizza(ingredients, teamname);
-                pizzas.addPizzaSuggestionForTeam(teamname, pizza);
-                res.status(201).end(JSON.stringify(pizza));
+                try {
+                    pizzas.addPizzaSuggestionForTeam(teamname, pizza);
+                    res.status(201).end(JSON.stringify(pizza));
+                } catch (error) {
+                    res.status(400).end(JSON.stringify({ error: 'Bad request: The pizza suggestion already exists' }));
+                } 
             } else {
                 res.status(400).end(JSON.stringify({ error: 'Bad request: At least one ingredient is not existent' }));
             }
@@ -56,6 +60,18 @@ api.get('/pizzas', (req, res, next) => {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         res.status(200).end(JSON.stringify(pizzas.getPizzaSuggestionsOfTeam(teamname)));
+    }
+});
+
+api.delete('/pizzas/:name', (req, res, next) => {
+    let suggestionName = req.params.name;
+    let teamname = req.body.teamname;
+    if (teamname === undefined || suggestionName === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or name of pizza is not defined' }));
+    } else if (!teams.has(teamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+
     }
 });
 
