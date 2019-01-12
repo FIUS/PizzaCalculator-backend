@@ -22,13 +22,12 @@ api.get('/ingredients', (req, res, next) => {
                 changeIngredientsFlagsToBoolean(ingredients);
                 res.status(200).end(JSON.stringify(ingredients));
             } else {
-                console.log(ingredients);
-                res.sendStatus(404);
+                res.status(404).end(JSON.stringify({ err: 'Not Found: There are no ingredients available' }));
             }
         });
     } catch (error) {
         console.error(`[Error] Catched error on retreiving all ingredients from DB in GET /ingredients: ${error}`);
-        res.sendStatus(500);
+        res.status(500).end(JSON.stringify({ err: 'Internat Server Error' }));
     }
 });
 
@@ -38,7 +37,7 @@ api.get('/templates', (req, res, next) => {
         let templates = fs.readFileSync('./templates.json');
         res.status(200).end(templates);
     } catch (error) {
-        res.sendStatus(500);
+        res.status(500).end(JSON.stringify({ err: 'Internat Server Error' }));
     }
 });
 
