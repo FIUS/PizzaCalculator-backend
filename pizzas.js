@@ -145,6 +145,7 @@ module.exports = class Pizzas {
         ];
         let teamSuggestions = new HashMap();
         pizzas.forEach((pizza) => {
+            pizza.vote = 0;
             teamSuggestions.set(createSuggestionName(pizza), pizza);
         });
         suggestions.set('test', teamSuggestions);

@@ -20,7 +20,8 @@ function createPizza(ingredientsData, teamname) {
         name: numberOfSuggestion, // TODO make more beautiful than just a number
         ingredients: ingredientsNames,
         vegetarian: vegetarian,
-        pork: pork
+        pork: pork,
+        votes: 0
     }
     return pizza;
 }
@@ -60,6 +61,8 @@ api.post('/pizzas/templates', (req, res, next) => {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         try {
+            // Add vote to template suggestion
+            template.vote = 0;
             pizzas.addPizzaSuggestionForTeam(teamname, template);
             res.status(201).end(JSON.stringify(template));
         } catch (error) {
