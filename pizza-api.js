@@ -51,6 +51,23 @@ api.post('/pizzas', (req, res, next) => {
     }
 });
 
+api.post('/pizzas/templates', (req, res, next) => {
+    let teamname = req.body.teamname;
+    let template = req.body.template;
+    if (teamname === undefined || template === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: template (pizza suggestion) or teamname is not defined' }));
+    } else if (!teams.has(teamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        try {
+            pizzas.addPizzaSuggestionForTeam(teamname, template);
+            res.status(201).end(JSON.stringify(template));
+        } catch (error) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: The pizza suggestion already exists' }));
+        }
+    }
+});
+
 api.get('/pizzas', (req, res, next) => {
     console.log('[Log] GET /pizzas');
     let teamname = req.query.teamname;
