@@ -60,7 +60,9 @@ module.exports = class Teams {
                 size: 0,
                 type: 'persons'
             },
-            pizzaCount: 0
+            pizzaCount: 0,
+            vegetarian: false,
+            pork: false
         });
         teams.set('SMHR', {
             name: 'SMHR',
@@ -69,7 +71,9 @@ module.exports = class Teams {
                 size: 0,
                 type: 'persons'
             },
-            pizzaCount: 0
+            pizzaCount: 0,
+            vegetarian: false,
+            pork: false
         });
         hashedTeamnames.set(crypto.createHash('sha256').update('test').digest('hex'), 'test');
         hashedTeamnames.set(crypto.createHash('sha256').update('SMHR').digest('hex'), 'SMHR');
