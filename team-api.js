@@ -19,7 +19,7 @@ api.post('/teams', (req, res, next) => {
             },
             pizzaCount: 0,
             vegetarian: false,
-            pork: false
+            noPork: false
         };
         teams.set(teamname, data);
         teams.setHash(data.hashedName, teamname);

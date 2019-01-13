@@ -39,30 +39,30 @@ api.patch('/teams/:teamname/size/type', (req, res, next) => {
 
 api.patch('/teams/:teamname/vegetarian', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
-    let vegetarian = req.body.vegetarian;
+    let size = req.body.size;
     console.log(`[Log] PATCH /teams/${hashedTeamname}/vegetarian`);
-    if (hashedTeamname === undefined || vegetarian === undefined) {
+    if (hashedTeamname === undefined || vegetarian === undefined || size < 0) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or vegetarian is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname);
-        teams.get(teamname).vegetarian = vegetarian;
+        teams.get(teamname).vegetarian = size;
         res.status(200).end(JSON.stringify(teams.get(teamname)));
     }
 });
 
-api.patch('/teams/:teamname/pork', (req, res, next) => {
+api.patch('/teams/:teamname/no-pork', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
-    let pork = req.body.pork;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/vegetarian`);
-    if (hashedTeamname === undefined || pork === undefined) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or pork is not defined' }));
+    let size = req.body.size;
+    console.log(`[Log] PATCH /teams/${hashedTeamname}/no-pork`);
+    if (hashedTeamname === undefined || size === undefined || size < 0) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or size is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname);
-        teams.get(teamname).pork = pork;
+        teams.get(teamname).pork = size;
         res.status(200).end(JSON.stringify(teams.get(teamname)));
     }
 });
