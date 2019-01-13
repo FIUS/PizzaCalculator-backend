@@ -69,6 +69,20 @@ numberPropertyEndpoints.forEach((endpoint) => {
             res.status(200).end(JSON.stringify(teams.get(teamname)));
         }
     });
+
+    api.get(`/teams/:teamname/${endpoint.endpoint}`, (req, res, next) => {
+        let hashedTeamname = req.params.teamname;
+        console.log(`[Log] PATCH /teams/${hashedTeamname}/${endpoint.endpoint}`);
+        if (hashedTeamname === undefined) {
+            console.log(amount)
+            res.status(400).end(JSON.stringify({ error: `Bad request: teamname is not defined` }));
+        } else if (!teams.hasHash(hashedTeamname)) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+        } else {
+            let teamname = teams.getTeamnameOfHash(hashedTeamname);
+            res.status(200).end(JSON.stringify({ [endpoint.property]: teams.get(teamname)[endpoint.property] }));
+        }
+    });
 });
 
 api.patch('/teams/:teamname/vote-mode', (req, res, next) => {

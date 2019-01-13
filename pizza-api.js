@@ -161,7 +161,7 @@ propertyEndpoints.forEach((endpoint) => {
             res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
         } else {
             try {
-                res.status(200).end(JSON.stringify({ registeredPieces: pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, endpoint.property) }));
+                res.status(200).end(JSON.stringify({ [endpoint.property]: pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, endpoint.property) }));
             } catch (error) {
                 res.status(403).end(JSON.stringify({ error: 'Not Found: there is no such suggestion' }));
             }
