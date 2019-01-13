@@ -85,16 +85,15 @@ api.get('/pizzas', (req, res, next) => {
 });
 
 api.get('/pizzas/:name/vote', (req, res, next) => {
-    let hashedTeamname = req.query.teamname;
+    let teamname = req.query.teamname;
     let suggestionName = req.params.name;
-    console.log(`[Log] GET /pizzas/${suggestionName}/vote/?teamname=${hashedTeamname}`);
-    if (hashedTeamname === undefined || suggestionName === undefined) {
+    console.log(`[Log] GET /pizzas/${suggestionName}/vote/?teamname=${teamname}`);
+    if (teamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or pizza name is not defined' }));
-    } else if (!teams.hasHash(hashedTeamname)) {
+    } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         try {
-            let teamname = teams.getTeamnameOfHash(hashedTeamname);
             res.status(200).end(JSON.stringify({ vote: pizzas.getVoteOfPizzaSuggestionOfTeam(teamname, suggestionName) }));
         } catch (error) {
             res.status(403).end(JSON.stringify({ error: 'Bad request: there is no such suggestion' }));
