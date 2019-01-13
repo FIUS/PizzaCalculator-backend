@@ -56,9 +56,10 @@ api.patch('/teams/:teamname/size/type', (req, res, next) => {
 numberPropertyEndpoints.forEach((endpoint) => {
     api.patch(`/teams/:teamname/${endpoint.endpoint}`, (req, res, next) => {
         let hashedTeamname = req.params.teamname;
-        let amount = req.body.size;
+        let amount = req.body[endpoint.property];
         console.log(`[Log] PATCH /teams/${hashedTeamname}/${endpoint.endpoint}`);
         if (hashedTeamname === undefined || amount === undefined || amount < 0) {
+            console.log(amount)
             res.status(400).end(JSON.stringify({ error: `Bad request: teamname or ${endpoint.property} is not defined` }));
         } else if (!teams.hasHash(hashedTeamname)) {
             res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
