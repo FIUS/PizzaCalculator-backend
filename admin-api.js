@@ -77,7 +77,7 @@ api.patch('/teams/:teamname/no-pork', (req, res, next) => {
 api.patch('/teams/:teamname/vote-mode', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let voteMode = req.body.voteMode;
-    console.log(`[Log] GET /teams/${hashedTeamname}/vote-mode`);
+    console.log(`[Log] PATCH /teams/${hashedTeamname}/vote-mode`);
     if (hashedTeamname === undefined || voteMode === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
@@ -94,7 +94,7 @@ api.patch('/teams/:teamname/vote-mode', (req, res, next) => {
 api.patch('/teams/:teamname/freeze', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let freeze = req.body.freeze;
-    console.log(`[Log] GET /teams/${hashedTeamname}/freeze`);
+    console.log(`[Log] PATCH /teams/${hashedTeamname}/freeze`);
     if (hashedTeamname === undefined || freeze === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
