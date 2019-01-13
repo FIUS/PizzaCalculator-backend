@@ -87,7 +87,7 @@ api.get('/pizzas', (req, res, next) => {
 api.get('/pizzas/:name/vote', (req, res, next) => {
     let hashedTeamname = req.query.teamname;
     let suggestionName = req.params.name;
-    console.log(`[Log] GET /pizzas/${hashedTeamname}/vote/?teamname=${teamname}`);
+    console.log(`[Log] GET /pizzas/${suggestionName}/vote/?teamname=${hashedTeamname}`);
     if (hashedTeamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or pizza name is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
