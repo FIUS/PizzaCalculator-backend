@@ -35,6 +35,11 @@ const teams = new Teams();
  */
 const Pizzas = require('./pizzas');
 const pizzas = new Pizzas();
+/**
+ * Module to control sessions
+ */
+const Sessions = require('./sessions');
+const sessions = new Sessions();
 
 /**
  * Start server on 8080 or PORT of environment varibale
@@ -82,6 +87,7 @@ api.use('/', sessionAPI);
 var server = api.listen(port, function () {
     teams.setTestTeams();
     pizzas.setTestSuggestions();
+    sessions.setupSessions();
 
     var host = server.address().address;
     var port = server.address().port;

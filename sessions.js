@@ -18,4 +18,8 @@ module.exports = class Sessions {
     get(session) {
         return sessions.get(session);
     }
+
+    setupSessions() {
+        sessions.set('1234567', '1234567');
+    }
 }

@@ -1,5 +1,6 @@
 const HashMap = require('hashmap');
 const Set = require('set');
+const uuid = require('uuid/v4');
 const DBController = require('./db-controller');
 const db = new DBController();
 
@@ -78,13 +79,23 @@ module.exports = class Pizzas {
     changeSessionPieces(teamname, pizza, session, pieces) {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
             suggestionSessions.get(teamname).get(pizza).set(session, pieces);
+        } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)){
+            let sessionMap = new HashMap();
+            sessionMap.set(session, pieces);
+            suggestionSessions.get(teamname).set(pizza, sessionMap);
+        } else if (!suggestionSessions.has(teamname)) {
+            let sessionMap = new HashMap();
+            sessionMap.set(session, pieces);
+            let pizzaMap = new HashMap();
+            pizzaMap.set(pizza, sessionMap);
+            suggestionSessions.set(teamname, pizzaMap);
         } else {
             throw new Error('team or pizza not in suggestionSessions');
         }
     }
 
     getSessionPieces(teamname, pizza, session) {
-        if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza) 
+        if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)
             && suggestionSessions.get(teamname).get(pizza).has(session)) {
             suggestionSessions.get(teamname).get(pizza).get(session);
         } else {
@@ -262,6 +273,15 @@ module.exports = class Pizzas {
         });
         suggestions.set('test', teamSuggestions);
         suggestionNames.set('test', teamSuggestionNames);
+        suggestions.set('SMHR', teamSuggestions);
+        suggestionNames.set('SMHR', teamSuggestionNames);
+
+
+        let pizzaMap = new HashMap();
+        let sessionMap = new HashMap();
+        sessionMap.set('1234567', 3);
+        pizzaMap.set('0', sessionMap);
+        suggestionSessions.set('test', pizzaMap);
     }
 
 }
