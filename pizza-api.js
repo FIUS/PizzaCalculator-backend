@@ -23,7 +23,7 @@ function createPizza(ingredientsData, teamname) {
         ingredients: ingredientsNames,
         vegetarian: vegetarian,
         pork: pork,
-        votes: 0
+        vote: 0
     }
     return pizza;
 }

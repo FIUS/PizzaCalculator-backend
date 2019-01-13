@@ -156,6 +156,7 @@ module.exports = class Pizzas {
 
     getVoteOfPizzaSuggestionOfTeam(teamname, suggestionName) {
         let teamSuggestion = suggestions.get(teamname);
+        console.log(teamSuggestion.get(suggestionName));
         if (!teamSuggestion.has(suggestionName)) {
             throw new Error('There is no such suggestion');
         }
