@@ -87,7 +87,22 @@ api.patch('/teams/:teamname/vote-mode', (req, res, next) => {
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname);
         teams.get(teamname).voteMode = voteMode;
-        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname) }));
+        res.status(200).end(JSON.stringify(teams.get(teamname)));
+    }
+});
+
+api.patch('/teams/:teamname/freeze', (req, res, next) => {
+    let hashedTeamname = req.params.teamname;
+    let freeze = req.body.freeze;
+    console.log(`[Log] GET /teams/${hashedTeamname}/freeze`);
+    if (hashedTeamname === undefined || freeze === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.hasHash(hashedTeamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        let teamname = teams.getTeamnameOfHash(hashedTeamname);
+        teams.get(teamname).freeze = freeze;
+        res.status(200).end(JSON.stringify(teams.get(teamname)));
     }
 });
 

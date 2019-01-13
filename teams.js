@@ -62,6 +62,7 @@ module.exports = class Teams {
             },
             pizzaCount: 0,
             voteMode: 'std',
+            freeze: false,
             vegetarian: false,
             noPork: false
         });
@@ -74,6 +75,7 @@ module.exports = class Teams {
             },
             pizzaCount: 0,
             voteMode: 'std',
+            freeze: false,
             vegetarian: false,
             noPork: false
         });

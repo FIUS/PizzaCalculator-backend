@@ -19,6 +19,7 @@ api.post('/teams', (req, res, next) => {
             },
             pizzaCount: 0,
             voteMode: 'std',
+            freeze: false,
             vegetarian: false,
             noPork: false
         };
@@ -50,6 +51,18 @@ api.get('/teams/:teamname/vote-mode', (req, res, next) => {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname).voteMode }));
+    }
+});
+
+api.get('/teams/:teamname/freeze', (req, res, next) => {
+    let teamname = req.params.teamname;
+    console.log(`[Log] GET /teams/${teamname}/freeze`);
+    if (teamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.has(teamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname).freeze }));
     }
 });
 
