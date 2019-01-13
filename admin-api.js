@@ -13,7 +13,7 @@ api.patch('/teams/:teamname/size', (req, res, next) => {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname)
-        teams.get(teamname).teamSize = size;
+        teams.get(teamname).teamSize.size = size;
         res.status(200).end(JSON.stringify(teams.get(teamname)));
     }
 });

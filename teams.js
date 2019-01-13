@@ -45,11 +45,11 @@ module.exports = class Teams {
     recalculatePizzaCount(teamname) {
         let team = teams.get(teamname);
         if (team.teamSize.type === 'persons') {
-            
+            team.pizzaCount = Math.ceil(team.teamSize.size / 4);
         } else {
-
+            team.pizzaCount = Math.ceil(team.teamSize.size / 16);
         }
-        console.log(teamSize);
+        console.log(team.teamSize);
     }
 
     setTestTeams() {
