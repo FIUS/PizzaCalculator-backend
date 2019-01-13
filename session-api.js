@@ -56,5 +56,22 @@ api.get('/pizzas/:name/pieces', (req, res, next) => {
     }
 });
 
+api.get('/pizzas/:name/pieces/total', (req, res, next) => {
+    let pizzaName = req.params.name;
+    let teamname = req.query.teamname;
+
+    console.log(`[Log] GET /pizzas/${pizzaName}/pieces/total`);
+    if (pizzaName === undefined || teamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or pizza name is not defined' }));
+    } else {
+        try {
+            let total = pizzas.getTotalPieces(teamname, pizzaName);
+            res.status(200).end(JSON.stringify({ total: total }));
+        } catch (error) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: Problems getting total pieces' }));
+        }
+    }
+});
+
 
 module.exports = api;

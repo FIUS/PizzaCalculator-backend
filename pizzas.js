@@ -1,6 +1,5 @@
 const HashMap = require('hashmap');
 const Set = require('set');
-const uuid = require('uuid/v4');
 const DBController = require('./db-controller');
 const db = new DBController();
 
@@ -98,6 +97,19 @@ module.exports = class Pizzas {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)
             && suggestionSessions.get(teamname).get(pizza).has(session)) {
             return suggestionSessions.get(teamname).get(pizza).get(session);
+        } else {
+            throw new Error('team or pizza not in suggestionSessions');
+        }
+    }
+
+    getTotalPieces(teamname, pizza) {
+        if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
+            let sessions = suggestionSessions.get(teamname).get(pizza).values();
+            let total = 0;
+            sessions.forEach((pieces) => {
+                total += pieces;
+            });
+            return total;
         } else {
             throw new Error('team or pizza not in suggestionSessions');
         }
