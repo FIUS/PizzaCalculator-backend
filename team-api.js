@@ -62,7 +62,7 @@ api.get('/teams/:teamname/freeze', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname).freeze }));
+        res.status(200).end(JSON.stringify({ freeze: teams.get(teamname).freeze }));
     }
 });
 

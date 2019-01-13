@@ -3,6 +3,14 @@ const api = express();
 const Teams = require('./teams');
 const teams = new Teams();
 
+/**
+ * List of property endpoints to autogenerate getter for all properties
+ */
+const numberPropertyEndpoints = [
+    { endpoint: 'vegetarian', property: 'vegetarian' },
+    { endpoint: 'no-pork', property: 'noPork' },
+];
+
 function checkVoteMode(voteMode) {
     if (voteMode != 'std' && voteMode != 'registration') {
         return false
@@ -44,34 +52,22 @@ api.patch('/teams/:teamname/size/type', (req, res, next) => {
     }
 });
 
-api.patch('/teams/:teamname/vegetarian', (req, res, next) => {
-    let hashedTeamname = req.params.teamname;
-    let size = req.body.size;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/vegetarian`);
-    if (hashedTeamname === undefined || size === undefined || size < 0) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or vegetarian is not defined' }));
-    } else if (!teams.hasHash(hashedTeamname)) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
-    } else {
-        let teamname = teams.getTeamnameOfHash(hashedTeamname);
-        teams.get(teamname).vegetarian = size;
-        res.status(200).end(JSON.stringify(teams.get(teamname)));
-    }
-});
 
-api.patch('/teams/:teamname/no-pork', (req, res, next) => {
-    let hashedTeamname = req.params.teamname;
-    let size = req.body.size;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/no-pork`);
-    if (hashedTeamname === undefined || size === undefined || size < 0) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or size is not defined' }));
-    } else if (!teams.hasHash(hashedTeamname)) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
-    } else {
-        let teamname = teams.getTeamnameOfHash(hashedTeamname);
-        teams.get(teamname).pork = size;
-        res.status(200).end(JSON.stringify(teams.get(teamname)));
-    }
+numberPropertyEndpoints.forEach((endpoint) => {
+    api.patch(`/teams/:teamname/${endpoint.endpoint}`, (req, res, next) => {
+        let hashedTeamname = req.params.teamname;
+        let amount = req.body.size;
+        console.log(`[Log] PATCH /teams/${hashedTeamname}/${endpoint.endpoint}`);
+        if (hashedTeamname === undefined || amount === undefined || amount < 0) {
+            res.status(400).end(JSON.stringify({ error: `Bad request: teamname or ${endpoint.property} is not defined` }));
+        } else if (!teams.hasHash(hashedTeamname)) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+        } else {
+            let teamname = teams.getTeamnameOfHash(hashedTeamname);
+            teams.get(teamname)[endpoint.property] = amount;
+            res.status(200).end(JSON.stringify(teams.get(teamname)));
+        }
+    });
 });
 
 api.patch('/teams/:teamname/vote-mode', (req, res, next) => {
