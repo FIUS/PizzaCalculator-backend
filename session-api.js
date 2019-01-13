@@ -22,7 +22,7 @@ api.post('/pizzas/:name/pieces', (req, res, next) => {
     let pieces = req.body.pieces;
 
     console.log(`[Log] POST /pizzas/${pizzaName}/pieces`);
-    if (session === undefined || pizzaName === undefined || teamname === undefined || pieces === undefined) {
+    if (session === undefined || pizzaName === undefined || teamname === undefined || pieces === undefined || pieces < 0) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname, session, pizza name or pieces is not defined' }));
     } else if (!sessions.has(session)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such session' }));
@@ -32,6 +32,26 @@ api.post('/pizzas/:name/pieces', (req, res, next) => {
             res.status(200).end(JSON.stringify({ msg: 'OK' }));
         } catch (error) {
             res.status(400).end(JSON.stringify({ error: 'Bad request: Problems changing session pieces' }));
+        }
+    }
+});
+
+api.get('/pizzas/:name/pieces', (req, res, next) => {
+    let pizzaName = req.params.name;
+    let teamname = req.query.teamname;
+    let session = req.query.uuid;
+
+    console.log(`[Log] GET /pizzas/${pizzaName}/pieces`);
+    if (session === undefined || pizzaName === undefined || teamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname, session or pizza name is not defined' }));
+    } else if (!sessions.has(session)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such session' }));
+    } else {
+        try {
+            let pieces = pizzas.getSessionPieces(teamname, pizzaName, session);
+            res.status(200).end(JSON.stringify({ pieces: pieces }));
+        } catch (error) {
+            res.status(400).end(JSON.stringify({ error: 'Bad request: Problems getting session pieces' }));
         }
     }
 });
