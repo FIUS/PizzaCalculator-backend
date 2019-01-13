@@ -57,10 +57,10 @@ module.exports = class Teams {
             name: 'test',
             hashedName: crypto.createHash('sha256').update('test').digest('hex'),
             teamSize: {
-                size: 3,
+                size: 2,
                 type: 'persons'
             },
-            pizzaCount: 0,
+            pizzaCount: 1,
             voteMode: 'std',
             freeze: false,
             vegetarian: 0,

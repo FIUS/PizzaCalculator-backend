@@ -107,15 +107,14 @@ module.exports = class Solver {
         // At last fill with remaining pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             if (order.length < numberOfPizzaPartsNeeded && !containsPizza(order, suggestions[i])) {
-                order.push(suggestions[i]);
+                order.push(suggestions[i]);       
             }
         }
 
         // Check if enough vegetarian pizzas are in the order, else throw Error
-        if (numberOfPizzaPartsNeeded > 0) {
+        if (numberOfPizzaPartsNeeded > order.length) {
             throw new Error('There are not enough pizzas');
         }
-
         return order;
     }
 }
