@@ -22,7 +22,7 @@ function countOfVegetarianPieces(teamname) {
     }
 }
 
-function countOfVegetarianPizzas(teamname) {
+function countOfVegetarianPizzaParts(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
         return Math.ceil(team.vegetarian / 2);
