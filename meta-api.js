@@ -32,7 +32,7 @@ api.get('/ingredients', (req, res, next) => {
             }
         });
     } catch (error) {
-        console.error(`[Error] Catched error on retreiving all ingredients from DB in GET /ingredients: ${error}`);
+        console.error(`[Error] Catched error on retrieving all ingredients from DB in GET /ingredients: ${error}`);
         res.status(500).end(JSON.stringify({ err: 'Internat Server Error' }));
     }
 });

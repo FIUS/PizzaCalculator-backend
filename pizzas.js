@@ -154,6 +154,14 @@ module.exports = class Pizzas {
         (mode == 'up') ? teamSuggestions.get(suggestionName).vote++ : teamSuggestions.get(suggestionName).vote--;
     }
 
+    getVoteOfPizzaSuggestionOfTeam(teamname, suggestionName) {
+        let teamSuggestion = suggestions.get(teamname);
+        if (!teamSuggestion.has(suggestionName)) {
+            throw new Error('There is no such suggestion');
+        }
+        return teamSuggestion.get(suggestionName).vote;
+    }
+
     /**
      * #################
      * # Setup methods #

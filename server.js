@@ -18,6 +18,10 @@ const pizzaAPI = require('./pizza-api');
  */
 const votesAPI = require('./votes-api');
 /**
+ * APIs for the admin page
+ */
+const adminAPI = require('./admin-api');
+/**
  * Module to control teams
  */
 const Teams = require('./teams');
@@ -68,6 +72,7 @@ api.use('/', metaAPI);
 api.use('/', teamAPI);
 api.use('/', pizzaAPI);
 api.use('/', votesAPI);
+api.use('/', adminAPI);
 
 var server = api.listen(port, function () {
     teams.setTestTeams();
