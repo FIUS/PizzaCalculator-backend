@@ -57,7 +57,7 @@ module.exports = class Teams {
             name: 'test',
             hashedName: crypto.createHash('sha256').update('test').digest('hex'),
             teamSize: {
-                size: 0,
+                size: 3,
                 type: 'persons'
             },
             pizzaCount: 0,

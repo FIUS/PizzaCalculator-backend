@@ -34,6 +34,32 @@ api.patch('/teams/:teamname/size', (req, res, next) => {
     }
 });
 
+api.get('/teams/:teamname/size', (req, res, next) => {
+    let hashedTeamname = req.params.teamname;
+    console.log(`[Log] PATCH /teams/${hashedTeamname}/size`);
+    if (hashedTeamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.hasHash(hashedTeamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        let teamname = teams.getTeamnameOfHash(hashedTeamname)
+        res.status(200).end(JSON.stringify({ size: teams.get(teamname).teamSize.size }));
+    }
+});
+
+api.get('/teams/:teamname/size/type', (req, res, next) => {
+    let hashedTeamname = req.params.teamname;
+    console.log(`[Log] PATCH /teams/${hashedTeamname}/size/type`);
+    if (hashedTeamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.hasHash(hashedTeamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        let teamname = teams.getTeamnameOfHash(hashedTeamname)
+        res.status(200).end(JSON.stringify({ size: teams.get(teamname).teamSize.type }));
+    }
+});
+
 api.patch('/teams/:teamname/size/type', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let type = req.body.type;
