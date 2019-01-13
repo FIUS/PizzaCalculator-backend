@@ -22,6 +22,10 @@ const votesAPI = require('./votes-api');
  */
 const adminAPI = require('./admin-api');
 /**
+ * APIs for the session page
+ */
+const sessionAPI = require('./session-api');
+/**
  * Module to control teams
  */
 const Teams = require('./teams');
@@ -73,6 +77,7 @@ api.use('/', teamAPI);
 api.use('/', pizzaAPI);
 api.use('/', votesAPI);
 api.use('/', adminAPI);
+api.use('/', sessionAPI);
 
 var server = api.listen(port, function () {
     teams.setTestTeams();

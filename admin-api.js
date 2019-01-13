@@ -85,7 +85,6 @@ numberPropertyEndpoints.forEach((endpoint) => {
         let amount = req.body[endpoint.property];
         console.log(`[Log] PATCH /teams/${hashedTeamname}/${endpoint.endpoint}`);
         if (hashedTeamname === undefined || amount === undefined || amount < 0) {
-            console.log(amount)
             res.status(400).end(JSON.stringify({ error: `Bad request: teamname or ${endpoint.property} is not defined` }));
         } else if (!teams.hasHash(hashedTeamname)) {
             res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
