@@ -34,9 +34,9 @@ function countOfVegetarianPizzaParts(teamname) {
 function countOfNoPorkPieces(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return Math.ceil(team.noPork / 2) * 8;
+        return parseInt(Math.ceil(team.noPork / 2) * 8);
     } else {
-        return team.noPork;
+        return parseInt(team.noPork);
     }
 }
 
@@ -67,9 +67,9 @@ module.exports = class Solver {
         let numberOfVegetarianPizzaPiecesNeeded = countOfVegetarianPieces(teamname);
         let numberOfVegetarianPizzaPiecesinOrder = 0;
         let numberOfNoPorkPizzaPiecesNeeded = countOfNoPorkPieces(teamname);
-        let numberOfNoPorkPizzaPiecesinOrder = 0;
-        let numberOfPizzaPartsNeeded = team.get(teamname).pizzaCount;
-        let numberOfPizzaPiecesNeeded = numberOfPizzaPartsNeeded * 16;
+        let numberOfNoPorkPizzaPiecesInOrder = 0;
+        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount;
+        let numberOfPizzaPiecesNeeded = numberOfPizzaPartsNeeded * 8;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
 
@@ -89,34 +89,32 @@ module.exports = class Solver {
 
         // Add noPork pizza pieces regarding remaining vegetarian pizza pieces
         let noPorkVegetarianPizzaPieces = numberOfVegetarianPizzaPiecesinOrder - numberOfVegetarianPizzaPiecesNeeded;
-        numberOfNoPorkPizzaPiecesinOrder += noPorkVegetarianPizzaPieces;
-
+        numberOfNoPorkPizzaPiecesInOrder += noPorkVegetarianPizzaPieces;
         // Second add enough noPork pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             // Pizza is vegetarian or has no pork and we need at least one more
-            if ((suggestions[i].vegetarian || !suggestions[i].pork) && numberOfNoPorkPizzaPiecesinOrder < numberOfNoPorkPizzaPiecesNeeded) {
+            if ((suggestions[i].vegetarian || !suggestions[i].pork) && numberOfNoPorkPizzaPiecesInOrder < numberOfNoPorkPizzaPiecesNeeded) {
                 // Only add if pizza is not already in order
                 if (!containsPizza(order, suggestions[i])) {
                     order.push(suggestions[i]);
-                    numberOfNoPorkPizzaPiecesinOrder += 8;
+                    numberOfNoPorkPizzaPiecesInOrder += 8;
                 }
             }
         }
 
         // Check if enough no pork pizzas are in the order, else throw Error
-        if (numberOfNoPorkPizzaPartsNeeded > numberOfNoPorkPizzaPartsInOrder) {
+        if (numberOfNoPorkPizzaPiecesNeeded > numberOfNoPorkPizzaPiecesInOrder) {
             throw new Error('There are not enough no pork pizzas');
         }
-
         // At last fill with remaining pizzas
         for (let i = 0; i < suggestions.length; ++i) {
-            if (order.length * 16 < numberOfPizzaPiecesNeeded && !containsPizza(order, suggestions[i])) {
+            if (order.length * 8 < numberOfPizzaPiecesNeeded && !containsPizza(order, suggestions[i])) {
                 order.push(suggestions[i]);
             }
         }
 
         // Check if enough vegetarian pizzas are in the order, else throw Error
-        if (numberOfPizzaPiecesNeeded > order.length * 16) {
+        if (numberOfPizzaPiecesNeeded > order.length * 8) {
             throw new Error('There are not enough pizzas');
         }
         return order;
@@ -136,6 +134,7 @@ module.exports = class Solver {
         let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
+
 
         // First add enough vegetarian pizzas
         for (let i = 0; i < suggestions.length; ++i) {
