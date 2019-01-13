@@ -12,11 +12,21 @@ const db = new DBController();
  */
 let suggestions = new HashMap();
 /**
- * Map to store suggestions of a team
+ * Map to store special suggestion names of a team
  * <key>: teamname
  * <value>: Set of suggestion names build as the concatenation of the ingredient names
  */
 let suggestionNames = new HashMap();
+/**
+ * Map to store suggestions of a team for session handling
+ * <key>: teamname
+ * <value>: Map of suggestions
+ *          <key>: Name of the suggestion
+ *          <value>: Map of sessions
+ *                  <key>: session id
+ *                  <value>: amount
+ */
+let suggestionSessions = new HashMap();
 
 /**
  * Creates a suggestion name for the set.
@@ -54,6 +64,17 @@ module.exports = class Pizzas {
      * # Pizza suggestion methods #
      * ############################
      */
+
+    addPizzaSuggestionSession(teamname, suggestion) {
+        if (suggestionSessions.has(teamname)) {
+            let suggestionSession = suggestionSessions.get(teamname);
+            suggestionSession.set(suggestion.name, new HashMap());
+        } else {
+            let suggestionSession = new HashMap();
+            suggestionSessions.set(teamname, suggestionSession);
+        }
+    }
+
 
     /**
      * Adds a pizza suggestion for a given team 

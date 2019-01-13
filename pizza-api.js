@@ -53,6 +53,7 @@ api.post('/pizzas', (req, res, next) => {
                 let pizza = createPizza(ingredients, teamname);
                 try {
                     pizzas.addPizzaSuggestionForTeam(teamname, pizza);
+                    pizzas.addPizzaSuggestionSession(teamname, pizza);
                     res.status(201).end(JSON.stringify(pizza));
                 } catch (error) {
                     res.status(400).end(JSON.stringify({ error: 'Bad request: The pizza suggestion already exists' }));
@@ -77,6 +78,7 @@ api.post('/pizzas/templates', (req, res, next) => {
             // Add vote to template suggestion
             template.vote = 0;
             pizzas.addPizzaSuggestionForTeam(teamname, template);
+            pizzas.addPizzaSuggestionSession(teamname, template);
             res.status(201).end(JSON.stringify(template));
         } catch (error) {
             res.status(400).end(JSON.stringify({ error: 'Bad request: The pizza suggestion already exists' }));
