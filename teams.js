@@ -28,6 +28,13 @@ module.exports = class Teams {
         return hashedTeamnames.keys();
     }
 
+    get(teamname) {
+        if (teams.has(teamname)) {
+            return teams.get(teamname);
+        }
+        throw new Error('No such team in teamnames');
+    }
+
     getTeamnameOfHash(hashedName) {
         if (hashedTeamnames.has(hashedName)) {
             return hashedTeamnames.get(hashedName);
@@ -35,22 +42,32 @@ module.exports = class Teams {
         throw new Error('No such team in hashedTeamnames');
     }
 
+    recalculatePizzaCount(teamname) {
+        let team = teams.get(teamname);
+        if (team.teamSize.type === 'persons') {
+            
+        } else {
+
+        }
+        console.log(teamSize);
+    }
+
     setTestTeams() {
         teams.set('test', {
             name: 'test',
             hashedName: crypto.createHash('sha256').update('test').digest('hex'),
-            teamsize: {
-                number: 0,
-                type: null
+            teamSize: {
+                size: 0,
+                type: 'persons'
             },
             pizzaCount: 0
         });
         teams.set('SMHR', {
             name: 'SMHR',
             hashedName: crypto.createHash('sha256').update('SMHR').digest('hex'),
-            teamsize: {
-                number: 0,
-                type: null
+            teamSize: {
+                size: 0,
+                type: 'persons'
             },
             pizzaCount: 0
         });

@@ -13,9 +13,9 @@ api.post('/teams', (req, res, next) => {
         let data = {
             name: teamname,
             hashedName: crypto.createHash('sha256').update(teamname).digest('hex'),
-            teamsize: {
-                number: 0,
-                type: null
+            teamSize: {
+                size: 0,
+                type: 'persons'
             },
             pizzaCount: 0
         };

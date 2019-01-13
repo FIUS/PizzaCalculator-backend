@@ -118,7 +118,7 @@ api.get('/pizzas/order', (req, res, next) => {
 
 api.delete('/pizzas/:name', (req, res, next) => {
     let suggestionName = req.params.name;
-    let hashedTeamname = req.body.teamname;
+    let hashedTeamname = req.query.teamname;
     console.log(`[Log] DELETE /pizzas/${suggestionName}`);
     if (hashedTeamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or name of pizza is not defined' }));
