@@ -61,6 +61,7 @@ module.exports = class Teams {
                 type: 'persons'
             },
             pizzaCount: 0,
+            voteMode: 'std',
             vegetarian: false,
             noPork: false
         });
@@ -72,6 +73,7 @@ module.exports = class Teams {
                 type: 'persons'
             },
             pizzaCount: 0,
+            voteMode: 'std',
             vegetarian: false,
             noPork: false
         });

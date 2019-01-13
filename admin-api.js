@@ -3,6 +3,13 @@ const api = express();
 const Teams = require('./teams');
 const teams = new Teams();
 
+function checkVoteMode(voteMode) {
+    if (voteMode != 'std' && voteMode != 'registration') {
+        return false
+    }
+    return true;
+}
+
 api.patch('/teams/:teamname/size', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let size = req.body.size;
@@ -64,6 +71,23 @@ api.patch('/teams/:teamname/no-pork', (req, res, next) => {
         let teamname = teams.getTeamnameOfHash(hashedTeamname);
         teams.get(teamname).pork = size;
         res.status(200).end(JSON.stringify(teams.get(teamname)));
+    }
+});
+
+api.patch('/teams/:teamname/vote-mode', (req, res, next) => {
+    let hashedTeamname = req.params.teamname;
+    let voteMode = req.body.voteMode;
+    console.log(`[Log] GET /teams/${hashedTeamname}/vote-mode`);
+    if (hashedTeamname === undefined || voteMode === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.hasHash(hashedTeamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else if (!checkVoteMode(voteMode)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: this voteMode is not supported' }));
+    } else {
+        let teamname = teams.getTeamnameOfHash(hashedTeamname);
+        teams.get(teamname).voteMode = voteMode;
+        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname) }));
     }
 });
 

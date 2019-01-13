@@ -18,6 +18,7 @@ api.post('/teams', (req, res, next) => {
                 type: 'persons'
             },
             pizzaCount: 0,
+            voteMode: 'std',
             vegetarian: false,
             noPork: false
         };
@@ -38,6 +39,18 @@ api.post('/teams', (req, res, next) => {
 api.get('/teams', (req, res, next) => {
     console.log('[Log] GET /teams');
     res.status(200).end(JSON.stringify(teams.keys()));
+});
+
+api.get('/teams/:teamname/vote-mode', (req, res, next) => {
+    let teamname = req.params.teamname;
+    console.log(`[Log] GET /teams/${teamname}/vote-mode`);
+    if (teamname === undefined) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+    } else if (!teams.has(teamname)) {
+        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+    } else {
+        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname).voteMode }));
+    }
 });
 
 module.exports = api;
