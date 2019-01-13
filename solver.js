@@ -16,7 +16,7 @@ function containsPizza(array, pizza) {
 function countOfVegetarianPieces(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return Math.ceil(team.vegetarian / 4) * 16;
+        return Math.ceil(team.vegetarian / 2) * 8;
     } else {
         return team.vegetarian;
     }
@@ -25,27 +25,27 @@ function countOfVegetarianPieces(teamname) {
 function countOfVegetarianPizzas(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return Math.ceil(team.vegetarian / 4);
+        return Math.ceil(team.vegetarian / 2);
     } else {
-        return Math.ceil(team.vegetarian / 16);
+        return Math.ceil(team.vegetarian / 8);
     }
 }
 
 function countOfNoPorkPieces(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return Math.ceil(team.noPork / 4) * 16;
+        return Math.ceil(team.noPork / 2) * 8;
     } else {
         return team.noPork;
     }
 }
 
-function countOfNoPorkPizzas(teamname) {
+function countOfNoPorkPizzaParts(teamname) {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return Math.ceil(team.noPork / 4);
+        return Math.ceil(team.noPork / 2);
     } else {
-        return Math.ceil(team.noPork / 16);
+        return Math.ceil(team.noPork / 8);
     }
 }
 
@@ -68,7 +68,7 @@ module.exports = class Solver {
         let numberOfVegetarianPizzaPiecesinOrder = 0;
         let numberOfNoPorkPizzaPiecesNeeded = countOfNoPorkPieces(teamname);
         let numberOfNoPorkPizzaPiecesinOrder = 0;
-        let numberOfPizzaPartsNeeded = team.get(teamname).pizzaCount * 2;
+        let numberOfPizzaPartsNeeded = team.get(teamname).pizzaCount;
         let numberOfPizzaPiecesNeeded = numberOfPizzaPartsNeeded * 16;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
@@ -129,11 +129,11 @@ module.exports = class Solver {
      * @returns A array of suggestions which should be ordered
      */
     solveForPersons(teamname) {
-        let numberOfVegetarianPizzaPartsNeeded = countOfVegetarianPizzas(teamname) * 2;
+        let numberOfVegetarianPizzaPartsNeeded = countOfVegetarianPizzaParts(teamname);
         let numberOfVegetarianPizzaPartsInOrder = 0;
-        let numberOfNoPorkPizzaPartsNeeded = countOfNoPorkPizzas(teamname) * 2;
+        let numberOfNoPorkPizzaPartsNeeded = countOfNoPorkPizzaParts(teamname);
         let numberOfNoPorkPizzaPartsInOrder = 0;
-        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount * 2;
+        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
 
