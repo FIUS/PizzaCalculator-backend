@@ -14,6 +14,7 @@ api.patch('/teams/:teamname/size', (req, res, next) => {
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname)
         teams.get(teamname).teamSize.size = size;
+        teams.recalculatePizzaCount(teamname);
         res.status(200).end(JSON.stringify(teams.get(teamname)));
     }
 });
