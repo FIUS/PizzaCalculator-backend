@@ -4,6 +4,8 @@ const Teams = require('./teams');
 const teams = new Teams();
 const Pizzas = require('./pizzas');
 const pizzas = new Pizzas();
+const Solver = require('./solver');
+const solver = new Solver();
 
 
 function createPizza(ingredientsData, teamname) {
@@ -112,7 +114,7 @@ api.get('/pizzas/order', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-        res.status(200).end(JSON.stringify(pizzas.getPizzaSuggestionsOfTeam(teamname)));
+        res.status(200).end(JSON.stringify(solver.solveForPersons(teamname)));
     }
 });
 
