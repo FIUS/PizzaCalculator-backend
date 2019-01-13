@@ -65,10 +65,6 @@ module.exports = class Solver {
      * @returns A array of suggestions which should be ordered
      */
     solveForPersons(teamname) {
-
-        // TODO Check if enough pizza parts are 
-
-
         let numberOfVegetarianPizzaPartsNeeded = countOfVegetarianPizzas(teamname) * 2;
         let numberOfVegetarianPizzaPartsInOrder = 0;
         let numberOfNoPorkPizzaPartsNeeded = countOfNoPorkPizzas(teamname) * 2;
@@ -85,6 +81,12 @@ module.exports = class Solver {
                 numberOfVegetarianPizzaPartsInOrder++;
             }
         }
+
+        // Check if enough vegetarian pizzas are in the order, else throw Error
+        if (numberOfVegetarianPizzaPartsNeeded > 0) {
+            throw new Error('There are not enough vegetarian pizzas');
+        }
+
         // Second add enough noPork pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             // Pizza is vegetarian or has no pork and we need at least one more
@@ -96,11 +98,22 @@ module.exports = class Solver {
                 }
             }
         }
+
+        // Check if enough no pork pizzas are in the order, else throw Error
+        if (numberOfNoPorkPizzaPartsNeeded > 0) {
+            throw new Error('There are not enough no pork pizzas');
+        }
+
         // At last fill with remaining pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             if (order.length < numberOfPizzaPartsNeeded && !containsPizza(order, suggestions[i])) {
                 order.push(suggestions[i]);
             }
+        }
+
+        // Check if enough vegetarian pizzas are in the order, else throw Error
+        if (numberOfPizzaPartsNeeded > 0) {
+            throw new Error('There are not enough pizzas');
         }
 
         return order;

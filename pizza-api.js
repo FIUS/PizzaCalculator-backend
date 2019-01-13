@@ -123,7 +123,11 @@ api.get('/pizzas/order', (req, res, next) => {
     } else if (!teams.has(teamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
-        res.status(200).end(JSON.stringify(solver.solveForPersons(teamname)));
+        try {
+            res.status(200).end(JSON.stringify(solver.solveForPersons(teamname)));   
+        } catch (error) {
+            res.status(409).end(JSON.stringify({ error: 'Conflict: not enough pizza parts to create a sufficent order' }));
+        }
     }
 });
 
