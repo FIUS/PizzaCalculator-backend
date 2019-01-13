@@ -56,7 +56,7 @@ api.get('/teams/:teamname/size/type', (req, res, next) => {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
     } else {
         let teamname = teams.getTeamnameOfHash(hashedTeamname)
-        res.status(200).end(JSON.stringify({ size: teams.get(teamname).teamSize.type }));
+        res.status(200).end(JSON.stringify({ type: teams.get(teamname).teamSize.type }));
     }
 });
 
