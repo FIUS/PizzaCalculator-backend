@@ -41,7 +41,7 @@ api.patch('/teams/:teamname/vegetarian', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let size = req.body.size;
     console.log(`[Log] PATCH /teams/${hashedTeamname}/vegetarian`);
-    if (hashedTeamname === undefined || vegetarian === undefined || size < 0) {
+    if (hashedTeamname === undefined || size === undefined || size < 0) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or vegetarian is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
