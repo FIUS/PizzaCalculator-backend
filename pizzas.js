@@ -75,6 +75,23 @@ module.exports = class Pizzas {
         }
     }
 
+    changeSessionPieces(teamname, pizza, session, pieces) {
+        if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
+            suggestionSessions.get(teamname).get(pizza).set(session, pieces);
+        } else {
+            throw new Error('team or pizza not in suggestionSessions');
+        }
+    }
+
+    getSessionPieces(teamname, pizza, session) {
+        if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza) 
+            && suggestionSessions.get(teamname).get(pizza).has(session)) {
+            suggestionSessions.get(teamname).get(pizza).get(session);
+        } else {
+            throw new Error('team or pizza not in suggestionSessions');
+        }
+    }
+
 
     /**
      * Adds a pizza suggestion for a given team 
