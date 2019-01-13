@@ -154,13 +154,20 @@ module.exports = class Pizzas {
         (mode == 'up') ? teamSuggestions.get(suggestionName).vote++ : teamSuggestions.get(suggestionName).vote--;
     }
 
-    getVoteOfPizzaSuggestionOfTeam(teamname, suggestionName) {
+    getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, property) {
         let teamSuggestion = suggestions.get(teamname);
-        console.log(teamSuggestion.get(suggestionName));
         if (!teamSuggestion.has(suggestionName)) {
             throw new Error('There is no such suggestion');
         }
-        return teamSuggestion.get(suggestionName).vote;
+        return teamSuggestion.get(suggestionName)[property];
+    }
+
+    resetPropertyValueOfSuggestion(teamname, suggestionName, propertyValue, property) {
+        let teamSuggestion = suggestions.get(teamname);
+        if (!teamSuggestion.has(suggestionName)) {
+            throw new Error('There is no such suggestion');
+        }
+        teamSuggestion.get(suggestionName)[property] = propertyValue;
     }
 
     /**
@@ -182,7 +189,8 @@ module.exports = class Pizzas {
                     "Feta"
                 ],
                 vegetarian: true,
-                pork: false
+                pork: false,
+                registeredPieces: 0
             },
             {
                 name: '1',
@@ -191,7 +199,8 @@ module.exports = class Pizzas {
                     "Schinken",
                 ],
                 vegetarian: false,
-                pork: true
+                pork: true,
+                registeredPieces: 0
             },
             {
                 name: '2',
@@ -202,7 +211,8 @@ module.exports = class Pizzas {
                     "Pepperoni"
                 ],
                 vegetarian: false,
-                pork: false
+                pork: false,
+                registeredPieces: 0
             }
         ];
         let teamSuggestions = new HashMap();
