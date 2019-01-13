@@ -65,10 +65,14 @@ module.exports = class Solver {
      * @returns A array of suggestions which should be ordered
      */
     solveForPersons(teamname) {
-        let numberOfVegetarianPizzasNeeded = countOfVegetarianPizzas(teamname);
-        let numberOfVegetarianPizzasInOrder = 0;
-        let numberOfNoPorkPizzasNeeded = countOfNoPorkPizzas(teamname);
-        let numberOfNoPorkPizzasInOrder = 0;
+
+        // TODO Check if enough pizza parts are 
+
+
+        let numberOfVegetarianPizzaPartsNeeded = countOfVegetarianPizzas(teamname) * 2;
+        let numberOfVegetarianPizzaPartsInOrder = 0;
+        let numberOfNoPorkPizzaPartsNeeded = countOfNoPorkPizzas(teamname) * 2;
+        let numberOfNoPorkPizzaPartsInOrder = 0;
         let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount * 2;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
@@ -76,18 +80,19 @@ module.exports = class Solver {
         // First add enough vegetarian pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             // Pizza is vegetarian and we need at least one more
-            if (suggestions[i].vegetarian && numberOfVegetarianPizzasInOrder < numberOfVegetarianPizzasNeeded) {
+            if (suggestions[i].vegetarian && numberOfVegetarianPizzaPartsInOrder < numberOfVegetarianPizzaPartsNeeded) {
                 order.push(suggestions[i]);
+                numberOfVegetarianPizzaPartsInOrder++;
             }
         }
-        console.log(order);
         // Second add enough noPork pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             // Pizza is vegetarian or has no pork and we need at least one more
-            if ((suggestions[i].vegetarian || !suggestions[i].pork) && numberOfNoPorkPizzasNeeded < numberOfNoPorkPizzasInOrder) {
+            if ((suggestions[i].vegetarian || !suggestions[i].pork) && numberOfNoPorkPizzaPartsNeeded < numberOfNoPorkPizzaPartsInOrder) {
                 // Only add if pizza is not already in order
                 if (!containsPizza(order, suggestions[i])) {
                     order.push(suggestions[i]);
+                    numberOfNoPorkPizzaPartsInOrder++;
                 }
             }
         }
@@ -98,6 +103,6 @@ module.exports = class Solver {
             }
         }
 
-        console.log(order);
+        return order;
     }
 }
