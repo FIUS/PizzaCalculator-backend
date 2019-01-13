@@ -60,7 +60,7 @@ function getSuggestionsOfTeamOrdered(teamname) {
 module.exports = class Solver {
 
     /**
-     * Calculates a order using the votes, vegetarian and noPork properties of the suggestions
+     * Calculates an order using the votes, vegetarian and noPork properties of the suggestions
      * @param {*} teamname - The name of the team
      * @returns A array of suggestions which should be ordered
      */
@@ -69,7 +69,7 @@ module.exports = class Solver {
         let numberOfVegetarianPizzasInOrder = 0;
         let numberOfNoPorkPizzasNeeded = countOfNoPorkPizzas(teamname);
         let numberOfNoPorkPizzasInOrder = 0;
-        let numberOfPizzasNeeded = teams.get(teamname).pizzaCount;
+        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount * 2;
         let suggestions = getSuggestionsOfTeamOrdered(teamname);
         let order = [];
 
@@ -80,23 +80,24 @@ module.exports = class Solver {
                 order.push(suggestions[i]);
             }
         }
-
+        console.log(order);
         // Second add enough noPork pizzas
         for (let i = 0; i < suggestions.length; ++i) {
             // Pizza is vegetarian or has no pork and we need at least one more
-            if ((suggestions[i].vegetarian || suggestions[i].noPork) && numberOfNoPorkPizzasNeeded < numberOfNoPorkPizzasInOrder) {
+            if ((suggestions[i].vegetarian || !suggestions[i].pork) && numberOfNoPorkPizzasNeeded < numberOfNoPorkPizzasInOrder) {
                 // Only add if pizza is not already in order
                 if (!containsPizza(order, suggestions[i])) {
                     order.push(suggestions[i]);
                 }
             }
         }
-
         // At last fill with remaining pizzas
         for (let i = 0; i < suggestions.length; ++i) {
-            if (order.length < numberOfPizzasNeeded && !containsPizza(order, suggestions[i])) {
+            if (order.length < numberOfPizzaPartsNeeded && !containsPizza(order, suggestions[i])) {
                 order.push(suggestions[i]);
             }
         }
+
+        console.log(order);
     }
 }
