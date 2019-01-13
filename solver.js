@@ -98,7 +98,7 @@ module.exports = class Solver {
                 // Only add if pizza is not already in order
                 if (!containsPizza(order, suggestions[i])) {
                     order.push(suggestions[i]);
-                    numberOfNoPorkPizzaPartsInOrder++;
+                    numberOfNoPorkPizzaPiecesinOrder += 8;
                 }
             }
         }
@@ -107,6 +107,19 @@ module.exports = class Solver {
         if (numberOfNoPorkPizzaPartsNeeded > numberOfNoPorkPizzaPartsInOrder) {
             throw new Error('There are not enough no pork pizzas');
         }
+
+        // At last fill with remaining pizzas
+        for (let i = 0; i < suggestions.length; ++i) {
+            if (order.length * 16 < numberOfPizzaPiecesNeeded && !containsPizza(order, suggestions[i])) {
+                order.push(suggestions[i]);
+            }
+        }
+
+        // Check if enough vegetarian pizzas are in the order, else throw Error
+        if (numberOfPizzaPiecesNeeded > order.length * 16) {
+            throw new Error('There are not enough pizzas');
+        }
+        return order;
 
     }
 
