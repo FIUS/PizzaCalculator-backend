@@ -1,10 +1,10 @@
 const express = require('express');
 const api = express();
-const Teams = require('./teams');
+const Teams = require('../controller/teams');
 const teams = new Teams();
-const Pizzas = require('./pizzas');
+const Pizzas = require('../controller/pizzas');
 const pizzas = new Pizzas();
-const Solver = require('./solver');
+const Solver = require('../controller/solver');
 const solver = new Solver();
 
 /**

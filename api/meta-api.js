@@ -1,7 +1,7 @@
 const express = require('express');
 const api = express();
 const fs = require('fs');
-const DBController = require('./db-controller');
+const DBController = require('../data/db-controller');
 const db = new DBController();
 
 function changeFlagsToBoolean(array) {

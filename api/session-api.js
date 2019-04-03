@@ -1,11 +1,11 @@
 const express = require('express');
 const api = express();
 const uuid = require('uuid/v4');
-const Sessions = require('./sessions');
+const Sessions = require('../controller/sessions');
 const sessions = new Sessions();
-const Teams = require('./teams');
+const Teams = require('../controller/teams');
 const teams = new Teams();
-const Pizzas = require('./pizzas');
+const Pizzas = require('../controller/pizzas');
 const pizzas = new Pizzas();
 
 api.post('/uuid', (req, res, next) => {

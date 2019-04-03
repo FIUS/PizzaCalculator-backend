@@ -2,7 +2,7 @@ const express = require('express');
 const api = express();
 const crypto = require('crypto');
 const timeoutInMS = 28800000;
-const Teams = require('./teams');
+const Teams = require('../controller/teams');
 const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {

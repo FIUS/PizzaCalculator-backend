@@ -1,8 +1,8 @@
 const express = require('express');
 const api = express();
-const Teams = require('./teams');
+const Teams = require('../controller/teams');
 const teams = new Teams();
-const Pizzas = require('./pizzas');
+const Pizzas = require('../controller/pizzas');
 const pizzas = new Pizzas();
 
 api.patch('/pizzas/:name', (req, res, next) => {

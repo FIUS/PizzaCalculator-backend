@@ -4,41 +4,41 @@ const compression = require('compression');
 /**
  * APIs for ingredients and templates
  */
-const metaAPI = require('./meta-api');
+const metaAPI = require('./api/meta-api');
 /**
  * APIs for teams
  */
-const teamAPI = require('./team-api');
+const teamAPI = require('./api/team-api');
 /**
  * APIs for pizzas
  */
-const pizzaAPI = require('./pizza-api');
+const pizzaAPI = require('./api/pizza-api');
 /**
  * APIs for votes of pizzas
  */
-const votesAPI = require('./votes-api');
+const votesAPI = require('./api/votes-api');
 /**
  * APIs for the admin page
  */
-const adminAPI = require('./admin-api');
+const adminAPI = require('./api/admin-api');
 /**
  * APIs for the session page
  */
-const sessionAPI = require('./session-api');
+const sessionAPI = require('./api/session-api');
 /**
  * Module to control teams
  */
-const Teams = require('./teams');
+const Teams = require('./controller/teams');
 const teams = new Teams();
 /**
  * Module to control pizzas
  */
-const Pizzas = require('./pizzas');
+const Pizzas = require('./controller/pizzas');
 const pizzas = new Pizzas();
 /**
  * Module to control sessions
  */
-const Sessions = require('./sessions');
+const Sessions = require('./controller/sessions');
 const sessions = new Sessions();
 
 /**
