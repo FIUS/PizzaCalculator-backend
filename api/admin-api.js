@@ -21,7 +21,6 @@ function checkVoteMode(voteMode) {
 api.patch('/teams/:teamname/size', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let size = req.body.size;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/size`);
     if (hashedTeamname === undefined || size === undefined || size < 0) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or size is not defined' }));
     } else if (!teams.hasHash(hashedTeamname)) {

@@ -77,6 +77,10 @@ api.use(function (req, res, next) {
     // Pass to next layer of middleware
     next();
 });
+api.use('/', (req, res, next) => {
+    console.log(`[Log] ${req.method} ${req.originalUrl}`);
+    next();
+});
 api.use('/', metaAPI);
 api.use('/', teamAPI);
 api.use('/', pizzaAPI);

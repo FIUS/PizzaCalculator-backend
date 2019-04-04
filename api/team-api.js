@@ -6,7 +6,6 @@ const Teams = require('../controller/teams');
 const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {
-    console.log('[Log] POST /teams');
     let teamname = req.body.teamname;
     // teamname is not undefined and teamname is not currently used
     if (teamname != undefined && !teams.has(teamname)) {
@@ -38,13 +37,11 @@ api.post('/teams', (req, res, next) => {
 });
 
 api.get('/teams', (req, res, next) => {
-    console.log('[Log] GET /teams');
     res.status(200).end(JSON.stringify(teams.keys()));
 });
 
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
     let teamname = req.params.teamname;
-    console.log(`[Log] GET /teams/${teamname}/vote-mode`);
     if (teamname === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
     } else if (!teams.has(teamname)) {

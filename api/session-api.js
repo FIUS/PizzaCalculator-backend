@@ -42,7 +42,6 @@ api.get('/pizzas/:name/pieces', (req, res, next) => {
     let teamname = req.query.teamname;
     let session = req.query.uuid;
 
-    console.log(`[Log] GET /pizzas/${pizzaName}/pieces`);
     if (session === undefined || pizzaName === undefined || teamname === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname, session or pizza name is not defined' }));
     } else if (!sessions.has(session)) {

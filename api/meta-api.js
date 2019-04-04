@@ -20,7 +20,6 @@ function parseTemplatesIngredients(templates) {
 }
 
 api.get('/ingredients', (req, res, next) => {
-    console.log('[Log] GET /ingredients');
     try {
         db.getAllIngredients((ingredients) => {
             // If ingredients array is not null, return ingredients with 200
@@ -38,7 +37,6 @@ api.get('/ingredients', (req, res, next) => {
 });
 
 api.get('/templates', (req, res, next) => {
-    console.log('[Log] GET /templates');
     try {
         db.getAllTemplates((templates) => {
             // If templates array is not null, return templates with 200

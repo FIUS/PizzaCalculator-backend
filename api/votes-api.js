@@ -9,7 +9,6 @@ api.patch('/pizzas/:name', (req, res, next) => {
     let teamname = req.body.teamname;
     let suggestionName = req.params.name;
     let mode = req.query.mode;
-    console.log(`[Log] PATCH /pizzas/${suggestionName}/?mode=${mode}`);
     if (teamname === undefined || suggestionName === undefined || mode === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: mode, teamname or name of pizza is not defined' }));
     } else if (!teams.has(teamname)) {
@@ -29,7 +28,6 @@ api.patch('/pizzas/:name', (req, res, next) => {
 api.get('/pizzas/:name/vote', (req, res, next) => {
     let teamname = req.query.teamname;
     let suggestionName = req.params.name;
-    console.log(`[Log] GET /pizzas/${suggestionName}/vote/?teamname=${teamname}`);
     if (teamname === undefined || suggestionName === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: teamname or pizza name is not defined' }));
     } else if (!teams.has(teamname)) {
