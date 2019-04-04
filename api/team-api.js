@@ -28,38 +28,37 @@ api.post('/teams', (req, res, next) => {
         setTimeout(() => {
             teams.remove(teamname);
         }, timeoutInMS);
-        res.status(201).end(JSON.stringify(data));
+        res.json(201, data);
     } else if (teamname === undefined) {
-        res.send(400).end(JSON.stringify({ error: 'Bad Request: teamname is undefined' }));
+        res.json(409, { error: 'Bad Request: teamname is undefined' });
     } else {
-        res.send(409).end(JSON.stringify({ error: 'Conflict: teamname is already used' }));
+        res.json(409, { error: 'Conflict: teamname is already used' });
     }
 });
 
 api.get('/teams', (req, res, next) => {
-    res.status(200).end(JSON.stringify(teams.keys()));
+    res.json(200, teams.keys());
 });
 
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
     let teamname = req.params.teamname;
     if (teamname === undefined) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+        res.json(403, { error: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+        res.json(403, { error: 'Bad request: there is no such team' });
     } else {
-        res.status(200).end(JSON.stringify({ voteMode: teams.get(teamname).voteMode }));
+        res.json(200, { voteMode: teams.get(teamname).voteMode });
     }
 });
 
 api.get('/teams/:teamname/freeze', (req, res, next) => {
     let teamname = req.params.teamname;
-    console.log(`[Log] GET /teams/${teamname}/freeze`);
     if (teamname === undefined) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: teamname is not defined' }));
+        res.json(403, { error: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.status(400).end(JSON.stringify({ error: 'Bad request: there is no such team' }));
+        res.json(403, { error: 'Bad request: there is no such team' });
     } else {
-        res.status(200).end(JSON.stringify({ freeze: teams.get(teamname).freeze }));
+        res.json(200, { freeze: teams.get(teamname).freeze });
     }
 });
 
