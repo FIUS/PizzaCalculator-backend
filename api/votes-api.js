@@ -9,7 +9,7 @@ api.patch('/pizzas/:name', (req, res, next) => {
     let teamname = req.body.teamname;
     let suggestionName = req.params.name;
     let mode = req.query.mode;
-    console.log(`[Log] DELETE /pizzas/${suggestionName}/?mode=${mode}`);
+    console.log(`[Log] PATCH /pizzas/${suggestionName}/?mode=${mode}`);
     if (teamname === undefined || suggestionName === undefined || mode === undefined) {
         res.status(400).end(JSON.stringify({ error: 'Bad request: mode, teamname or name of pizza is not defined' }));
     } else if (!teams.has(teamname)) {

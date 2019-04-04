@@ -107,7 +107,7 @@ module.exports = class Pizzas {
             let sessions = suggestionSessions.get(teamname).get(pizza).values();
             let total = 0;
             sessions.forEach((pieces) => {
-                total += pieces;
+                total += new Number(pieces);
             });
             return total;
         } else {
