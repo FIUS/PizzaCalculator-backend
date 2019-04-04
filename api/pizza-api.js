@@ -42,9 +42,9 @@ api.post('/pizzas', (req, res, next) => {
     let ingredients = req.body.ingredients;
     let teamname = req.body.teamname;
     if (ingredients === undefined || teamname === undefined) {
-        res.json(403, { error: 'Bad request: ingredients or teamname is not defined' });
+        res.json(403, { message: 'Bad request: ingredients or teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         // Checks if all ingredients are existent
         pizzas.checkIngredientsOfPizza(ingredients, (result) => {
@@ -55,10 +55,10 @@ api.post('/pizzas', (req, res, next) => {
                     pizzas.addPizzaSuggestionSession(teamname, pizza);
                     res.json(201, pizza);
                 } catch (error) {
-                    res.json(403, { error: 'Bad request: The pizza suggestion already exists' });
+                    res.json(403, { message: 'Bad request: The pizza suggestion already exists' });
                 }
             } else {
-                res.json(403, { error: 'Bad request: At least one ingredient is not existent' });
+                res.json(403, { message: 'Bad request: At least one ingredient is not existent' });
             }
         });
     }
@@ -68,9 +68,9 @@ api.post('/pizzas/templates', (req, res, next) => {
     let teamname = req.body.teamname;
     let template = req.body.template;
     if (teamname === undefined || template === undefined) {
-        res.json(403, { error: 'Bad request: template (pizza suggestion) or teamname is not defined' });
+        res.json(403, { message: 'Bad request: template (pizza suggestion) or teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         try {
             // Add vote to template suggestion
@@ -79,7 +79,7 @@ api.post('/pizzas/templates', (req, res, next) => {
             pizzas.addPizzaSuggestionSession(teamname, template);
             res.json(201, template);
         } catch (error) {
-            res.json(403, { error: 'Bad request: The pizza suggestion already exists' });
+            res.json(403, { message: 'Bad request: The pizza suggestion already exists' });
         }
     }
 });
@@ -87,9 +87,9 @@ api.post('/pizzas/templates', (req, res, next) => {
 api.get('/pizzas', (req, res, next) => {
     let teamname = req.query.teamname;
     if (teamname === undefined) {
-        res.json(403, { error: 'Bad request: teamname is not defined' });
+        res.json(403, { message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         res.json(200, pizzas.getPizzaSuggestionsOfTeam(teamname));
     }
@@ -100,15 +100,15 @@ api.patch('/pizzas/:name/registered-pieces', (req, res, next) => {
     let registeredPieces = req.body.amount;
     let suggestionName = req.params.name;
     if (teamname === undefined || suggestionName === undefined || registeredPieces === undefined) {
-        res.json(403, { error: 'Bad request: teamname, registered pieces (amount) or pizza name is not defined' });
+        res.json(403, { message: 'Bad request: teamname, registered pieces (amount) or pizza name is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         try {
             pizzas.resetPropertyValueOfSuggestion(teamname, suggestionName, amount, 'registeredPieces'); // TODO implement
             res.json(200, pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, 'vote'));
         } catch (error) {
-            res.json(403, { error: 'Bad request: there is no such suggestion' });
+            res.json(403, { message: 'Bad request: there is no such suggestion' });
         }
     }
 });
@@ -116,16 +116,16 @@ api.patch('/pizzas/:name/registered-pieces', (req, res, next) => {
 api.get('/pizzas/order', (req, res, next) => {
     let teamname = req.query.teamname;
     if (teamname === undefined) {
-        res.json(403, { error: 'Bad request: teamname is not defined' });
+        res.json(403, { message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         try {
             res.json(
                 200, JSON.stringify((teams.get(teamname).teamSize.type === 'persons') ? solver.solveForPersons(teamname) : solver.solveForPieces(teamname))
             );
         } catch (error) {
-            res.json(409, { error: 'Conflict: not enough pizza parts to create a sufficent order' });
+            res.json(409, { message: 'Conflict: not enough pizza parts to create a sufficent order' });
         }
     }
 });
@@ -134,16 +134,16 @@ api.delete('/pizzas/:name', (req, res, next) => {
     let suggestionName = req.params.name;
     let hashedTeamname = req.query.teamname;
     if (hashedTeamname === undefined || suggestionName === undefined) {
-        res.json(403, { error: 'Bad request: teamname or name of pizza is not defined' });
+        res.json(403, { message: 'Bad request: teamname or name of pizza is not defined' });
     } else if (!teams.hasHash(hashedTeamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         try {
             let teamname = teams.getTeamnameOfHash(hashedTeamname);
             let deletedSuggestion = pizzas.deletePizzaSuggestionOfTeam(suggestionName, teamname);
             res.json(200, deletedSuggestion);
         } catch (error) {
-            res.json(403, { error: 'Bad request: There is no such suggestion for the given team' });
+            res.json(403, { message: 'Bad request: There is no such suggestion for the given team' });
         }
     }
 });
@@ -153,14 +153,14 @@ propertyEndpoints.forEach((endpoint) => {
         let suggestionName = req.params.name;
         let teamname = req.query.teamname;
         if (teamname === undefined || suggestionName === undefined) {
-            res.json(403, { error: 'Bad request: teamname or pizza name is not defined' });
+            res.json(403, { message: 'Bad request: teamname or pizza name is not defined' });
         } else if (!teams.has(teamname)) {
-            res.json(403, { error: 'Bad request: there is no such team' });
+            res.json(403, { message: 'Bad request: there is no such team' });
         } else {
             try {
                 res.json(200, { [endpoint.property]: pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, endpoint.property) });
             } catch (error) {
-                res.json(403, { error: 'Not Found: there is no such suggestion' });
+                res.json(403, { message: 'Not Found: there is no such suggestion' });
             }
         }
     });

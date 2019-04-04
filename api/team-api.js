@@ -30,9 +30,9 @@ api.post('/teams', (req, res, next) => {
         }, timeoutInMS);
         res.json(201, data);
     } else if (teamname === undefined) {
-        res.json(409, { error: 'Bad Request: teamname is undefined' });
+        res.json(409, { message: 'Bad Request: teamname is undefined' });
     } else {
-        res.json(409, { error: 'Conflict: teamname is already used' });
+        res.json(409, { message: 'Conflict: teamname is already used' });
     }
 });
 
@@ -43,9 +43,9 @@ api.get('/teams', (req, res, next) => {
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
     let teamname = req.params.teamname;
     if (teamname === undefined) {
-        res.json(403, { error: 'Bad request: teamname is not defined' });
+        res.json(403, { message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         res.json(200, { voteMode: teams.get(teamname).voteMode });
     }
@@ -54,9 +54,9 @@ api.get('/teams/:teamname/vote-mode', (req, res, next) => {
 api.get('/teams/:teamname/freeze', (req, res, next) => {
     let teamname = req.params.teamname;
     if (teamname === undefined) {
-        res.json(403, { error: 'Bad request: teamname is not defined' });
+        res.json(403, { message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
-        res.json(403, { error: 'Bad request: there is no such team' });
+        res.json(403, { message: 'Bad request: there is no such team' });
     } else {
         res.json(200, { freeze: teams.get(teamname).freeze });
     }
