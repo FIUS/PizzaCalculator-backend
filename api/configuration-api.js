@@ -43,4 +43,8 @@ api.delete('/templates', (req, res, next) => {
     }
 });
 
+api.post('/ingredients', (req, res, next) => {
+    
+});
+
 module.exports = api;

@@ -24,14 +24,14 @@ api.get('/ingredients', (req, res, next) => {
             // If ingredients array is not null, return ingredients with 200
             if (ingredients != null) {
                 changeFlagsToBoolean(ingredients);
-                res.json(200, ingredients);
+                res.status(200).json(ingredients);
             } else {
-                res.json(404, { err: 'Not Found: There are no ingredients available' });
+                res.status(404).json({ err: 'Not Found: There are no ingredients available' });
             }
         });
     } catch (error) {
         console.error(`[Error] Catched error on retrieving all ingredients from DB in GET /ingredients: ${error}`);
-        res.json(500, { err: 'Internat Server Error' });
+        res.status(500).json({ err: 'Internat Server Error' });
     }
 });
 
@@ -42,13 +42,13 @@ api.get('/templates', (req, res, next) => {
             if (templates != null) {
                 parseTemplatesIngredients(templates);
                 changeFlagsToBoolean(templates);
-                res.json(200, templates);
+                res.status(200).json(templates);
             } else {
-                res.json(404, { err: 'Not Found: There are no ingredients available' });
+                res.status(404).json({ err: 'Not Found: There are no ingredients available' });
             }
         });
     } catch (error) {
-        res.json(500, { err: 'Internat Server Error' });
+        res.status(500).json({ err: 'Internat Server Error' });
     }
 });
 
