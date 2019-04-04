@@ -30,7 +30,17 @@ api.post('/templates', async (req, res, next) => {
 });
 
 api.delete('/templates', (req, res, next) => {
-
+    let template = req.body.template;
+    if (template === undefined) {
+        res.status(400).json({ message: "Template name is undefined"});
+    } else {
+        db.deleteTemplateByName(template).then(() => {
+            res.status(202).json({ message: "Template was deleted" });
+            db.removeTemplateFromFile(template);
+        }).catch(() => {
+            res.status(400).json({ message: "Template could not be deleted"});
+        });
+    }
 });
 
 module.exports = api;

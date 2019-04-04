@@ -37,7 +37,7 @@ function prepare(statement, next) {
 module.exports = class DBController {
 
     storeIngredient(ingredient) {
-        let stmt = prepare('INSERT INTO Ingredients(name, vegetarian, pork) VALUES (?, ?, ?);');
+        let stmt = prepare('INSERT OR REPLACE INTO Ingredients(name, vegetarian, pork) VALUES (?, ?, ?);');
         let name = ingredient.name;
         let vegetarian = ingredient.vegetarian;
         let pork = ingredient.pork;
@@ -107,6 +107,22 @@ module.exports = class DBController {
     }
 
 
+    deleteTemplateByName(name) {
+        let stmt = prepare('DELETE FROM Templates WHERE name = ?;');
+        return new Promise((resolve, reject) => {
+            stmt.run(name, (err) => {
+                if (err) {
+                    console.log('[Error] Error on deleting template');
+                    reject(err);
+                    return;
+                } else {
+                    resolve();
+                }
+            })
+        });
+    }
+
+
     addTemplateToFile(template) {
         let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
         templates.push(template);
@@ -119,6 +135,22 @@ module.exports = class DBController {
             });
         } catch (error) {
             // TODO some error handling
-        }    
+        }
+    }
+
+    removeTemplateFromFile(templateName) {
+        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+        try {
+            fs.writeFile('./data/templates.json', JSON.stringify(templates.filter((t) => {
+                return t.name != templateName;
+            })), err => {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+            });
+        } catch (error) {
+            // TODO some error handling
+        }
     }
 }
