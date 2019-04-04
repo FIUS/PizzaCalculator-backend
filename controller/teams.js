@@ -28,6 +28,14 @@ module.exports = class Teams {
         return hashedTeamnames.keys();
     }
 
+    getPublicTeams() {
+        return teams.values().filter(team => {
+            return team.public;
+        }).map(team => {
+            return team.name;
+        });
+    }
+
     get(teamname) {
         if (teams.has(teamname)) {
             return teams.get(teamname);
@@ -60,6 +68,7 @@ module.exports = class Teams {
                 size: 2,
                 type: 'persons'
             },
+            public: true,
             pizzaCount: 1,
             voteMode: 'std',
             freeze: false,
@@ -73,6 +82,7 @@ module.exports = class Teams {
                 size: 0,
                 type: 'persons'
             },
+            public: false,
             pizzaCount: 0,
             voteMode: 'std',
             freeze: false,

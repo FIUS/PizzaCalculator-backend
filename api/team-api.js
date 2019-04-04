@@ -1,14 +1,15 @@
 const express = require('express');
 const api = express();
 const crypto = require('crypto');
-const timeoutInMS = 28800000;
+const timeoutInMS = 28800000; // TODO read timeout from environment variable or command line param
 const Teams = require('../controller/teams');
 const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {
     let teamname = req.body.teamname;
+    let public = req.body.public;
     // teamname is not undefined and teamname is not currently used
-    if (teamname != undefined && !teams.has(teamname)) {
+    if (teamname != undefined && req.body.public != undefined && !teams.has(teamname)) {
         let data = {
             name: teamname,
             hashedName: crypto.createHash('sha256').update(teamname).digest('hex'),
@@ -16,6 +17,7 @@ api.post('/teams', (req, res, next) => {
                 size: 0,
                 type: 'persons'
             },
+            public: public,
             pizzaCount: 0,
             voteMode: 'std',
             freeze: false,
@@ -37,7 +39,7 @@ api.post('/teams', (req, res, next) => {
 });
 
 api.get('/teams', (req, res, next) => {
-    res.json(200, teams.keys());
+    res.json(200, teams.getPublicTeams());
 });
 
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
