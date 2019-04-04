@@ -3,8 +3,6 @@ const api = express();
 const uuid = require('uuid/v4');
 const Sessions = require('../controller/sessions');
 const sessions = new Sessions();
-const Teams = require('../controller/teams');
-const teams = new Teams();
 const Pizzas = require('../controller/pizzas');
 const pizzas = new Pizzas();
 

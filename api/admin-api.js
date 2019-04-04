@@ -35,7 +35,6 @@ api.patch('/teams/:teamname/size', (req, res, next) => {
 
 api.get('/teams/:teamname/size', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/size`);
     if (hashedTeamname === undefined) {
         res.json(403, { error: 'Bad request: teamname is not defined' });
     } else if (!teams.hasHash(hashedTeamname)) {
@@ -48,7 +47,6 @@ api.get('/teams/:teamname/size', (req, res, next) => {
 
 api.get('/teams/:teamname/size/type', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/size/type`);
     if (hashedTeamname === undefined) {
         res.json(403, { error: 'Bad request: teamname is not defined' });
     } else if (!teams.hasHash(hashedTeamname)) {
@@ -62,7 +60,6 @@ api.get('/teams/:teamname/size/type', (req, res, next) => {
 api.patch('/teams/:teamname/size/type', (req, res, next) => {
     let hashedTeamname = req.params.teamname;
     let type = req.body.type;
-    console.log(`[Log] PATCH /teams/${hashedTeamname}/size/type`);
     if (hashedTeamname === undefined || type === undefined) {
         res.json(403, { error: 'Bad request: teamname or type is not defined' });
     } else if (!teams.hasHash(hashedTeamname)) {
@@ -96,7 +93,6 @@ numberPropertyEndpoints.forEach((endpoint) => {
     api.get(`/teams/:teamname/${endpoint.endpoint}`, (req, res, next) => {
         let hashedTeamname = req.params.teamname;
         if (hashedTeamname === undefined) {
-            console.log(amount)
             res.json(403, { error: `Bad request: teamname is not defined` });
         } else if (!teams.hasHash(hashedTeamname)) {
             res.json(403, { error: 'Bad request: there is no such team' });
