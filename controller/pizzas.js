@@ -1,6 +1,6 @@
 const HashMap = require('hashmap');
 const Set = require('set');
-const DBController = require('./db-controller');
+const DBController = require('../data/db-controller');
 const db = new DBController();
 
 /**
