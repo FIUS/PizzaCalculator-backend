@@ -118,7 +118,22 @@ module.exports = class DBController {
                 } else {
                     resolve();
                 }
-            })
+            });
+        });
+    }
+
+    deleteIngredientByName(name) {
+        let stmt = prepare('DELETE FROM Ingredients WHERE name = ?;');
+        return new Promise((resolve, reject) => {
+            stmt.run(name, (err) => {
+                if (err) {
+                    console.log('[Error] Error on deleting ingredient');
+                    reject(err);
+                    return;
+                } else {
+                    resolve();
+                }
+            });
         });
     }
 
@@ -138,11 +153,42 @@ module.exports = class DBController {
         }
     }
 
+    addIngredientToFile(ingredient) {
+        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+        ingredients.push(ingredient);
+        try {
+            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients), err => {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+            });
+        } catch (error) {
+            // TODO some error handling
+        }
+    }
+
     removeTemplateFromFile(templateName) {
         let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
         try {
             fs.writeFile('./data/templates.json', JSON.stringify(templates.filter((t) => {
                 return t.name != templateName;
+            })), err => {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+            });
+        } catch (error) {
+            // TODO some error handling
+        }
+    }
+
+    removeIngredientFromFile(ingredientName) {
+        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+        try {
+            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients.filter((i) => {
+                return i.name != ingredientName;
             })), err => {
                 if (err) {
                     console.log(err);
