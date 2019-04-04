@@ -122,7 +122,7 @@ api.get('/pizzas/order', (req, res, next) => {
     } else {
         try {
             res.json(
-                200, JSON.stringify((teams.get(teamname).teamSize.type === 'persons') ? solver.solveForPersons(teamname) : solver.solveForPieces(teamname))
+                200, (teams.get(teamname).teamSize.type === 'persons') ? solver.solveForPersons(teamname) : solver.solveForPieces(teamname)
             );
         } catch (error) {
             res.json(409, { message: 'Conflict: not enough pizza parts to create a sufficent order' });
