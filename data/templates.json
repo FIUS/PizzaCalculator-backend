@@ -1,68 +1,85 @@
 [
-  {
-    "name": "Schleife",
-    "ingredients": [
-      "Maultaschen",
-      "Schinken",
-      "Speck",
-      "Hackfleischklöse"
-    ],
-    "vegetarian": false,
-    "pork": true
-  },
-  {
-    "name": "A lá Flo",
-    "ingredients": [
-      "Hackfleischsoße",
-      "Zwiebeln",
-      "Mais",
-      "Speck"
-    ],
-    "vegetarian": false,
-    "pork": true
-  },
-  {
-    "name": "Sucuk (scharf)",
-    "ingredients": [
-      "Sucuk",
-      "Mais",
-      "Speck",
-      "Pepperoni (scharf)"
-    ],
-    "vegetarian": false,
-    "pork": false
-  },
-  {
-    "name": "Sucuk (mild)",
-    "ingredients": [
-      "Sucuk",
-      "Mais",
-      "Speck",
-      "Fetakäse"
-    ],
-    "vegetarian": false,
-    "pork": false
-  },
-  {
-    "name": "MC's Sucuk-Pizza",
-    "ingredients": [
-      "Sucuk",
-      "Zwiebeln",
-      "Mais",
-      "Speck"
-    ],
-    "vegetarian": false,
-    "pork": true
-  },
-  {
-    "name": "Mozzarella + Ei",
-    "ingredients": [
-      "Ei",
-      "Pepperoni (scharf)",
-      "Mozzarella",
-      "Oliven"
-    ],
-    "vegetarian": true,
-    "pork": false
-  }
+    {
+        "name": "Schleife",
+        "ingredients": [
+            "Maultaschen",
+            "Schinken",
+            "Speck",
+            "Hackfleischklöse"
+        ],
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "A lá Flo",
+        "ingredients": [
+            "Hackfleischsoße",
+            "Zwiebeln",
+            "Mais",
+            "Speck"
+        ],
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Sucuk (scharf)",
+        "ingredients": [
+            "Sucuk",
+            "Mais",
+            "Speck",
+            "Pepperoni (scharf)"
+        ],
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "Sucuk (mild)",
+        "ingredients": [
+            "Sucuk",
+            "Mais",
+            "Speck",
+            "Fetakäse"
+        ],
+        "vegetarian": false,
+        "pork": false
+    },
+    {
+        "name": "MC's Sucuk-Pizza",
+        "ingredients": [
+            "Sucuk",
+            "Zwiebeln",
+            "Mais",
+            "Speck"
+        ],
+        "vegetarian": false,
+        "pork": true
+    },
+    {
+        "name": "Mozzarella + Ei",
+        "ingredients": [
+            "Ei",
+            "Pepperoni (scharf)",
+            "Mozzarella",
+            "Oliven"
+        ],
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Margherita",
+        "ingredients": [],
+        "vegetarian": true,
+        "pork": false
+    },
+    {
+        "name": "Sandros Spezial",
+        "ingredients": [
+            "Thunfisch",
+            "Meeresfrüchte",
+            "Krabben",
+            "Oliven"
+        ],
+        "vegetarian": false,
+        "pork": false
+    }
 ]

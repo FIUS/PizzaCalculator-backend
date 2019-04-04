@@ -1,5 +1,6 @@
 const sqlite3 = require('sqlite3').verbose();
 const HashMap = require('hashmap');
+const fs = require('fs');
 
 let preparedStatements = new HashMap();
 let db = new sqlite3.Database('./data/meta.db');
@@ -63,8 +64,21 @@ module.exports = class DBController {
         });
     }
 
+    getIngredientByName(name) {
+        let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients WHERE name = ?;');
+        return new Promise((resolve, reject) => {
+            stmt.get(name, (err, result) => {
+                if (err) {
+                    console.log(`[Error] Error on receiving ingredients: ${err}`);
+                    reject(err);
+                }
+                resolve(result);
+            });
+        });
+    }
+
     storeTemplate(template) {
-        let stmt = prepare('INSERT INTO Templates(name, ingredients, vegetarian, pork) VALUES (?, ?, ?, ?);');
+        let stmt = prepare('INSERT OR REPLACE INTO Templates(name, ingredients, vegetarian, pork) VALUES (?, ?, ?, ?);');
         let name = template.name;
         let ingredients = JSON.stringify(template.ingredients);
         let vegetarian = template.vegetarian;
@@ -90,5 +104,21 @@ module.exports = class DBController {
             }
             callback(result);
         });
+    }
+
+
+    addTemplateToFile(template) {
+        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+        templates.push(template);
+        try {
+            fs.writeFile('./data/templates.json', JSON.stringify(templates), err => {
+                if (err) {
+                    console.log(err);
+                    throw err;
+                }
+            });
+        } catch (error) {
+            // TODO some error handling
+        }    
     }
 }
