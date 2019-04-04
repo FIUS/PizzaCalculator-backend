@@ -108,6 +108,7 @@ module.exports = class Pizzas {
     }
 
     getTotalPieces(teamname, pizza) {
+        console.log(`Total Pieces: ${suggestionSessions.get(teamname).has(pizza)}`);
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
             let sessions = suggestionSessions.get(teamname).get(pizza).values();
             let total = 0;
@@ -115,6 +116,8 @@ module.exports = class Pizzas {
                 total += new Number(pieces);
             });
             return total;
+        } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)) {
+            return 0;
         } else {
             throw new Error('team or pizza not in suggestionSessions');
         }
