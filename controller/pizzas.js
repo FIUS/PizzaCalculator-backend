@@ -97,6 +97,9 @@ module.exports = class Pizzas {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)
             && suggestionSessions.get(teamname).get(pizza).has(session)) {
             return suggestionSessions.get(teamname).get(pizza).get(session);
+        } else if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)
+            && !suggestionSessions.get(teamname).get(pizza).has(session)) {
+            return 0;
         } else {
             throw new Error('team or pizza not in suggestionSessions');
         }

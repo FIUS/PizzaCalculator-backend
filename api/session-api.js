@@ -12,6 +12,7 @@ api.post('/uuid', (req, res, next) => {
     console.log('[Log] POST /uuid');
     let sessionID = uuid();
     sessions.set(sessionID, sessionID);
+    console.log(`SessionID: ${sessions.get(sessionID)}`);
     res.status(201).end(JSON.stringify({ uuid: sessionID }));
 });
 
