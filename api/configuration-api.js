@@ -41,8 +41,8 @@ api.post('/templates', async (req, res, next) => {
     }
 });
 
-api.delete('/templates', (req, res, next) => {
-    let template = req.body.template;
+api.delete('/templates/:template', (req, res, next) => {
+    let template = req.params.template;
     if (template === undefined) {
         res.status(400).json({ message: "Template name is undefined"});
     } else {
@@ -73,8 +73,8 @@ api.post('/ingredients', (req, res, next) => {
     }
 });
 
-api.delete('/ingredients', (req, res, next) => {
-    let name = req.body.name;
+api.delete('/ingredients/:name', (req, res, next) => {
+    let name = req.params.name;
     if (name === undefined) {
         res.status(400).json({ message: "Ingredient name is undefined" });
     } else {

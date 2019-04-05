@@ -1,7 +1,18 @@
 const express = require('express');
 const api = express();
 const crypto = require('crypto');
-const timeoutInMS = 28800000; // TODO read timeout from environment variable or command line param
+const timeoutInMS = 28800000;
+if (process.env.TIMEOUT_IN_MS != null) {
+    let envTimeout = parseInt(process.env.TIMEOUT_IN_MS);
+    if (!isNaN(envTimeout)) {
+        console.log("Found valid environment variable TIMEOUT_IN_MS. Setting timeout to %i", envTimeout);
+        timeoutInMS = envTimeout;
+    } else {
+        console.log("The value \"%s\" is not a valid timeout", process.env.TIMEOUT_IN_MS);
+    }
+} else {
+    console.log("Environment variable TIMEOUT_IN_MS not set. Using default timeout.");
+}
 const Teams = require('../controller/teams');
 const teams = new Teams();
 
