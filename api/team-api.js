@@ -42,6 +42,15 @@ api.get('/teams', (req, res, next) => {
     res.status(200).json(teams.getPublicTeams());
 });
 
+api.get('/teams/:name', (req, res, next) => {
+    let teamname = req.params.name;
+    if (teamname === undefined) {
+        res.status(400).json({ message: "team name is undefined" });
+    } else {
+        res.status(200).json({ exists: teams.has(teamname) });
+    }
+});
+
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
     let teamname = req.params.teamname;
     if (teamname === undefined) {
