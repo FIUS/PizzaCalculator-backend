@@ -53,14 +53,16 @@ module.exports = class DBController {
         }
     }
 
-    getAllIngredients(callback) {
+    getAllIngredients() {
         let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients;');
-        stmt.all((err, result) => {
-            if (err) {
-                console.log(`[Error] Error on receiving ingredients: ${err}`);
-                callback(null);
-            }
-            callback(result);
+        return new Promise((resolve, reject) => {
+            stmt.all((err, result) => {
+                if (err) {
+                    console.log(`[Error] Error on receiving ingredients: ${err}`);
+                    reject(err);
+                }
+                resolve(result);
+            });
         });
     }
 

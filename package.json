@@ -1,37 +1,43 @@
 {
-  "name": "pizzacalculator-backend",
-  "version": "1.0.0",
-  "description": "Service backend to calculate pizza orders for big groups",
-  "main": "server.js",
-  "scripts": {
-    "start": "nodemon server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend.git"
-  },
-  "keywords": [
-    "REST",
-    "NodeJS",
-    "express",
-    "Pizza"
-  ],
-  "author": "spethso",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend/issues"
-  },
-  "homepage": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend#readme",
-  "dependencies": {
-    "compression": "^1.7.3",
-    "crypto": "^1.0.1",
-    "express": "^4.16.4",
-    "fs": "0.0.1-security",
-    "hashmap": "^2.3.0",
-    "nodemon": "^1.18.9",
-    "set": "^1.1.1",
-    "sqlite3": "^4.0.6",
-    "uuid": "^3.3.2"
-  }
+    "name": "pizzacalculator-backend",
+    "version": "1.0.0",
+    "description": "Service backend to calculate pizza orders for big groups",
+    "main": "server.js",
+    "scripts": {
+        "start": "nodemon server.js",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend.git"
+    },
+    "keywords": [
+        "REST",
+        "NodeJS",
+        "express",
+        "Pizza"
+    ],
+    "author": "spethso",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend/issues"
+    },
+    "homepage": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend#readme",
+    "dependencies": {
+        "compression": "^1.7.3",
+        "crypto": "^1.0.1",
+        "express": "^4.16.4",
+        "fs": "0.0.1-security",
+        "hashmap": "^2.3.0",
+        "nodemon": "^1.18.9",
+        "set": "^1.1.1",
+        "sqlite3": "^4.0.6",
+        "uuid": "^3.3.2"
+    },
+    "nodemonConfig": {
+        "ignore": [
+            "data/ingredients.json",
+            "data/templates.json"
+        ]
+    }
 }

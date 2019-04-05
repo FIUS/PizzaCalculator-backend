@@ -78,7 +78,7 @@ module.exports = class Pizzas {
     changeSessionPieces(teamname, pizza, session, pieces) {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
             suggestionSessions.get(teamname).get(pizza).set(session, pieces);
-        } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)){
+        } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)) {
             let sessionMap = new HashMap();
             sessionMap.set(session, pieces);
             suggestionSessions.get(teamname).set(pizza, sessionMap);
@@ -192,14 +192,13 @@ module.exports = class Pizzas {
      * @param {*} pizza - Given pizza to check
      * @param {*} callback - Callback with true if all ingredients are existent else false
      */
-    checkIngredientsOfPizza(pizza, callback) {
-        db.getAllIngredients((ingredients) => {
-            let result = false;
-            pizza.forEach((ingredient) => {
-                result = result || containsIngredient(ingredients, ingredient);
-            });
-            callback(result);
+    async checkIngredientsOfPizza(pizza, callback) {
+        let ingredients = await AbortController.getAllIngredients();
+        let result = false;
+        pizza.forEach((ingredient) => {
+            result = result || containsIngredient(ingredients, ingredient);
         });
+        callback(result);
     }
 
     /**

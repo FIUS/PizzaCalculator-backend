@@ -18,17 +18,16 @@ function parseTemplatesIngredients(templates) {
     }
 }
 
-api.get('/ingredients', (req, res, next) => {
+api.get('/ingredients', async (req, res, next) => {
     try {
-        db.getAllIngredients((ingredients) => {
-            // If ingredients array is not null, return ingredients with 200
-            if (ingredients != null) {
-                changeFlagsToBoolean(ingredients);
-                res.status(200).json(ingredients);
-            } else {
-                res.status(404).json({ err: 'Not Found: There are no ingredients available' });
-            }
-        });
+        let ingredients = db.getAllIngredients();
+        // If ingredients array is not null, return ingredients with 200
+        if (ingredients != null) {
+            changeFlagsToBoolean(ingredients);
+            res.status(200).json(ingredients);
+        } else {
+            res.status(404).json({ err: 'Not Found: There are no ingredients available' });
+        }
     } catch (error) {
         console.error(`[Error] Catched error on retrieving all ingredients from DB in GET /ingredients: ${error}`);
         res.status(500).json({ err: 'Internat Server Error' });

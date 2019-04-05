@@ -3,10 +3,6 @@ const api = express();
 const dbController = require('../data/db-controller');
 const db = new dbController();
 
-
-/**
- * TODO Check that all ingredients exists!
- */
 api.post('/templates', async (req, res, next) => {
     let name = req.body.name;
     let ingredients = req.body.ingredients;
@@ -14,6 +10,18 @@ api.post('/templates', async (req, res, next) => {
     if (name === undefined || ingredients === undefined) {
         res.status(400).json({ message: "At least one parameter is undefined" });
     } else {
+        let existingIngredients = await db.getAllIngredients();
+        for(let i = 0; i < ingredients.length; ++i) {
+            let ingredientExists = (existingIngredients.find((ing) => {
+                return ingredients[i] == ing.name;
+            })) != undefined;
+
+            if (!ingredientExists) {
+                res.status(400).json({ message: "One of the ingredients does not exist" });
+                return;
+            }
+        }
+
         let vegetarian = true;
         let pork = false;
         for(let i = 0; i < ingredients.length; ++i) {
