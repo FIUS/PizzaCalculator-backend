@@ -193,7 +193,7 @@ module.exports = class Pizzas {
      * @param {*} callback - Callback with true if all ingredients are existent else false
      */
     async checkIngredientsOfPizza(pizza, callback) {
-        let ingredients = await AbortController.getAllIngredients();
+        let ingredients = await db.getAllIngredients();
         let result = false;
         pizza.forEach((ingredient) => {
             result = result || containsIngredient(ingredients, ingredient);

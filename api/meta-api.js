@@ -20,7 +20,7 @@ function parseTemplatesIngredients(templates) {
 
 api.get('/ingredients', async (req, res, next) => {
     try {
-        let ingredients = db.getAllIngredients();
+        let ingredients = await db.getAllIngredients();
         // If ingredients array is not null, return ingredients with 200
         if (ingredients != null) {
             changeFlagsToBoolean(ingredients);
