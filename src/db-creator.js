@@ -1,5 +1,5 @@
 const sqlite3 = require('sqlite3');
-const DBController = require('./data/db-controller');
+const DBController = require('./src/data/db-controller');
 const fs = require('fs');
 
 function recreateDB(callback) {

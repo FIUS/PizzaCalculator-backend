@@ -1,7 +1,7 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const Teams = require('../controller/teams');
-const teams = new Teams();
+import Teams = require('../controller/teams');
+const teams: Teams = new Teams();
 
 /**
  * List of property endpoints to autogenerate getter for all properties
@@ -11,7 +11,7 @@ const numberPropertyEndpoints = [
     { endpoint: 'no-pork', property: 'noPork' },
 ];
 
-function checkVoteMode(voteMode) {
+function checkVoteMode(voteMode: string) {
     if (voteMode != 'std' && voteMode != 'registration') {
         return false
     }

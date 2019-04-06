@@ -1,6 +1,6 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const compression = require('compression');
+import compression = require('compression');
 /**
  * APIs for ingredients and templates
  */
@@ -32,8 +32,8 @@ const configurationAPI = require('./api/configuration-api');
 /**
  * Module to control teams
  */
-const Teams = require('./controller/teams');
-const teams = new Teams();
+import Teams = require('./controller/teams');
+const teams: Teams = new Teams();
 /**
  * Module to control pizzas
  */
@@ -74,7 +74,7 @@ api.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Auth-Token,content-type');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', false);
+    res.setHeader('Access-Control-Allow-Credentials', 'false');
     // Set response header to application/json
     res.setHeader('content-type', 'application/json');
 
@@ -93,7 +93,7 @@ api.use('/', adminAPI);
 api.use('/', sessionAPI);
 api.use('/', configurationAPI);
 
-var server = api.listen(port, function () {
+var server: any = api.listen(port, function () {
     teams.setTestTeams();
     pizzas.setTestSuggestions();
     sessions.setupSessions();

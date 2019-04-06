@@ -3,7 +3,7 @@ const HashMap = require('hashmap');
 const fs = require('fs');
 
 let preparedStatements = new HashMap();
-let db = new sqlite3.Database('./data/meta.db');
+let db = new sqlite3.Database('./src/data/meta.db');
 
 /**
  * Function for sql prepared statements

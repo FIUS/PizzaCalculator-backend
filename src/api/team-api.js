@@ -43,9 +43,9 @@ api.post('/teams', (req, res, next) => {
         }, timeoutInMS);
         res.status(201).json(data);
     } else if (teamname === undefined) {
-        res.json(409, { message: 'Bad Request: teamname is undefined' });
+        res.status(409).json( { message: 'Bad Request: teamname is undefined' });
     } else {
-        res.json(409, { message: 'Conflict: teamname is already used' });
+        res.status(409).json( { message: 'Conflict: teamname is already used' });
     }
 });
 

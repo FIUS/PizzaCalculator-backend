@@ -4,7 +4,8 @@
     "description": "Service backend to calculate pizza orders for big groups",
     "main": "server.js",
     "scripts": {
-        "start": "nodemon server.js",
+        "prod": "ts-node src/server.ts",
+        "start": "nodemon",
         "test": "echo \"Error: no test specified\" && exit 1"
     },
     "repository": {
@@ -24,20 +25,21 @@
     },
     "homepage": "https://github.com/SMH-PizzaCalculator/PizzaCalculator-backend#readme",
     "dependencies": {
+        "@types/compression": "0.0.36",
+        "@types/express": "^4.16.1",
+        "@types/hashmap": "^2.0.29",
+        "@types/sqlite3": "^3.1.5",
+        "@types/uuid": "^3.4.4",
         "compression": "^1.7.3",
         "crypto": "^1.0.1",
         "express": "^4.16.4",
         "fs": "0.0.1-security",
         "hashmap": "^2.3.0",
-        "nodemon": "^1.18.9",
+        "nodemon": "^1.18.10",
         "set": "^1.1.1",
         "sqlite3": "^4.0.6",
+        "ts-node": "^8.0.3",
+        "typescript": "^3.4.2",
         "uuid": "^3.3.2"
-    },
-    "nodemonConfig": {
-        "ignore": [
-            "data/ingredients.json",
-            "data/templates.json"
-        ]
     }
 }
