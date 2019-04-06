@@ -1,8 +1,8 @@
 import Teams = require('./teams');
-const Pizzas = require('./pizzas'); // TODO after refactor pizzas.js to typescript
+import Pizzas = require('./pizzas');
 
 const teams: Teams = new Teams();
-const pizzas = new Pizzas();
+const pizzas: Pizzas = new Pizzas();
 
 function containsPizza(array: any, pizza: any): boolean {
     for (let i = 0; i < array.length; ++i) {

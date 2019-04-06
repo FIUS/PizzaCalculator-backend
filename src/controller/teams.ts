@@ -1,5 +1,5 @@
 import HashMap = require('hashmap');
-import * as crypto from "crypto";
+import * as crypto from "crypto"; // TODO import only needed functions
 let teams: HashMap<string, any> = new HashMap();
 let hashedTeamnames: HashMap<string, string> = new HashMap();
 

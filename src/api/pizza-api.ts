@@ -2,8 +2,8 @@ import express = require('express');
 const api = express();
 import Teams = require('../controller/teams');
 const teams: Teams = new Teams();
-const Pizzas = require('../controller/pizzas'); // TODO refactor after changing pizzas.js to typescript
-const pizzas = new Pizzas();
+import Pizzas = require('../controller/pizzas');
+const pizzas: Pizzas = new Pizzas();
 import Solver = require('../controller/solver');
 const solver: Solver = new Solver();
 
@@ -164,4 +164,4 @@ propertyEndpoints.forEach((endpoint) => {
     });
 });
 
-module.exports = api;
+export = api;

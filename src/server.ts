@@ -12,7 +12,7 @@ const teamAPI = require('./api/team-api');
 /**
  * APIs for pizzas
  */
-const pizzaAPI = require('./api/pizza-api');
+import pizzaAPI = require('./api/pizza-api');
 /**
  * APIs for votes of pizzas
  */
@@ -37,8 +37,8 @@ const teams: Teams = new Teams();
 /**
  * Module to control pizzas
  */
-const Pizzas = require('./controller/pizzas');
-const pizzas = new Pizzas();
+import Pizzas = require('./controller/pizzas');
+const pizzas: Pizzas = new Pizzas();
 /**
  * Module to control sessions
  */

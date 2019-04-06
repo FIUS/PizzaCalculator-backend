@@ -1,6 +1,6 @@
-const HashMap = require('hashmap');
-const Set = require('set');
-const DBController = require('../data/db-controller');
+import HashMap = require('hashmap');
+const Set = require('set'); // TODO look for a typescript alternative
+const DBController = require('../data/db-controller'); // TODO Change to import after refactoring db-controller to typescript 
 const db = new DBController();
 
 /**
@@ -10,13 +10,13 @@ const db = new DBController();
  *          <key>: Name of the suggestion
  *          <value>: Pizza object
  */
-let suggestions = new HashMap();
+let suggestions: HashMap<string, HashMap<string, any>> = new HashMap();
 /**
  * Map to store special suggestion names of a team
  * <key>: teamname
  * <value>: Set of suggestion names build as the concatenation of the ingredient names
  */
-let suggestionNames = new HashMap();
+let suggestionNames: HashMap<string, any> = new HashMap(); // TODO refactor type after changing Set to typescript
 /**
  * Map to store suggestions of a team for session handling
  * <key>: teamname
@@ -26,16 +26,16 @@ let suggestionNames = new HashMap();
  *                  <key>: session id
  *                  <value>: amount
  */
-let suggestionSessions = new HashMap();
+let suggestionSessions: HashMap<string, HashMap<string, HashMap<string, number>>> = new HashMap();
 
 /**
  * Creates a suggestion name for the set.
  * Concatenates the ingredients names.
  * @param {*} suggestion - Given suggestion to create a name.
  */
-function createSuggestionName(suggestion) {
+function createSuggestionName(suggestion: any): string {
     let suggestionName = '';
-    suggestion.ingredients.forEach((ingredient) => {
+    suggestion.ingredients.forEach((ingredient: string) => {
         suggestionName += ingredient;
     });
     return suggestionName;
@@ -47,9 +47,9 @@ function createSuggestionName(suggestion) {
  * @param {*} toCheck element to check
  * @returns true if toCheck is in given
  */
-function containsIngredient(ingredients, toCheckIngredient) {
-    let result = false;
-    ingredients.forEach((element) => {
+function containsIngredient(ingredients: any[], toCheckIngredient: any): boolean {
+    let result: boolean = false;
+    ingredients.forEach((element: any) => {
         if (element.name == toCheckIngredient.name) {
             result = true
             return;
@@ -58,34 +58,34 @@ function containsIngredient(ingredients, toCheckIngredient) {
     return result;
 }
 
-module.exports = class Pizzas {
+class Pizzas {
     /**
      * ############################
      * # Pizza suggestion methods #
      * ############################
      */
 
-    addPizzaSuggestionSession(teamname, suggestion) {
+    addPizzaSuggestionSession(teamname: string, suggestion: any): void {
         if (suggestionSessions.has(teamname)) {
-            let suggestionSession = suggestionSessions.get(teamname);
+            let suggestionSession: HashMap<string, HashMap<string, number>> = suggestionSessions.get(teamname);
             suggestionSession.set(suggestion.name, new HashMap());
         } else {
-            let suggestionSession = new HashMap();
+            let suggestionSession: HashMap<string, HashMap<string, number>> = new HashMap();
             suggestionSessions.set(teamname, suggestionSession);
         }
     }
 
-    changeSessionPieces(teamname, pizza, session, pieces) {
+    changeSessionPieces(teamname: string, pizza: string, session: string, pieces: number): void {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
             suggestionSessions.get(teamname).get(pizza).set(session, pieces);
         } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)) {
-            let sessionMap = new HashMap();
+            let sessionMap: HashMap<string, number> = new HashMap();
             sessionMap.set(session, pieces);
             suggestionSessions.get(teamname).set(pizza, sessionMap);
         } else if (!suggestionSessions.has(teamname)) {
-            let sessionMap = new HashMap();
+            let sessionMap: HashMap<string, number> = new HashMap();
             sessionMap.set(session, pieces);
-            let pizzaMap = new HashMap();
+            let pizzaMap: HashMap<string, HashMap<string, number>> = new HashMap();
             pizzaMap.set(pizza, sessionMap);
             suggestionSessions.set(teamname, pizzaMap);
         } else {
@@ -93,7 +93,7 @@ module.exports = class Pizzas {
         }
     }
 
-    getSessionPieces(teamname, pizza, session) {
+    getSessionPieces(teamname: string, pizza: string, session: string): number {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)
             && suggestionSessions.get(teamname).get(pizza).has(session)) {
             return suggestionSessions.get(teamname).get(pizza).get(session);
@@ -107,13 +107,12 @@ module.exports = class Pizzas {
         }
     }
 
-    getTotalPieces(teamname, pizza) {
-        console.log(`Total Pieces: ${suggestionSessions.get(teamname).has(pizza)}`);
+    getTotalPieces(teamname: string, pizza: string): number {
         if (suggestionSessions.has(teamname) && suggestionSessions.get(teamname).has(pizza)) {
-            let sessions = suggestionSessions.get(teamname).get(pizza).values();
-            let total = 0;
-            sessions.forEach((pieces) => {
-                total += new Number(pieces);
+            let sessions: number[] = suggestionSessions.get(teamname).get(pizza).values();
+            let total: number = 0;
+            sessions.forEach((pieces: number) => {
+                total += pieces;
             });
             return total;
         } else if (suggestionSessions.has(teamname) && !suggestionSessions.get(teamname).has(pizza)) {
@@ -129,11 +128,11 @@ module.exports = class Pizzas {
      * @param {*} teamname - Name of the team the suggestion is posted for
      * @param {*} suggestion - Pizza suggestion
      */
-    addPizzaSuggestionForTeam(teamname, suggestion) {
+    addPizzaSuggestionForTeam(teamname: string, suggestion: any): void {
         if (suggestions.has(teamname)) {
-            let teamSuggestions = suggestions.get(teamname);
+            let teamSuggestions: HashMap<string, any> = suggestions.get(teamname);
             // Special suggestion name as concatenation of ingredients for suggestionNames
-            let suggestionName = createSuggestionName(suggestion);
+            let suggestionName: string = createSuggestionName(suggestion);
             // Add if not already exists else throw new Error
             if (!suggestionNames.get(teamname).contains(suggestionName)) {
                 teamSuggestions.set(suggestion.name, suggestion);
@@ -142,10 +141,10 @@ module.exports = class Pizzas {
                 throw new Error(`Pizza suggestion with name ${suggestionName} or ${suggestion.name} already exists`);
             }
         } else {
-            let pizzas = new HashMap();
+            let pizzas: HashMap<string, any> = new HashMap();
             pizzas.set(suggestion.name, suggestion);
             suggestions.set(teamname, pizzas);
-            let teamSuggestionNames = new Set();
+            let teamSuggestionNames = new Set(); // TODO add type after refactoring
             teamSuggestionNames.add(createSuggestionName(suggestion));
             suggestionNames.set(teamname, teamSuggestionNames);
         }
@@ -155,11 +154,11 @@ module.exports = class Pizzas {
      * Return a list of pizza suggestions for a given team
      * @param {*} teamname - Name of the team of which the suggestions belong
      */
-    getPizzaSuggestionsOfTeam(teamname) {
+    getPizzaSuggestionsOfTeam(teamname: string): any {
         if (suggestions.has(teamname)) {
             return suggestions.get(teamname).values();
         } else {
-            return null;
+            return null; // TODO maybe return empty array and update return type of function
         }
     }
 
@@ -169,10 +168,10 @@ module.exports = class Pizzas {
      * @param {*} teamname - The teamname which the suggestion should belong to
      * @throws Error if there is no such suggestion for the given team
      */
-    deletePizzaSuggestionOfTeam(suggestionName, teamname) {
-        let teamSuggestions = suggestions.get(teamname);
+    deletePizzaSuggestionOfTeam(suggestionName: string, teamname: string): any {
+        let teamSuggestions: HashMap<string, any> = suggestions.get(teamname);
         if (teamSuggestions.has(suggestionName)) {
-            let teamSuggestion = teamSuggestions.get(suggestionName);
+            let teamSuggestion: any = teamSuggestions.get(suggestionName);
             teamSuggestions.remove(suggestionName);
             suggestionNames.get(teamname).remove(createSuggestionName(teamSuggestion));
             return teamSuggestion;
@@ -192,10 +191,10 @@ module.exports = class Pizzas {
      * @param {*} pizza - Given pizza to check
      * @param {*} callback - Callback with true if all ingredients are existent else false
      */
-    async checkIngredientsOfPizza(pizza, callback) {
-        let ingredients = await db.getAllIngredients();
-        let result = false;
-        pizza.forEach((ingredient) => {
+    async checkIngredientsOfPizza(pizza: any, callback: any) {
+        let ingredients: any[] = await db.getAllIngredients();
+        let result: boolean = false;
+        pizza.forEach((ingredient: any) => {
             result = result || containsIngredient(ingredients, ingredient);
         });
         callback(result);
@@ -214,24 +213,24 @@ module.exports = class Pizzas {
      * @param {*} mode - 'up' if the suggestion should be upvoted else 'down'
      * @throws Error if there is no suggestion with the given name
      */
-    revoteSuggestionOfTeam(suggestionName, teamname, mode) {
-        let teamSuggestions = suggestions.get(teamname);
+    revoteSuggestionOfTeam(suggestionName: string, teamname: string, mode: string) {
+        let teamSuggestions: HashMap<string, any> = suggestions.get(teamname);
         if (!teamSuggestions.has(suggestionName)) {
             throw new Error('There is no such suggestion');
         }
         (mode == 'up') ? teamSuggestions.get(suggestionName).vote++ : teamSuggestions.get(suggestionName).vote--;
     }
 
-    getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, property) {
-        let teamSuggestion = suggestions.get(teamname);
+    getPropertyOfPizzaSuggestionOfTeam(teamname: string, suggestionName: string, property: string): any {
+        let teamSuggestion: HashMap<string, any> = suggestions.get(teamname);
         if (!teamSuggestion.has(suggestionName)) {
             throw new Error('There is no such suggestion');
         }
         return teamSuggestion.get(suggestionName)[property];
     }
 
-    resetPropertyValueOfSuggestion(teamname, suggestionName, propertyValue, property) {
-        let teamSuggestion = suggestions.get(teamname);
+    resetPropertyValueOfSuggestion(teamname: string, suggestionName: string, propertyValue: any, property: string): void {
+        let teamSuggestion: HashMap<string, any> = suggestions.get(teamname);
         if (!teamSuggestion.has(suggestionName)) {
             throw new Error('There is no such suggestion');
         }
@@ -247,7 +246,7 @@ module.exports = class Pizzas {
     /**
      * Init 3 pizza suggestions for test team
      */
-    setTestSuggestions() {
+    setTestSuggestions(): void {
         let pizzas = [
             {
                 name: '0',
@@ -283,9 +282,9 @@ module.exports = class Pizzas {
                 registeredPieces: 0
             }
         ];
-        let teamSuggestions = new HashMap();
+        let teamSuggestions: HashMap<string, any> = new HashMap();
         let teamSuggestionNames = new Set();
-        pizzas.forEach((pizza) => {
+        pizzas.forEach((pizza: any) => {
             pizza.vote = 0;
             teamSuggestions.set(pizza.name, pizza);
             teamSuggestionNames.add(createSuggestionName(pizza));
@@ -296,11 +295,13 @@ module.exports = class Pizzas {
         suggestionNames.set('SMHR', teamSuggestionNames);
 
 
-        let pizzaMap = new HashMap();
-        let sessionMap = new HashMap();
+        let pizzaMap: HashMap<string, HashMap<string, number>> = new HashMap();
+        let sessionMap: HashMap<string, number> = new HashMap();
         sessionMap.set('1234567', 3);
         pizzaMap.set('0', sessionMap);
         suggestionSessions.set('test', pizzaMap);
     }
 
 }
+
+export = Pizzas;

@@ -6,7 +6,7 @@ const teams: Teams = new Teams();
 /**
  * List of property endpoints to autogenerate getter for all properties
  */
-const numberPropertyEndpoints = [
+const numberPropertyEndpoints: any[] = [
     { endpoint: 'vegetarian', property: 'vegetarian' },
     { endpoint: 'no-pork', property: 'noPork' },
 ];
