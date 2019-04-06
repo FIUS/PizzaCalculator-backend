@@ -57,7 +57,7 @@ function getSuggestionsOfTeamOrdered(teamname: string): any[] {
     return suggestions;
 }
 
-module.exports = class Solver {
+class Solver {
     /**
      * Calculates an order using the votes, vegetarian and noPork properties of the suggestions regarding pieces mode
      * @param {*} teamname - The name of the team
@@ -181,3 +181,5 @@ module.exports = class Solver {
         return order;
     }
 }
+
+export = Solver;

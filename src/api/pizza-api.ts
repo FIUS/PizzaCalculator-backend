@@ -1,33 +1,33 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const Teams = require('../controller/teams');
-const teams = new Teams();
-const Pizzas = require('../controller/pizzas');
+import Teams = require('../controller/teams');
+const teams: Teams = new Teams();
+const Pizzas = require('../controller/pizzas'); // TODO refactor after changing pizzas.js to typescript
 const pizzas = new Pizzas();
-const Solver = require('../controller/solver');
-const solver = new Solver();
+import Solver = require('../controller/solver');
+const solver: Solver = new Solver();
 
 /**
  * List of property endpoints to autogenerate getter for all properties
  */
-const propertyEndpoints = [
+const propertyEndpoints: any[] = [
     { endpoint: 'registered-pieces', property: 'registeredPieces' },
     { endpoint: 'vegetarian', property: 'vegetarian' },
     { endpoint: 'pork', property: 'pork' },
 ];
 
 
-function createPizza(ingredientsData, teamname) {
-    let ingredientsNames = [];
-    let vegetarian = true;
-    let pork = false;
+function createPizza(ingredientsData: any[], teamname: string): any {
+    let ingredientsNames: any[] = [];
+    let vegetarian: boolean = true;
+    let pork: boolean = false;
     ingredientsData.forEach((ingredient) => {
         if (!ingredient.vegetarian) { vegetarian = false }
         if (ingredient.pork) { pork = true };
         ingredientsNames.push(ingredient.name);
     });
-    let numberOfSuggestion = (pizzas.getPizzaSuggestionsOfTeam(teamname) != null) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
-    let pizza = {
+    let numberOfSuggestion: number = (pizzas.getPizzaSuggestionsOfTeam(teamname) != null) ? pizzas.getPizzaSuggestionsOfTeam(teamname).length : 0;
+    let pizza: any = {
         name: numberOfSuggestion.toString(), // TODO make more beautiful than just a number
         ingredients: ingredientsNames,
         vegetarian: vegetarian,
@@ -39,17 +39,17 @@ function createPizza(ingredientsData, teamname) {
 }
 
 api.post('/pizzas', (req, res, next) => {
-    let ingredients = req.body.ingredients;
-    let teamname = req.body.teamname;
+    let ingredients: any = req.body.ingredients;
+    let teamname: string = req.body.teamname;
     if (ingredients === undefined || teamname === undefined) {
         res.status(400).json({ message: 'Bad request: ingredients or teamname is not defined' });
     } else if (!teams.has(teamname)) {
         res.status(400).json({ message: 'Bad request: there is no such team' });
     } else {
         // Checks if all ingredients are existent
-        pizzas.checkIngredientsOfPizza(ingredients, (result) => {
+        pizzas.checkIngredientsOfPizza(ingredients, (result: any) => {
             if (result) {
-                let pizza = createPizza(ingredients, teamname);
+                let pizza: any = createPizza(ingredients, teamname);
                 try {
                     pizzas.addPizzaSuggestionForTeam(teamname, pizza);
                     pizzas.addPizzaSuggestionSession(teamname, pizza);
@@ -65,8 +65,8 @@ api.post('/pizzas', (req, res, next) => {
 });
 
 api.post('/pizzas/templates', (req, res, next) => {
-    let teamname = req.body.teamname;
-    let template = req.body.template;
+    let teamname: string = req.body.teamname;
+    let template: any = req.body.template;
     if (teamname === undefined || template === undefined) {
         res.status(400).json({ message: 'Bad request: template (pizza suggestion) or teamname is not defined' });
     } else if (!teams.has(teamname)) {
@@ -85,7 +85,7 @@ api.post('/pizzas/templates', (req, res, next) => {
 });
 
 api.get('/pizzas', (req, res, next) => {
-    let teamname = req.query.teamname;
+    let teamname: string = req.query.teamname;
     if (teamname === undefined) {
         res.status(400).json({ message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
@@ -96,16 +96,16 @@ api.get('/pizzas', (req, res, next) => {
 });
 
 api.patch('/pizzas/:name/registered-pieces', (req, res, next) => {
-    let teamname = req.body.teamname;
-    let registeredPieces = req.body.amount;
-    let suggestionName = req.params.name;
+    let teamname: string = req.body.teamname;
+    let registeredPieces: number = req.body.amount;
+    let suggestionName: string = req.params.name;
     if (teamname === undefined || suggestionName === undefined || registeredPieces === undefined) {
         res.status(400).json({ message: 'Bad request: teamname, registered pieces (amount) or pizza name is not defined' });
     } else if (!teams.has(teamname)) {
         res.status(400).json({ message: 'Bad request: there is no such team' });
     } else {
         try {
-            pizzas.resetPropertyValueOfSuggestion(teamname, suggestionName, amount, 'registeredPieces'); // TODO implement
+            pizzas.resetPropertyValueOfSuggestion(teamname, suggestionName, registeredPieces, 'registeredPieces');
             res.status(200).json(pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, 'vote'));
         } catch (error) {
             res.status(400).json({ message: 'Bad request: there is no such suggestion' });
@@ -114,33 +114,31 @@ api.patch('/pizzas/:name/registered-pieces', (req, res, next) => {
 });
 
 api.get('/pizzas/order', (req, res, next) => {
-    let teamname = req.query.teamname;
+    let teamname: string = req.query.teamname;
     if (teamname === undefined) {
         res.status(400).json({ message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
         res.status(400).json({ message: 'Bad request: there is no such team' });
     } else {
         try {
-            res.json(
-                200, (teams.get(teamname).teamSize.type === 'persons') ? solver.solveForPersons(teamname) : solver.solveForPieces(teamname)
-            );
+            res.status(200).json( (teams.get(teamname).teamSize.type === 'persons') ? solver.solveForPersons(teamname) : solver.solveForPieces(teamname));
         } catch (error) {
-            res.json(409, { message: 'Conflict: not enough pizza parts to create a sufficent order' });
+            res.status(409).json( { message: 'Conflict: not enough pizza parts to create a sufficent order' });
         }
     }
 });
 
 api.delete('/pizzas/:name', (req, res, next) => {
-    let suggestionName = req.params.name;
-    let hashedTeamname = req.query.teamname;
+    let suggestionName: string = req.params.name;
+    let hashedTeamname: string = req.query.teamname;
     if (hashedTeamname === undefined || suggestionName === undefined) {
         res.status(400).json({ message: 'Bad request: teamname or name of pizza is not defined' });
     } else if (!teams.hasHash(hashedTeamname)) {
         res.status(400).json({ message: 'Bad request: there is no such team' });
     } else {
         try {
-            let teamname = teams.getTeamnameOfHash(hashedTeamname);
-            let deletedSuggestion = pizzas.deletePizzaSuggestionOfTeam(suggestionName, teamname);
+            let teamname: string = teams.getTeamnameOfHash(hashedTeamname);
+            let deletedSuggestion: any = pizzas.deletePizzaSuggestionOfTeam(suggestionName, teamname);
             res.status(200).json(deletedSuggestion);
         } catch (error) {
             res.status(400).json({ message: 'Bad request: There is no such suggestion for the given team' });
@@ -150,8 +148,8 @@ api.delete('/pizzas/:name', (req, res, next) => {
 
 propertyEndpoints.forEach((endpoint) => {
     api.get(`/pizzas/:name/${endpoint.endpoint}`, (req, res, next) => {
-        let suggestionName = req.params.name;
-        let teamname = req.query.teamname;
+        let suggestionName: string = req.params.name;
+        let teamname: string = req.query.teamname;
         if (teamname === undefined || suggestionName === undefined) {
             res.status(400).json({ message: 'Bad request: teamname or pizza name is not defined' });
         } else if (!teams.has(teamname)) {
@@ -160,7 +158,7 @@ propertyEndpoints.forEach((endpoint) => {
             try {
                 res.status(200).json({ [endpoint.property]: pizzas.getPropertyOfPizzaSuggestionOfTeam(teamname, suggestionName, endpoint.property) });
             } catch (error) {
-                res.status(400).json({ message: 'Not Found: there is no such suggestion' });
+                res.status(400).json({ message: 'Bad request: Not Found: there is no such suggestion' });
             }
         }
     });
