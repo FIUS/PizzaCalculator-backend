@@ -20,7 +20,7 @@ const votesAPI = require('./api/votes-api');
 /**
  * APIs for the admin page
  */
-const adminAPI = require('./api/admin-api');
+import adminAPI = require('./api/admin-api');
 /**
  * APIs for the session page
  */
@@ -42,16 +42,16 @@ const pizzas = new Pizzas();
 /**
  * Module to control sessions
  */
-const Sessions = require('./controller/sessions');
-const sessions = new Sessions();
+import Sessions = require('./controller/sessions');
+const sessions: Sessions = new Sessions();
 
 /**
  * Start server on 8080 or PORT of environment varibale
  */
-let port = 8080
+let port: number = 8080
 
 if (process.env.PORT != null) {
-    let envPort = parseInt(process.env.PORT);
+    let envPort: number = parseInt(process.env.PORT);
     if (!(isNaN(envPort) || envPort < 1 || envPort > 65535)) {
         console.log("Found valid environment variable PORT. Setting port to %i", envPort);
         port = envPort;
@@ -82,6 +82,7 @@ api.use(function (req, res, next) {
     next();
 });
 api.use('/', (req, res, next) => {
+    // Log every incoming request and its http method
     console.log(`[Log] ${req.method} ${req.originalUrl}`);
     next();
 });
@@ -93,13 +94,13 @@ api.use('/', adminAPI);
 api.use('/', sessionAPI);
 api.use('/', configurationAPI);
 
-var server: any = api.listen(port, function () {
+let server: any = api.listen(port, function () {
     teams.setTestTeams();
     pizzas.setTestSuggestions();
     sessions.setupSessions();
 
-    var host = server.address().address;
-    var port = server.address().port;
+    let host: string = server.address().address;
+    let port: number = server.address().port;
     console.log("REST server listening at http://%s:%s", host, port);
 });
 

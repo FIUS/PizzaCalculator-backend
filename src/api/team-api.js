@@ -5,13 +5,13 @@ const timeoutInMS = 28800000;
 if (process.env.TIMEOUT_IN_MS != null) {
     let envTimeout = parseInt(process.env.TIMEOUT_IN_MS);
     if (!isNaN(envTimeout)) {
-        console.log("Found valid environment variable TIMEOUT_IN_MS. Setting timeout to %i", envTimeout);
+        console.log("Found valid environment variable TIMEOUT_IN_MS. Setting timeout to delete a team to %i", envTimeout);
         timeoutInMS = envTimeout;
     } else {
         console.log("The value \"%s\" is not a valid timeout", process.env.TIMEOUT_IN_MS);
     }
 } else {
-    console.log("Environment variable TIMEOUT_IN_MS not set. Using default timeout.");
+    console.log("Environment variable TIMEOUT_IN_MS not set. Using default timeout to delete a team.");
 }
 const Teams = require('../controller/teams');
 const teams = new Teams();

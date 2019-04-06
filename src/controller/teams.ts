@@ -8,27 +8,27 @@ class Teams {
         return teams.has(team);
     }
 
-    hasHash(team: string) {
+    hasHash(team: string): boolean {
         return hashedTeamnames.has(team);
     }
 
-    set(teamname: string, data: any) {
+    set(teamname: string, data: any): void {
         teams.set(teamname, data);
     }
 
-    setHash(hashedName: string, originalName: string) {
+    setHash(hashedName: string, originalName: string): void {
         hashedTeamnames.set(hashedName, originalName);
     }
 
-    keys() {
+    keys(): string[] {
         return teams.keys();
     }
 
-    hashKeys() {
+    hashKeys(): string[] {
         return hashedTeamnames.keys();
     }
 
-    getPublicTeams() {
+    getPublicTeams(): string[] {
         return teams.values().filter((team: any) => {
             return team.public;
         }).map((team: any) => {
@@ -36,21 +36,21 @@ class Teams {
         });
     }
 
-    get(teamname: string) {
+    get(teamname: string): any {
         if (teams.has(teamname)) {
             return teams.get(teamname);
         }
         throw new Error('No such team in teamnames');
     }
 
-    getTeamnameOfHash(hashedName: string) {
+    getTeamnameOfHash(hashedName: string): string {
         if (hashedTeamnames.has(hashedName)) {
             return hashedTeamnames.get(hashedName);
         }
         throw new Error('No such team in hashedTeamnames');
     }
 
-    recalculatePizzaCount(teamname: string) {
+    recalculatePizzaCount(teamname: string): void {
         let team = teams.get(teamname);
         if (team.teamSize.type === 'persons') {
             team.pizzaCount = Math.ceil(team.teamSize.size / 2);
@@ -60,7 +60,7 @@ class Teams {
         console.log(team.teamSize);
     }
 
-    setTestTeams() {
+    setTestTeams(): void {
         teams.set('test', {
             name: 'test',
             hashedName: crypto.createHash('sha256').update('test').digest('hex'),
