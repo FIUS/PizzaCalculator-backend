@@ -24,7 +24,7 @@ import adminAPI = require('./api/admin-api');
 /**
  * APIs for the session page
  */
-const sessionAPI = require('./api/session-api');
+import sessionAPI = require('./api/session-api');
 /**
  * APIs for global configuration admin page to configure server
  */
