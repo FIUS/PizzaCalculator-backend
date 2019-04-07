@@ -1,7 +1,7 @@
 import express = require('express');
 const api = express();
-const DBController = require('../data/db-controller'); // TODO change to import after refactoring db-controller to typescript
-const db = new DBController();
+import DBController = require('../data/db-controller');
+const db: DBController = new DBController();
 
 function changeFlagsToBoolean(array: any[]): void {
     for (let i = 0; i < array.length; ++i) {
@@ -20,7 +20,7 @@ function parseTemplatesIngredients(templates: any[]): void {
 
 api.get('/ingredients', async (req, res, next) => {
     try {
-        let ingredients: any[] = await db.getAllIngredients();
+        let ingredients: any = await db.getAllIngredients();
         // If ingredients array is not null, return ingredients with 200
         if (ingredients != null) {
             changeFlagsToBoolean(ingredients);

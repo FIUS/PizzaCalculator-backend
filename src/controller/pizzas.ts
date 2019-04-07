@@ -1,7 +1,7 @@
 import HashMap = require('hashmap');
 const Set = require('set'); // TODO look for a typescript alternative
-const DBController = require('../data/db-controller'); // TODO Change to import after refactoring db-controller to typescript 
-const db = new DBController();
+import DBController = require('../data/db-controller');
+const db: DBController = new DBController();
 
 /**
  * Map to store suggestions of a team
@@ -192,7 +192,7 @@ class Pizzas {
      * @param {*} callback - Callback with true if all ingredients are existent else false
      */
     async checkIngredientsOfPizza(pizza: any, callback: any) {
-        let ingredients: any[] = await db.getAllIngredients();
+        let ingredients: any = await db.getAllIngredients();
         let result: boolean = false;
         pizza.forEach((ingredient: any) => {
             result = result || containsIngredient(ingredients, ingredient);

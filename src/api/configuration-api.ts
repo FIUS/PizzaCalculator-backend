@@ -1,7 +1,7 @@
 import express = require('express');
 const api = express();
-const dbController = require('../data/db-controller'); // TODO change to import after refactoring db-controller to typescript
-const db = new dbController();
+import DBController = require('../data/db-controller');
+const db: DBController = new DBController();
 
 api.post('/templates', async (req, res, next) => {
     let name: string = req.body.name;
@@ -10,7 +10,7 @@ api.post('/templates', async (req, res, next) => {
     if (name === undefined || ingredients === undefined) {
         res.status(400).json({ message: "Bad request: At least one parameter is undefined" });
     } else {
-        let existingIngredients: string[] = await db.getAllIngredients();
+        let existingIngredients: any = await db.getAllIngredients();
         for(let i = 0; i < ingredients.length; ++i) {
             let ingredientExists: boolean = (existingIngredients.find((ing: any) => {
                 return ingredients[i] == ing.name;
