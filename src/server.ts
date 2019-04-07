@@ -28,7 +28,7 @@ const sessionAPI = require('./api/session-api');
 /**
  * APIs for global configuration admin page to configure server
  */
-const configurationAPI = require('./api/configuration-api');
+import configurationAPI = require('./api/configuration-api');
 /**
  * Module to control teams
  */

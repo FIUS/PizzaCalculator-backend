@@ -1,18 +1,18 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const dbController = require('../data/db-controller');
+const dbController = require('../data/db-controller'); // TODO change to import after refactoring db-controller to typescript
 const db = new dbController();
 
 api.post('/templates', async (req, res, next) => {
-    let name = req.body.name;
-    let ingredients = req.body.ingredients;
+    let name: string = req.body.name;
+    let ingredients: any[] = req.body.ingredients;
 
     if (name === undefined || ingredients === undefined) {
         res.status(400).json({ message: "Bad request: At least one parameter is undefined" });
     } else {
-        let existingIngredients = await db.getAllIngredients();
+        let existingIngredients: string[] = await db.getAllIngredients();
         for(let i = 0; i < ingredients.length; ++i) {
-            let ingredientExists = (existingIngredients.find((ing) => {
+            let ingredientExists: boolean = (existingIngredients.find((ing: any) => {
                 return ingredients[i] == ing.name;
             })) != undefined;
 
@@ -22,14 +22,14 @@ api.post('/templates', async (req, res, next) => {
             }
         }
 
-        let vegetarian = true;
-        let pork = false;
+        let vegetarian: boolean = true;
+        let pork: boolean = false;
         for(let i = 0; i < ingredients.length; ++i) {
-            let ingredient = await db.getIngredientByName(ingredients[i]);
+            let ingredient: any = await db.getIngredientByName(ingredients[i]);
             vegetarian = vegetarian && (Boolean) (ingredient.vegetarian);
             pork = pork || (Boolean) (ingredient.pork);
         }
-        let template = {
+        let template: any = {
             name: name,
             ingredients: ingredients,
             vegetarian: vegetarian,
@@ -42,7 +42,7 @@ api.post('/templates', async (req, res, next) => {
 });
 
 api.delete('/templates/:template', (req, res, next) => {
-    let template = req.params.template;
+    let template: string = req.params.template;
     if (template === undefined) {
         res.status(400).json({ message: "Bad request: Template name is undefined"});
     } else {
@@ -56,13 +56,13 @@ api.delete('/templates/:template', (req, res, next) => {
 });
 
 api.post('/ingredients', (req, res, next) => {
-    let name = req.body.name;
-    let vegetarian = req.body.vegetarian;
-    let pork = req.body.pork;
+    let name: string = req.body.name;
+    let vegetarian: boolean = req.body.vegetarian;
+    let pork: boolean = req.body.pork;
     if (name === undefined || vegetarian === undefined || pork === undefined) {
         res.status(400).json({ message: "Bad request: At least one parameter is undefined" });
     } else {
-        let ingredient = {
+        let ingredient: any = {
             name: name,
             vegetarian: vegetarian,
             pork: pork
@@ -74,7 +74,7 @@ api.post('/ingredients', (req, res, next) => {
 });
 
 api.delete('/ingredients/:name', (req, res, next) => {
-    let name = req.params.name;
+    let name: string = req.params.name;
     if (name === undefined) {
         res.status(400).json({ message: "Bad request: Ingredient name is undefined" });
     } else {
@@ -87,4 +87,4 @@ api.delete('/ingredients/:name', (req, res, next) => {
     }
 });
 
-module.exports = api;
+export = api;
