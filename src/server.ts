@@ -4,7 +4,7 @@ import compression = require('compression');
 /**
  * APIs for ingredients and templates
  */
-const metaAPI = require('./api/meta-api');
+import metaAPI = require('./api/meta-api');
 /**
  * APIs for teams
  */
