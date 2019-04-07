@@ -141,10 +141,10 @@ module.exports = class DBController {
 
 
     addTemplateToFile(template) {
-        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
         templates.push(template);
         try {
-            fs.writeFile('./data/templates.json', JSON.stringify(templates), err => {
+            fs.writeFile('./src/data/templates.json', JSON.stringify(templates), err => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -156,10 +156,10 @@ module.exports = class DBController {
     }
 
     addIngredientToFile(ingredient) {
-        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
         ingredients.push(ingredient);
         try {
-            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients), err => {
+            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients), err => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -171,9 +171,9 @@ module.exports = class DBController {
     }
 
     removeTemplateFromFile(templateName) {
-        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
         try {
-            fs.writeFile('./data/templates.json', JSON.stringify(templates.filter((t) => {
+            fs.writeFile('./src/data/templates.json', JSON.stringify(templates.filter((t) => {
                 return t.name != templateName;
             })), err => {
                 if (err) {
@@ -187,9 +187,9 @@ module.exports = class DBController {
     }
 
     removeIngredientFromFile(ingredientName) {
-        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
         try {
-            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients.filter((i) => {
+            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients.filter((i) => {
                 return i.name != ingredientName;
             })), err => {
                 if (err) {

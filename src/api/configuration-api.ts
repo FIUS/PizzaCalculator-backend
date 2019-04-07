@@ -36,8 +36,8 @@ api.post('/templates', async (req, res, next) => {
             pork: pork
         };
         db.storeTemplate(template);
-        res.status(201).json(template);
         db.addTemplateToFile(template);
+        res.status(201).json(template);
     }
 });
 
@@ -47,11 +47,12 @@ api.delete('/templates/:template', (req, res, next) => {
         res.status(400).json({ message: "Bad request: Template name is undefined"});
     } else {
         db.deleteTemplateByName(template).then(() => {
-            res.status(202).json({ message: "Accepted: Template was deleted" });
             db.removeTemplateFromFile(template);
-        }).catch(() => {
-            res.status(400).json({ message: "Bad request: Template could not be deleted"});
-        });
+            res.status(202).json({ message: "Accepted: Template was deleted" });
+        })
+        // .catch(() => {
+        //     res.status(400).json({ message: "Bad request: Template could not be deleted"});
+        // });
     }
 });
 
@@ -68,8 +69,8 @@ api.post('/ingredients', (req, res, next) => {
             pork: pork
         }
         db.storeIngredient(ingredient);
-        res.status(201).json(ingredient);
         db.addIngredientToFile(ingredient);
+        res.status(201).json(ingredient);      
     }
 });
 
@@ -79,8 +80,8 @@ api.delete('/ingredients/:name', (req, res, next) => {
         res.status(400).json({ message: "Bad request: Ingredient name is undefined" });
     } else {
         db.deleteIngredientByName(name).then(() => {
-            res.status(202).json({ message: "Accepted: Ingredient was deleted" });
             db.removeIngredientFromFile(name);
+            res.status(202).json({ message: "Accepted: Ingredient was deleted" });
         }).catch(() => {
             res.status(400).json({ message: "Bad request: Ingredient could not be deleted" });
         });
