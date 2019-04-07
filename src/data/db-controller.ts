@@ -48,7 +48,7 @@ class DBController {
     }
 
     getAllIngredients() {
-        let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients;');
+        let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients ORDER BY name ASC;');
         return new Promise((resolve, reject) => {
             stmt.all((err: any, result: any[]) => {
                 if (err) {
@@ -93,7 +93,7 @@ class DBController {
 
     // TODO refactor with promises
     getAllTemplates(callback: any) {
-        let stmt = prepare('SELECT name, ingredients, vegetarian, pork FROM Templates;');
+        let stmt = prepare('SELECT name, ingredients, vegetarian, pork FROM Templates ORDER BY name ASC;');
         stmt.all((err: any, result: any) => {
             if (err) {
                 console.log(`[Error] Error on receiving templates: ${err}`);
