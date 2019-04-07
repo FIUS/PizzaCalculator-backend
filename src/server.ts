@@ -16,7 +16,7 @@ import pizzaAPI = require('./api/pizza-api');
 /**
  * APIs for votes of pizzas
  */
-const votesAPI = require('./api/votes-api');
+import votesAPI = require('./api/votes-api');
 /**
  * APIs for the admin page
  */
