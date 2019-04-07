@@ -1,5 +1,5 @@
 import express = require('express');
-const api = express();
+const api: express.Application = express();
 import compression = require('compression');
 /**
  * APIs for ingredients and templates
@@ -8,7 +8,7 @@ import metaAPI = require('./api/meta-api');
 /**
  * APIs for teams
  */
-const teamAPI = require('./api/team-api');
+import teamAPI = require('./api/team-api');
 /**
  * APIs for pizzas
  */

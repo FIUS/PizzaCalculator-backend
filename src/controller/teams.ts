@@ -50,6 +50,11 @@ class Teams {
         throw new Error('No such team in hashedTeamnames');
     }
 
+    remove(teamname: string, hashedName: string): void {
+        teams.remove(teamname);
+        hashedTeamnames.remove(hashedName);
+    }
+
     recalculatePizzaCount(teamname: string): void {
         let team = teams.get(teamname);
         if (team.teamSize.type === 'persons') {
