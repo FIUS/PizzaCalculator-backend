@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3');
-const DBController = require('./src/data/db-controller');
+import DBController = require('./data/db-controller');
 const fs = require('fs');
 
-function recreateDB(callback) {
+function recreateDB(callback: any) {
     let db = new sqlite3.Database('./src/data/meta.db');
     db.serialize(function () {
         // create DB tables
@@ -18,17 +18,17 @@ function recreateDB(callback) {
 }
 
 function initializeIngredients() {
-    let db = new DBController();
+    let db: DBController = new DBController();
     let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
-    ingredients.forEach((ingredient) => {
+    ingredients.forEach((ingredient: any) => {
         db.storeIngredient(ingredient);
     });
 }
 
 function initializeTemplates() {
-    let db = new DBController();
+    let db: DBController = new DBController();
     let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
-    templates.forEach((template) => {
+    templates.forEach((template: any) => {
         db.storeTemplate(template);
     });
 }

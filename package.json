@@ -4,6 +4,7 @@
     "description": "Service backend to calculate pizza orders for big groups",
     "main": "server.js",
     "scripts": {
+        "db-creation": "ts-node src/db-creator.ts",
         "prod": "ts-node src/server.ts",
         "start": "nodemon",
         "test": "echo \"Error: no test specified\" && exit 1"
