@@ -1,5 +1,8 @@
 FROM node:8.15-alpine
 
+ENV PORT=8080
+ENV TIMEOUT_IN_MS=28800000
+
 COPY package.json tsconfig.json ./
 RUN npm install
 
