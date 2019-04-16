@@ -1,10 +1,10 @@
-const Teams = require('./teams');
-const Pizzas = require('./pizzas');
+import Teams = require('./teams');
+import Pizzas = require('./pizzas');
 
-const teams = new Teams();
-const pizzas = new Pizzas();
+const teams: Teams = new Teams();
+const pizzas: Pizzas = new Pizzas();
 
-function containsPizza(array, pizza) {
+function containsPizza(array: any, pizza: any): boolean {
     for (let i = 0; i < array.length; ++i) {
         if (array[i].name === pizza.name) {
             return true;
@@ -13,7 +13,7 @@ function containsPizza(array, pizza) {
     return false;
 }
 
-function countOfVegetarianPieces(teamname) {
+function countOfVegetarianPieces(teamname: string): number {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
         return Math.ceil(team.vegetarian / 2) * 8;
@@ -22,7 +22,7 @@ function countOfVegetarianPieces(teamname) {
     }
 }
 
-function countOfVegetarianPizzaParts(teamname) {
+function countOfVegetarianPizzaParts(teamname: string): number {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
         return Math.ceil(team.vegetarian / 2);
@@ -31,16 +31,16 @@ function countOfVegetarianPizzaParts(teamname) {
     }
 }
 
-function countOfNoPorkPieces(teamname) {
+function countOfNoPorkPieces(teamname: string): number {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
-        return parseInt(Math.ceil(team.noPork / 2) * 8);
+        return Math.ceil(team.noPork / 2) * 8;
     } else {
-        return parseInt(team.noPork);
+        return team.noPork;
     }
 }
 
-function countOfNoPorkPizzaParts(teamname) {
+function countOfNoPorkPizzaParts(teamname: string): number {
     let team = teams.get(teamname);
     if (team.teamSize.type === 'persons') {
         return Math.ceil(team.noPork / 2);
@@ -49,29 +49,29 @@ function countOfNoPorkPizzaParts(teamname) {
     }
 }
 
-function getSuggestionsOfTeamOrdered(teamname) {
+function getSuggestionsOfTeamOrdered(teamname: string): any[] {
     let suggestions = pizzas.getPizzaSuggestionsOfTeam(teamname);
-    suggestions.sort((a, b) => {
+    suggestions.sort((a: any, b: any) => {
         return b.vote - a.vote;
     });
     return suggestions;
 }
 
-module.exports = class Solver {
+class Solver {
     /**
      * Calculates an order using the votes, vegetarian and noPork properties of the suggestions regarding pieces mode
      * @param {*} teamname - The name of the team
      * @returns A array of suggestions which should be ordered
      */
-    solveForPieces(teamname) {
-        let numberOfVegetarianPizzaPiecesNeeded = countOfVegetarianPieces(teamname);
-        let numberOfVegetarianPizzaPiecesinOrder = 0;
-        let numberOfNoPorkPizzaPiecesNeeded = countOfNoPorkPieces(teamname);
-        let numberOfNoPorkPizzaPiecesInOrder = 0;
-        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount;
-        let numberOfPizzaPiecesNeeded = numberOfPizzaPartsNeeded * 8;
-        let suggestions = getSuggestionsOfTeamOrdered(teamname);
-        let order = [];
+    solveForPieces(teamname: string): any[] {
+        let numberOfVegetarianPizzaPiecesNeeded: number = countOfVegetarianPieces(teamname);
+        let numberOfVegetarianPizzaPiecesinOrder: number = 0;
+        let numberOfNoPorkPizzaPiecesNeeded: number = countOfNoPorkPieces(teamname);
+        let numberOfNoPorkPizzaPiecesInOrder: number = 0;
+        let numberOfPizzaPartsNeeded: number = teams.get(teamname).pizzaCount;
+        let numberOfPizzaPiecesNeeded: number = numberOfPizzaPartsNeeded * 8;
+        let suggestions: any[] = getSuggestionsOfTeamOrdered(teamname);
+        let order: any[] = [];
 
         // First add enough vegetarian pizza pieces
         for (let i = 0; i < suggestions.length; ++i) {
@@ -126,14 +126,14 @@ module.exports = class Solver {
      * @param {*} teamname - The name of the team
      * @returns A array of suggestions which should be ordered
      */
-    solveForPersons(teamname) {
-        let numberOfVegetarianPizzaPartsNeeded = countOfVegetarianPizzaParts(teamname);
-        let numberOfVegetarianPizzaPartsInOrder = 0;
-        let numberOfNoPorkPizzaPartsNeeded = countOfNoPorkPizzaParts(teamname);
-        let numberOfNoPorkPizzaPartsInOrder = 0;
-        let numberOfPizzaPartsNeeded = teams.get(teamname).pizzaCount;
-        let suggestions = getSuggestionsOfTeamOrdered(teamname);
-        let order = [];
+    solveForPersons(teamname: string): any[] {
+        let numberOfVegetarianPizzaPartsNeeded: number = countOfVegetarianPizzaParts(teamname);
+        let numberOfVegetarianPizzaPartsInOrder: number = 0;
+        let numberOfNoPorkPizzaPartsNeeded: number = countOfNoPorkPizzaParts(teamname);
+        let numberOfNoPorkPizzaPartsInOrder: number = 0;
+        let numberOfPizzaPartsNeeded: number = teams.get(teamname).pizzaCount;
+        let suggestions: any[] = getSuggestionsOfTeamOrdered(teamname);
+        let order: any[] = [];
 
 
         // First add enough vegetarian pizzas
@@ -181,3 +181,5 @@ module.exports = class Solver {
         return order;
     }
 }
+
+export = Solver;

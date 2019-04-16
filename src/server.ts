@@ -1,57 +1,57 @@
-const express = require('express');
-const api = express();
-const compression = require('compression');
+import express = require('express');
+const api: express.Application = express();
+import compression = require('compression');
 /**
  * APIs for ingredients and templates
  */
-const metaAPI = require('./api/meta-api');
+import metaAPI = require('./api/meta-api');
 /**
  * APIs for teams
  */
-const teamAPI = require('./api/team-api');
+import teamAPI = require('./api/team-api');
 /**
  * APIs for pizzas
  */
-const pizzaAPI = require('./api/pizza-api');
+import pizzaAPI = require('./api/pizza-api');
 /**
  * APIs for votes of pizzas
  */
-const votesAPI = require('./api/votes-api');
+import votesAPI = require('./api/votes-api');
 /**
  * APIs for the admin page
  */
-const adminAPI = require('./api/admin-api');
+import adminAPI = require('./api/admin-api');
 /**
  * APIs for the session page
  */
-const sessionAPI = require('./api/session-api');
+import sessionAPI = require('./api/session-api');
 /**
  * APIs for global configuration admin page to configure server
  */
-const configurationAPI = require('./api/configuration-api');
+import configurationAPI = require('./api/configuration-api');
 /**
  * Module to control teams
  */
-const Teams = require('./controller/teams');
-const teams = new Teams();
+import Teams = require('./controller/teams');
+const teams: Teams = new Teams();
 /**
  * Module to control pizzas
  */
-const Pizzas = require('./controller/pizzas');
-const pizzas = new Pizzas();
+import Pizzas = require('./controller/pizzas');
+const pizzas: Pizzas = new Pizzas();
 /**
  * Module to control sessions
  */
-const Sessions = require('./controller/sessions');
-const sessions = new Sessions();
+import Sessions = require('./controller/sessions');
+const sessions: Sessions = new Sessions();
 
 /**
  * Start server on 8080 or PORT of environment varibale
  */
-let port = 8080
+let port: number = 8080
 
 if (process.env.PORT != null) {
-    let envPort = parseInt(process.env.PORT);
+    let envPort: number = parseInt(process.env.PORT);
     if (!(isNaN(envPort) || envPort < 1 || envPort > 65535)) {
         console.log("Found valid environment variable PORT. Setting port to %i", envPort);
         port = envPort;
@@ -74,7 +74,7 @@ api.use(function (req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', 'X-Auth-Token,content-type');
     // Set to true if you need the website to include cookies in the requests sent
     // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', false);
+    res.setHeader('Access-Control-Allow-Credentials', 'false');
     // Set response header to application/json
     res.setHeader('content-type', 'application/json');
 
@@ -82,6 +82,7 @@ api.use(function (req, res, next) {
     next();
 });
 api.use('/', (req, res, next) => {
+    // Log every incoming request and its http method
     console.log(`[Log] ${req.method} ${req.originalUrl}`);
     next();
 });
@@ -93,13 +94,13 @@ api.use('/', adminAPI);
 api.use('/', sessionAPI);
 api.use('/', configurationAPI);
 
-var server = api.listen(port, function () {
+let server: any = api.listen(port, function () {
     teams.setTestTeams();
     pizzas.setTestSuggestions();
     sessions.setupSessions();
 
-    var host = server.address().address;
-    var port = server.address().port;
+    let host: string = server.address().address;
+    let port: number = server.address().port;
     console.log("REST server listening at http://%s:%s", host, port);
 });
 

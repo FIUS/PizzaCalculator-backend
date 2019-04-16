@@ -1,56 +1,61 @@
-const HashMap = require('hashmap');
+import HashMap = require('hashmap');
 const crypto = require('crypto');
-let teams = new HashMap();
-let hashedTeamnames = new HashMap();
+let teams: HashMap<string, any> = new HashMap();
+let hashedTeamnames: HashMap<string, string> = new HashMap();
 
-module.exports = class Teams {
-    has(team) {
+class Teams {
+    has(team: string): boolean {
         return teams.has(team);
     }
 
-    hasHash(team) {
+    hasHash(team: string): boolean {
         return hashedTeamnames.has(team);
     }
 
-    set(teamname, data) {
+    set(teamname: string, data: any): void {
         teams.set(teamname, data);
     }
 
-    setHash(teamname, data) {
-        hashedTeamnames.set(teamname, data);
+    setHash(hashedName: string, originalName: string): void {
+        hashedTeamnames.set(hashedName, originalName);
     }
 
-    keys() {
+    keys(): string[] {
         return teams.keys();
     }
 
-    hashKeys() {
+    hashKeys(): string[] {
         return hashedTeamnames.keys();
     }
 
-    getPublicTeams() {
-        return teams.values().filter(team => {
+    getPublicTeams(): string[] {
+        return teams.values().filter((team: any) => {
             return team.public;
-        }).map(team => {
+        }).map((team: any) => {
             return team.name;
         });
     }
 
-    get(teamname) {
+    get(teamname: string): any {
         if (teams.has(teamname)) {
             return teams.get(teamname);
         }
         throw new Error('No such team in teamnames');
     }
 
-    getTeamnameOfHash(hashedName) {
+    getTeamnameOfHash(hashedName: string): string {
         if (hashedTeamnames.has(hashedName)) {
             return hashedTeamnames.get(hashedName);
         }
         throw new Error('No such team in hashedTeamnames');
     }
 
-    recalculatePizzaCount(teamname) {
+    remove(teamname: string, hashedName: string): void {
+        teams.remove(teamname);
+        hashedTeamnames.remove(hashedName);
+    }
+
+    recalculatePizzaCount(teamname: string): void {
         let team = teams.get(teamname);
         if (team.teamSize.type === 'persons') {
             team.pizzaCount = Math.ceil(team.teamSize.size / 2);
@@ -60,7 +65,7 @@ module.exports = class Teams {
         console.log(team.teamSize);
     }
 
-    setTestTeams() {
+    setTestTeams(): void {
         teams.set('test', {
             name: 'test',
             hashedName: crypto.createHash('sha256').update('test').digest('hex'),
@@ -96,3 +101,5 @@ module.exports = class Teams {
 
     }
 }
+
+export = Teams;

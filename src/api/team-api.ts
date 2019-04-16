@@ -1,34 +1,35 @@
-const express = require('express');
+import express = require('express');
 const api = express();
 const crypto = require('crypto');
-const timeoutInMS = 28800000;
+import Teams = require('../controller/teams');
+const teams: Teams = new Teams();
+
+let timeoutInMS: number = 28800000;
 if (process.env.TIMEOUT_IN_MS != null) {
-    let envTimeout = parseInt(process.env.TIMEOUT_IN_MS);
+    let envTimeout: number = parseInt(process.env.TIMEOUT_IN_MS);
     if (!isNaN(envTimeout)) {
-        console.log("Found valid environment variable TIMEOUT_IN_MS. Setting timeout to %i", envTimeout);
+        console.log("Found valid environment variable TIMEOUT_IN_MS. Setting timeout to delete a team to %i", envTimeout);
         timeoutInMS = envTimeout;
     } else {
         console.log("The value \"%s\" is not a valid timeout", process.env.TIMEOUT_IN_MS);
     }
 } else {
-    console.log("Environment variable TIMEOUT_IN_MS not set. Using default timeout.");
+    console.log("Environment variable TIMEOUT_IN_MS not set. Using default timeout to delete a team.");
 }
-const Teams = require('../controller/teams');
-const teams = new Teams();
 
 api.post('/teams', (req, res, next) => {
-    let teamname = req.body.teamname;
-    let public = req.body.public;
+    let teamname: string = req.body.teamname;
+    let publicFlag: boolean = req.body.public;
     // teamname is not undefined and teamname is not currently used
-    if (teamname != undefined && req.body.public != undefined && !teams.has(teamname)) {
-        let data = {
+    if (teamname != undefined && publicFlag != undefined && !teams.has(teamname)) {
+        let data: any = {
             name: teamname,
             hashedName: crypto.createHash('sha256').update(teamname).digest('hex'),
             teamSize: {
                 size: 0,
                 type: 'persons'
             },
-            public: public,
+            public: publicFlag,
             pizzaCount: 0,
             voteMode: 'std',
             freeze: false,
@@ -39,13 +40,13 @@ api.post('/teams', (req, res, next) => {
         teams.setHash(data.hashedName, teamname);
         // Delete team after given time
         setTimeout(() => {
-            teams.remove(teamname);
+            teams.remove(teamname, data.hashedName);
         }, timeoutInMS);
         res.status(201).json(data);
     } else if (teamname === undefined) {
-        res.json(409, { message: 'Bad Request: teamname is undefined' });
+        res.status(409).json( { message: 'Bad Request: teamname is undefined' });
     } else {
-        res.json(409, { message: 'Conflict: teamname is already used' });
+        res.status(409).json( { message: 'Conflict: teamname is already used' });
     }
 });
 
@@ -54,7 +55,7 @@ api.get('/teams', (req, res, next) => {
 });
 
 api.get('/teams/:name', (req, res, next) => {
-    let teamname = req.params.name;
+    let teamname: string = req.params.name;
     if (teamname === undefined) {
         res.status(400).json({ message: "team name is undefined" });
     } else {
@@ -63,7 +64,7 @@ api.get('/teams/:name', (req, res, next) => {
 });
 
 api.get('/teams/:teamname/vote-mode', (req, res, next) => {
-    let teamname = req.params.teamname;
+    let teamname: string = req.params.teamname;
     if (teamname === undefined) {
         res.status(400).json({ message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
@@ -74,7 +75,7 @@ api.get('/teams/:teamname/vote-mode', (req, res, next) => {
 });
 
 api.get('/teams/:teamname/freeze', (req, res, next) => {
-    let teamname = req.params.teamname;
+    let teamname: string = req.params.teamname;
     if (teamname === undefined) {
         res.status(400).json({ message: 'Bad request: teamname is not defined' });
     } else if (!teams.has(teamname)) {
@@ -84,4 +85,4 @@ api.get('/teams/:teamname/freeze', (req, res, next) => {
     }
 });
 
-module.exports = api;
+export = api;

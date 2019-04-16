@@ -1,48 +1,42 @@
 const sqlite3 = require('sqlite3').verbose();
-const HashMap = require('hashmap');
+import HashMap = require('hashmap');
 const fs = require('fs');
 
-let preparedStatements = new HashMap();
-let db = new sqlite3.Database('./data/meta.db');
+let preparedStatements: HashMap<string, any> = new HashMap();
+let db = new sqlite3.Database('./src/data/meta.db');
 
 /**
  * Function for sql prepared statements
  * @param {*} statement 
  * @param {*} next 
  */
-function prepare(statement, next) {
+function prepare(statement: string): any {
     if (preparedStatements.has(statement)) {
         try {
-            const sql = preparedStatements.get(statement);
+            const sql: any = preparedStatements.get(statement);
             sql.reset(); // provoke error if statement is finalized
             return sql;
         } catch (error) { } // don't use finalized statements
     }
-    var stmt = db.prepare(statement, function (err) {
+    var stmt = db.prepare(statement, function (err: any) {
         if (err) {
             console.log('[DB] [FAIL] Error Preparing Statement "' + statement + '" \n' +
                 'Error Text: ' + err.message);
-            if (next) {
-                err = new Error('Error while preparing statement! \n' +
-                    'Statement: "' + statement + '"\n' +
-                    'Error: ' + err.message);
-                return next(err);
-            }
         }
     });
     preparedStatements.set(statement, stmt);
     return stmt;
 }
 
-module.exports = class DBController {
+class DBController {
 
-    storeIngredient(ingredient) {
+    storeIngredient(ingredient: any) {
         let stmt = prepare('INSERT OR REPLACE INTO Ingredients(name, vegetarian, pork) VALUES (?, ?, ?);');
-        let name = ingredient.name;
-        let vegetarian = ingredient.vegetarian;
-        let pork = ingredient.pork;
+        let name: string = ingredient.name;
+        let vegetarian: boolean = ingredient.vegetarian;
+        let pork: boolean = ingredient.pork;
         try {
-            stmt.run(name, vegetarian, pork, (err) => {
+            stmt.run(name, vegetarian, pork, (err: any) => {
                 if (err) {
                     console.log(`[Error] Error on inserting new ingredient: ${err}`);
                     throw err;
@@ -54,9 +48,9 @@ module.exports = class DBController {
     }
 
     getAllIngredients() {
-        let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients;');
+        let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients ORDER BY name ASC;');
         return new Promise((resolve, reject) => {
-            stmt.all((err, result) => {
+            stmt.all((err: any, result: any[]) => {
                 if (err) {
                     console.log(`[Error] Error on receiving ingredients: ${err}`);
                     reject(err);
@@ -66,10 +60,10 @@ module.exports = class DBController {
         });
     }
 
-    getIngredientByName(name) {
+    getIngredientByName(name: string) {
         let stmt = prepare('SELECT name, vegetarian, pork FROM Ingredients WHERE name = ?;');
         return new Promise((resolve, reject) => {
-            stmt.get(name, (err, result) => {
+            stmt.get(name, (err: any, result: any) => {
                 if (err) {
                     console.log(`[Error] Error on receiving ingredients: ${err}`);
                     reject(err);
@@ -79,14 +73,14 @@ module.exports = class DBController {
         });
     }
 
-    storeTemplate(template) {
+    storeTemplate(template: any) {
         let stmt = prepare('INSERT OR REPLACE INTO Templates(name, ingredients, vegetarian, pork) VALUES (?, ?, ?, ?);');
-        let name = template.name;
-        let ingredients = JSON.stringify(template.ingredients);
-        let vegetarian = template.vegetarian;
-        let pork = template.pork;
+        let name: string = template.name;
+        let ingredients: string = JSON.stringify(template.ingredients);
+        let vegetarian: boolean = template.vegetarian;
+        let pork: boolean = template.pork;
         try {
-            stmt.run(name, ingredients, vegetarian, pork, (err) => {
+            stmt.run(name, ingredients, vegetarian, pork, (err: any) => {
                 if (err) {
                     console.log(`[Error] Error on inserting new template: ${err}`);
                     throw err;
@@ -97,9 +91,10 @@ module.exports = class DBController {
         }
     }
 
-    getAllTemplates(callback) {
-        let stmt = prepare('SELECT name, ingredients, vegetarian, pork FROM Templates;');
-        stmt.all((err, result) => {
+    // TODO refactor with promises
+    getAllTemplates(callback: any) {
+        let stmt = prepare('SELECT name, ingredients, vegetarian, pork FROM Templates ORDER BY name ASC;');
+        stmt.all((err: any, result: any) => {
             if (err) {
                 console.log(`[Error] Error on receiving templates: ${err}`);
                 callback(null);
@@ -109,10 +104,10 @@ module.exports = class DBController {
     }
 
 
-    deleteTemplateByName(name) {
+    deleteTemplateByName(name: string) {
         let stmt = prepare('DELETE FROM Templates WHERE name = ?;');
         return new Promise((resolve, reject) => {
-            stmt.run(name, (err) => {
+            stmt.run(name, (err: any) => {
                 if (err) {
                     console.log('[Error] Error on deleting template');
                     reject(err);
@@ -124,10 +119,10 @@ module.exports = class DBController {
         });
     }
 
-    deleteIngredientByName(name) {
+    deleteIngredientByName(name: string) {
         let stmt = prepare('DELETE FROM Ingredients WHERE name = ?;');
         return new Promise((resolve, reject) => {
-            stmt.run(name, (err) => {
+            stmt.run(name, (err: any) => {
                 if (err) {
                     console.log('[Error] Error on deleting ingredient');
                     reject(err);
@@ -140,11 +135,11 @@ module.exports = class DBController {
     }
 
 
-    addTemplateToFile(template) {
-        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+    addTemplateToFile(template: any) {
+        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
         templates.push(template);
         try {
-            fs.writeFile('./data/templates.json', JSON.stringify(templates), err => {
+            fs.writeFile('./src/data/templates.json', JSON.stringify(templates), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -155,11 +150,11 @@ module.exports = class DBController {
         }
     }
 
-    addIngredientToFile(ingredient) {
-        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+    addIngredientToFile(ingredient: any) {
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
         ingredients.push(ingredient);
         try {
-            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients), err => {
+            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -170,12 +165,12 @@ module.exports = class DBController {
         }
     }
 
-    removeTemplateFromFile(templateName) {
-        let templates = JSON.parse(fs.readFileSync('./data/templates.json'));
+    removeTemplateFromFile(templateName: string) {
+        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
         try {
-            fs.writeFile('./data/templates.json', JSON.stringify(templates.filter((t) => {
+            fs.writeFile('./src/data/templates.json', JSON.stringify(templates.filter((t: any) => {
                 return t.name != templateName;
-            })), err => {
+            })), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -186,12 +181,12 @@ module.exports = class DBController {
         }
     }
 
-    removeIngredientFromFile(ingredientName) {
-        let ingredients = JSON.parse(fs.readFileSync('./data/ingredients.json'));
+    removeIngredientFromFile(ingredientName: string) {
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
         try {
-            fs.writeFile('./data/ingredients.json', JSON.stringify(ingredients.filter((i) => {
+            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients.filter((i: any) => {
                 return i.name != ingredientName;
-            })), err => {
+            })), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -202,3 +197,5 @@ module.exports = class DBController {
         }
     }
 }
+
+export = DBController;

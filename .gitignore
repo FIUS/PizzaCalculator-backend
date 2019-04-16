@@ -99,8 +99,11 @@ typings/
 meta.db
 
 # Data JSON files
-data/ingredients.json
-data/templates.json
+src/data/ingredients.json
+src/data/templates.json
+
+# Ignore build folder
+build/
 
 # package-lock
 package-lock.json

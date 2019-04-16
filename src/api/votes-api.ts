@@ -1,14 +1,14 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const Teams = require('../controller/teams');
-const teams = new Teams();
-const Pizzas = require('../controller/pizzas');
-const pizzas = new Pizzas();
+import Teams = require('../controller/teams');
+const teams: Teams = new Teams();
+import Pizzas = require('../controller/pizzas');
+const pizzas: Pizzas = new Pizzas();
 
 api.patch('/pizzas/:name', (req, res, next) => {
-    let teamname = req.body.teamname;
-    let suggestionName = req.params.name;
-    let mode = req.query.mode;
+    let teamname: string = req.body.teamname;
+    let suggestionName: string = req.params.name;
+    let mode: string = req.query.mode;
     if (teamname === undefined || suggestionName === undefined || mode === undefined) {
         res.status(400).json({ message: 'Bad request: mode, teamname or name of pizza is not defined' });
     } else if (!teams.has(teamname)) {
@@ -26,8 +26,8 @@ api.patch('/pizzas/:name', (req, res, next) => {
 });
 
 api.get('/pizzas/:name/vote', (req, res, next) => {
-    let teamname = req.query.teamname;
-    let suggestionName = req.params.name;
+    let teamname: string = req.query.teamname;
+    let suggestionName: string = req.params.name;
     if (teamname === undefined || suggestionName === undefined) {
         res.status(400).json({ message: 'Bad request: teamname or pizza name is not defined' });
     } else if (!teams.has(teamname)) {
@@ -41,4 +41,4 @@ api.get('/pizzas/:name/vote', (req, res, next) => {
     }
 });
 
-module.exports = api;
+export = api;

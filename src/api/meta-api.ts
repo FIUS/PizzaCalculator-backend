@@ -1,9 +1,9 @@
-const express = require('express');
+import express = require('express');
 const api = express();
-const DBController = require('../data/db-controller');
-const db = new DBController();
+import DBController = require('../data/db-controller');
+const db: DBController = new DBController();
 
-function changeFlagsToBoolean(array) {
+function changeFlagsToBoolean(array: any[]): void {
     for (let i = 0; i < array.length; ++i) {
         let vegetarian = array[i].vegetarian;
         let pork = array[i].pork;
@@ -12,7 +12,7 @@ function changeFlagsToBoolean(array) {
     }
 }
 
-function parseTemplatesIngredients(templates) {
+function parseTemplatesIngredients(templates: any[]): void {
     for (let i = 0; i < templates.length; ++i) {
         templates[i].ingredients = JSON.parse(templates[i].ingredients);
     }
@@ -20,7 +20,7 @@ function parseTemplatesIngredients(templates) {
 
 api.get('/ingredients', async (req, res, next) => {
     try {
-        let ingredients = await db.getAllIngredients();
+        let ingredients: any = await db.getAllIngredients();
         // If ingredients array is not null, return ingredients with 200
         if (ingredients != null) {
             changeFlagsToBoolean(ingredients);
@@ -36,7 +36,7 @@ api.get('/ingredients', async (req, res, next) => {
 
 api.get('/templates', (req, res, next) => {
     try {
-        db.getAllTemplates((templates) => {
+        db.getAllTemplates((templates: any[]) => {
             // If templates array is not null, return templates with 200
             if (templates != null) {
                 parseTemplatesIngredients(templates);
@@ -51,4 +51,4 @@ api.get('/templates', (req, res, next) => {
     }
 });
 
-module.exports = api;
+export = api;
