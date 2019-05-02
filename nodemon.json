@@ -2,7 +2,7 @@
     "ignore": [
         "**/*.test.ts",
         "**/*.spec.ts",
-        "**/data/*.json",
+        "**/data/database/*.json",
         ".git",
         "node_modules"
     ],

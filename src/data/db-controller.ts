@@ -3,7 +3,7 @@ import HashMap = require('hashmap');
 const fs = require('fs');
 
 let preparedStatements: HashMap<string, any> = new HashMap();
-let db = new sqlite3.Database('./src/data/meta.db');
+let db = new sqlite3.Database('./src/data/database/meta.db');
 
 /**
  * Function for sql prepared statements
@@ -136,10 +136,10 @@ class DBController {
 
 
     addTemplateToFile(template: any) {
-        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
+        let templates = JSON.parse(fs.readFileSync('./src/data/database/templates.json'));
         templates.push(template);
         try {
-            fs.writeFile('./src/data/templates.json', JSON.stringify(templates), (err: any) => {
+            fs.writeFile('./src/data/database/templates.json', JSON.stringify(templates), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -151,10 +151,10 @@ class DBController {
     }
 
     addIngredientToFile(ingredient: any) {
-        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/database/ingredients.json'));
         ingredients.push(ingredient);
         try {
-            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients), (err: any) => {
+            fs.writeFile('./src/data/database/ingredients.json', JSON.stringify(ingredients), (err: any) => {
                 if (err) {
                     console.log(err);
                     throw err;
@@ -166,9 +166,9 @@ class DBController {
     }
 
     removeTemplateFromFile(templateName: string) {
-        let templates = JSON.parse(fs.readFileSync('./src/data/templates.json'));
+        let templates = JSON.parse(fs.readFileSync('./src/data/database/templates.json'));
         try {
-            fs.writeFile('./src/data/templates.json', JSON.stringify(templates.filter((t: any) => {
+            fs.writeFile('./src/data/database/templates.json', JSON.stringify(templates.filter((t: any) => {
                 return t.name != templateName;
             })), (err: any) => {
                 if (err) {
@@ -182,9 +182,9 @@ class DBController {
     }
 
     removeIngredientFromFile(ingredientName: string) {
-        let ingredients = JSON.parse(fs.readFileSync('./src/data/ingredients.json'));
+        let ingredients = JSON.parse(fs.readFileSync('./src/data/database/ingredients.json'));
         try {
-            fs.writeFile('./src/data/ingredients.json', JSON.stringify(ingredients.filter((i: any) => {
+            fs.writeFile('./src/data/database/ingredients.json', JSON.stringify(ingredients.filter((i: any) => {
                 return i.name != ingredientName;
             })), (err: any) => {
                 if (err) {

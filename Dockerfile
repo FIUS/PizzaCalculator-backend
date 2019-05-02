@@ -7,8 +7,8 @@ COPY package.json tsconfig.json ./
 RUN npm install
 
 COPY . ./
-ADD src/data/ingredients.template.json src/data/ingredients.json
-ADD src/data/templates.template.json src/data/templates.json
+ADD src/data/database/ingredients.template.json src/data/database/ingredients.json
+ADD src/data/database/templates.template.json src/data/database/templates.json
 
 RUN npm run db-creation
 
